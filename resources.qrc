@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>default.txt</file>
+        <file>images/icons/add.png</file>
+        <file>images/icons/add@4x.png</file>
+        <file>images/icons/add@3x.png</file>
+        <file>images/icons/add@2x.png</file>
+        <file>images/icons/remove@4x.png</file>
+        <file>images/icons/remove@3x.png</file>
+        <file>images/icons/remove@2x.png</file>
+        <file>images/icons/remove.png</file>
+    </qresource>
+</RCC>

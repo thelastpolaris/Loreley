@@ -1,6 +1,8 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QDebug>
+#include <QPrintDialog>
+#include <QPainter>
 
 #include "productsdata.h"
 #include "auxiliary/ean13.h"
@@ -53,11 +55,11 @@ ProductsData::ProductsData()
     //Select all subproducts
     subProductsModel.select();
 
-    QPixmap pixmap(500,500);
-
-    qDebug() << ean13.generateBarcode("202000000007");
-    ean13.EAN13ToImage(pixmap, QString("202000000007"));
-    qDebug() << pixmap.save("/home/polaris/test.png");
+    //Setup printer
+    printer.setPrinterName("QL-570");
+    printer.setPaperSize(QSize(62, 29), QPrinter::Millimeter);
+//    printer.setOutputFileName("testBarcode.pdf");
+    printer.setResolution(300);
 }
 
 ProductsData::~ProductsData() {
@@ -115,6 +117,18 @@ bool ProductsData::hasSubProducts() {
     return subProductsModel.rowCount() > 0;
 }
 
+void ProductsData::printBarcode(QModelIndex subProduct) {
+    QString barcode = subProductsModel.data(subProductsModel.index(subProduct.row(),SUBPROD_BARCODE)).toString();
+
+    QPixmap pixmap(400,250);
+    ean13.EAN13ToImage(pixmap, barcode);
+    QPainter painter;
+    painter.begin(&printer);
+    painter.drawPixmap(0,0, pixmap);
+    painter.end();
+}
+
+
 QHash<int, QString> ProductsData::getNameAndKey(QString table, QString key, QString value) {
     QSqlQuery query("SELECT * from `" + table + "`");
     query.exec();
@@ -131,8 +145,8 @@ QString ProductsData::generateBarcode() {
     QSqlQuery maxIDQuery("SELECT MAX(id) FROM subproducts");
     maxIDQuery.first();
     QString id = maxIDQuery.value(0).toString();
-    QString barcode("2030000000000");
-    barcode.insert(barcode.size() - id.size(),id );
+    QString barcode("203000000000");
+    barcode.replace(barcode.size() - id.size(), id.size(),id );
     return ean13.generateBarcode(barcode);
 }
 

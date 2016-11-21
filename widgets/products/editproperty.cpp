@@ -57,9 +57,13 @@ void EditProperty::removeProperty() {
     }
 }
 
-void EditProperty::show(QString _propertyName, QString _tableName)  {
+void EditProperty::show(QString _propertyName, QString _tableName, bool color)  {
     propertyName = _propertyName;
     tableName = _tableName;
+//    if(color) {
+//        ui->listView->setViewMode(QListView::IconMode);
+//    }
+//    else ui->listView->setViewMode(QListView::ListMode);
     QDialog::show();
 }
 

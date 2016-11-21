@@ -9,5 +9,9 @@
         <file>images/icons/remove@3x.png</file>
         <file>images/icons/remove@2x.png</file>
         <file>images/icons/remove.png</file>
+        <file>images/icons/print@4x.png</file>
+        <file>images/icons/print@3x.png</file>
+        <file>images/icons/print@2x.png</file>
+        <file>images/icons/print.png</file>
     </qresource>
 </RCC>

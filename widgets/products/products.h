@@ -44,6 +44,8 @@ public slots:
     void showEditSizes();
     void setupPropertyDelegates(QString propTableName);
 
+    void startPrintingBarcode();
+
 signals:
     void productSelected(bool selected);
     void subProductSelected(bool selected);

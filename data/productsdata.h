@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlError>
+#include <QPrinter>
 
 #include "productsmodel.h"
 #include "auxiliary/ean13.h"
@@ -60,6 +61,8 @@ public:
     bool hasProducts();
     bool hasSubProducts();
 
+    void printBarcode(QModelIndex subProduct);
+
 protected:
     ProductsData();
     ~ProductsData();
@@ -70,6 +73,7 @@ private:
     EAN13 ean13;
 
     static ProductsData *p_instance;
+    QPrinter printer;
 };
 
 #endif // PRODUCTSDATA_H

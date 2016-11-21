@@ -61,16 +61,19 @@ Products::Products() :
     //Setup buttons for products
     connect(ui->addProductButton, SIGNAL(clicked(bool)), addProdDialog, SLOT(startAddingProduct()));
     connect(ui->deleteProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingProduct()));
+    connect(ui->printBarcodeButton, SIGNAL(clicked(bool)), SLOT(startPrintingBarcode()));
 
     connect(this, SIGNAL(productSelected(bool)), ui->deleteProductButton, SLOT(setEnabled(bool)));
 
     //Setup buttons for subProducts
     connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
     connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
+    connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
 
     connect(this, SIGNAL(productSelected(bool)), ui->addSubProductButton, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(productSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(subProductSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
+    connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
 
     connect(editPropertyWindow, &EditProperty::propertiesChanged, [=](const QString &tableName) {
         propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
@@ -98,7 +101,7 @@ void Products::showEditCategories() {
 
 void Products::showEditColors() {
     propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey("colors", "id", "name"));
-    editPropertyWindow->show("color", "colors");
+    editPropertyWindow->show("color", "colors", true);
 }
 
 void Products::showEditBrands() {
@@ -122,6 +125,15 @@ void Products::setupPropertyDelegates(QString propTableName) {
         ui->tableView->setItemDelegateForColumn(PROD_BRAND, new ComboBoxItemDelegate(prodData->getNameAndKey("brands", "id", "name"), ui->tableView));
     } else if(propTableName == "sizes") {
         ui->tableView_2->setItemDelegateForColumn(SUBPROD_SIZE, new ComboBoxItemDelegate(prodData->getNameAndKey("sizes", "id", "name"), ui->tableView_2));
+    }
+}
+
+void Products::startPrintingBarcode() {
+    ProductsData* prodData = ProductsData::Instance();
+
+    int response = QMessageBox::question(this, tr("Print label for subproduct"), tr("Are you sure that you want to print label for this subproduct?"));
+    if(response == QMessageBox::Yes) {
+        prodData->printBarcode(ui->tableView_2->selectionModel()->currentIndex());
     }
 }
 

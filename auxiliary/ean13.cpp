@@ -1,10 +1,12 @@
 #include <QPainter>
 #include <QDebug>
+#include <QMessageBox>
 
 #include "ean13.h"
 
 /********************************************************************************/
-EAN13::EAN13()
+EAN13::EAN13(QObject *parent)
+    :QObject(parent)
 {
     // Set up constant data
 
@@ -30,9 +32,16 @@ EAN13::EAN13()
 }
 
 /********************************************************************************/
-void EAN13::makePattern(const QString &code)
+bool EAN13::makePattern(const QString &code)
 {
-    barcode = generateBarcode(code);
+    if(barcode.length() == 14) {
+        barcode = generateBarcode(code.mid(0,12), code.at(12).digitValue());
+    } else {
+        barcode = generateBarcode(code); // add check digit
+    }
+    if(barcode.isEmpty()) {
+        return false;
+    }
 
     pattern = quietZone + leadTail;                       // build the EAN code pattern
 
@@ -49,9 +58,11 @@ void EAN13::makePattern(const QString &code)
     countryCode = barcode.mid(0, 1);
     leftCode = barcode.mid(1, 6);
     rightCode = barcode.mid(7, 6);
+
+    return true;
 }
 
-QString EAN13::generateBarcode(const QString &code) {
+QString EAN13::generateBarcode(const QString &code, int _checksum) {
     int i, sum, digit;
     QString newBarcode;
 
@@ -66,6 +77,12 @@ QString EAN13::generateBarcode(const QString &code) {
             sum += digit * 3;		        // even
     }
     checksum = (10 -(sum % 10)) % 10;
+    if(_checksum >= 0) {
+        if(checksum != _checksum) {
+            QMessageBox::warning(nullptr, tr("Incorrect check digit"), tr("Your barcode contains incorrect check digit. Aborting printing"));
+            return QString();
+        }
+    }
     newBarcode += QString::number(checksum);
 
     return newBarcode;
@@ -74,7 +91,7 @@ QString EAN13::generateBarcode(const QString &code) {
 /********************************************************************************/
 void EAN13::draw(const QRectF &rect, QPainter &painter, const QString &code)
 {
-    makePattern(code);
+    if(!makePattern(code)) return; // Aborting. Something wrong has happened (i.e. wrong check digit provided by user)
     draw(rect, painter);
 }
 
@@ -145,7 +162,7 @@ void EAN13::draw(const QRectF &rect, QPainter &painter)
 
 void EAN13::EAN13ToImage(QPixmap &image, const QString &code) {
     QPainter painter(&image);
-    draw(QRectF(image.rect()), painter, code);
+        draw(QRectF(image.rect()), painter, code);
 }
 
 /********************************************************************************/

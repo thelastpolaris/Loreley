@@ -16,7 +16,7 @@ public:
     ~EditProperty();
     Ui::EditProperty* getUI() const { return ui; }
 public slots:
-    void show(QString _propertyName, QString _tableName);
+    void show(QString _propertyName, QString _tableName, bool color = false);
     void addProperty();
     void removeProperty();
 signals:

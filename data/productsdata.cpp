@@ -57,9 +57,10 @@ ProductsData::ProductsData()
 
     //Setup printer
     printer.setPrinterName("QL-570");
-    printer.setPaperSize(QSize(62, 29), QPrinter::Millimeter);
+    printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
+//    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
 //    printer.setOutputFileName("testBarcode.pdf");
-    printer.setResolution(300);
+    printer.setResolution(260);
 }
 
 ProductsData::~ProductsData() {
@@ -117,14 +118,90 @@ bool ProductsData::hasSubProducts() {
     return subProductsModel.rowCount() > 0;
 }
 
-void ProductsData::printBarcode(QModelIndex subProduct) {
+void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     QString barcode = subProductsModel.data(subProductsModel.index(subProduct.row(),SUBPROD_BARCODE)).toString();
+    QString size = subProductsModel.data(subProductsModel.index(subProduct.row(), SUBPROD_SIZE)).toString();
 
-    QPixmap pixmap(400,250);
+    QString name = productsModel.data(productsModel.index(product.row(), PROD_NAME)).toString();
+    QString category = productsModel.data(productsModel.index(product.row(), PROD_CAT)).toString();
+    QString color = productsModel.data(productsModel.index(product.row(), PROD_COLOR)).toString();
+    QString price = productsModel.data(productsModel.index(product.row(), PROD_PRICE)).toString();
+
+    QPixmap pixmap(540, 170);
     ean13.EAN13ToImage(pixmap, barcode);
+
     QPainter painter;
+    pixmap.save("/home/polaris/test.png");
+
+#define SEPARATOR_LINE_WIDTH 3
+#define BARCODE_SEPARATOR_DISTANCE 10
+
+#define SEPARATOR_NAME_DISTANCE 5
+#define NUM_LINES_NAME 2
+
+#define NAME_PRICE_DISTANCE 10
+#define LABEL_PRICE_DISTANCE 5
+
     painter.begin(&printer);
-    painter.drawPixmap(0,0, pixmap);
+    //Draw label
+    QRect rect(pixmap.rect());
+    int beginX = rect.bottomLeft().x();
+    int endX = rect.bottomRight().x();
+
+    QRect devRect(0,0,painter.device()->width(), painter.device()->height());
+    rect.moveCenter(devRect.center());
+    painter.drawPixmap(rect.topLeft().x(), 0, pixmap);
+
+    painter.setPen(QPen(painter.brush(), SEPARATOR_LINE_WIDTH));
+    int separator_y = pixmap.height() + BARCODE_SEPARATOR_DISTANCE;
+    painter.drawLine(beginX, separator_y, rect.bottomRight().x(), separator_y );
+
+    //Draw name, category and color
+    /***********************************************************/
+    QString barcodeName = QString("%1, %2, %3").arg(name, category, color);
+    painter.setFont(QFont("Arial", 8));
+    QRectF nameBound(beginX, separator_y + SEPARATOR_NAME_DISTANCE, rect.bottomRight().x() - beginX,
+               QFontMetrics(painter.font()).height()*NUM_LINES_NAME);
+    painter.drawText(nameBound, Qt::TextWrapAnywhere,  barcodeName, &nameBound);
+    /***********************************************************/
+
+    int blockWidth = nameBound.width()/3;
+    //Draw price
+    /***********************************************************/
+    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    QRectF priceLabelBound(beginX, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
+    painter.drawText(priceLabelBound, Qt::TextWrapAnywhere, tr("Price"), &priceLabelBound);
+
+    painter.setFont(QFont("Arial", 12));
+    QRectF priceBound(beginX, priceLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
+    painter.drawText(priceBound, Qt::TextWrapAnywhere, price, &priceBound);
+    /***********************************************************/
+
+    //Draw discount (to be added)
+//    int blockWidth = nameBound.width()/3;
+//    /***********************************************************/
+//    painter.setFont(QFont("Arial", 8, QFont::Bold));
+//    QRectF priceLabelBound(beginX, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
+//    painter.drawText(priceLabelBound, Qt::TextWrapAnywhere, tr("Price"), &priceLabelBound);
+
+//    painter.setFont(QFont("Arial", 8));
+//    QRectF priceBound(beginX, priceLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE, priceWidth, QFontMetrics(painter.font()).height());
+//    painter.drawText(priceBound, Qt::TextWrapAnywhere, price, &priceBound);
+    /***********************************************************/
+
+    //Draw size
+    /***********************************************************/
+    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    QRectF sizeLabelBound(endX - blockWidth, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE,
+                           blockWidth, QFontMetrics(painter.font()).height());
+    painter.drawText(sizeLabelBound, Qt::TextWrapAnywhere, tr("Size"), &sizeLabelBound);
+
+    painter.setFont(QFont("Arial", 12));
+    QRectF sizeBound(endX - blockWidth, sizeLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE,
+                      blockWidth, QFontMetrics(painter.font()).height());
+    painter.drawText(sizeBound, Qt::TextWrapAnywhere, size, &sizeBound);
+    /***********************************************************/
+
     painter.end();
 }
 

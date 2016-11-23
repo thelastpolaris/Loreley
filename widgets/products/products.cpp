@@ -133,7 +133,8 @@ void Products::startPrintingBarcode() {
 
     int response = QMessageBox::question(this, tr("Print label for subproduct"), tr("Are you sure that you want to print label for this subproduct?"));
     if(response == QMessageBox::Yes) {
-        prodData->printBarcode(ui->tableView_2->selectionModel()->currentIndex());
+        prodData->printBarcode(ui->tableView_2->selectionModel()->currentIndex(),
+                               ui->tableView->selectionModel()->currentIndex());
     }
 }
 

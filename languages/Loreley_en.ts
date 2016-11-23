@@ -54,6 +54,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../widgets/products/addproductdialog.ui" line="105"/>
+        <source>Brand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../widgets/products/addproductdialog.cpp" line="26"/>
         <source>Name was not entered</source>
         <translation type="unfinished"></translation>
@@ -74,22 +79,22 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="44"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="45"/>
         <source>Success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="44"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="45"/>
         <source>Successfully added product &lt;b&gt;%1&lt;/b&gt; to the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="47"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="48"/>
         <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="47"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="48"/>
         <source>Error - Product &lt;b&gt;%1&lt;/b&gt; was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %2&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -133,6 +138,79 @@
     </message>
 </context>
 <context>
+    <name>EAN13</name>
+    <message>
+        <location filename="../auxiliary/ean13.cpp" line="82"/>
+        <source>Incorrect check digit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../auxiliary/ean13.cpp" line="82"/>
+        <source>Your barcode contains incorrect check digit. Aborting printing</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditProperty</name>
+    <message>
+        <location filename="../widgets/products/editproperty.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="25"/>
+        <source>Add new %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="26"/>
+        <source>Enter the name of new %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="30"/>
+        <location filename="../widgets/products/editproperty.cpp" line="49"/>
+        <source>Success!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="30"/>
+        <source>Successfully added new property with the name %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="34"/>
+        <location filename="../widgets/products/editproperty.cpp" line="53"/>
+        <source>Error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="34"/>
+        <source>Error - property was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %1&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="46"/>
+        <source>Delete property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="46"/>
+        <source>Are you sure you want to delete &lt;b&gt;%1&lt;/b&gt;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="49"/>
+        <source>Successfully deleted property &lt;b&gt;%2&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="53"/>
+        <source>Error - property was not deleted to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %1&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
@@ -150,17 +228,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="74"/>
+        <location filename="../mainwindow.ui" line="53"/>
+        <location filename="../mainwindow.ui" line="85"/>
         <source>Products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="77"/>
+        <location filename="../mainwindow.ui" line="88"/>
         <source>Alt+1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="112"/>
+        <location filename="../mainwindow.ui" line="93"/>
+        <source>Categories</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="98"/>
+        <source>Brands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="103"/>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="108"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="124"/>
         <source>Current Language changed to %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -174,67 +273,77 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.ui" line="64"/>
+        <location filename="../widgets/products/products.ui" line="67"/>
         <source>Ctrl+1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.ui" line="84"/>
+        <location filename="../widgets/products/products.ui" line="87"/>
         <source>Ctrl+2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.ui" line="107"/>
+        <location filename="../widgets/products/products.ui" line="110"/>
         <source>Subproducts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.ui" line="153"/>
+        <location filename="../widgets/products/products.ui" line="159"/>
         <source>Ctrl+3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.ui" line="179"/>
+        <location filename="../widgets/products/products.ui" line="185"/>
         <source>Ctrl+4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="103"/>
+        <location filename="../widgets/products/products.cpp" line="134"/>
+        <source>Print label for subproduct</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="134"/>
+        <source>Are you sure that you want to print label for this subproduct?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="173"/>
         <source>Delete product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="103"/>
+        <location filename="../widgets/products/products.cpp" line="173"/>
         <source>Are you sure you want to delete &lt;b&gt;%1&lt;/b&gt;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="111"/>
+        <location filename="../widgets/products/products.cpp" line="184"/>
         <source>Error - No product selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="111"/>
+        <location filename="../widgets/products/products.cpp" line="184"/>
         <source>No product was selected to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="123"/>
+        <location filename="../widgets/products/products.cpp" line="198"/>
         <source>Delete subproduct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="123"/>
+        <location filename="../widgets/products/products.cpp" line="198"/>
         <source>Are you sure you want to delete subproduct of product &lt;b&gt;%1&lt;/b&gt;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="130"/>
+        <location filename="../widgets/products/products.cpp" line="207"/>
         <source>Error - No subproduct selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="130"/>
+        <location filename="../widgets/products/products.cpp" line="207"/>
         <source>No subproduct was selected to delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -242,53 +351,60 @@
 <context>
     <name>ProductsData</name>
     <message>
-        <location filename="../data/productsdata.cpp" line="22"/>
+        <location filename="../data/productsdata.cpp" line="24"/>
         <source>Product ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="23"/>
+        <location filename="../data/productsdata.cpp" line="25"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="24"/>
+        <location filename="../data/productsdata.cpp" line="26"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="25"/>
+        <location filename="../data/productsdata.cpp" line="27"/>
+        <location filename="../data/productsdata.cpp" line="173"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="26"/>
+        <location filename="../data/productsdata.cpp" line="28"/>
+        <source>Brand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/productsdata.cpp" line="29"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="27"/>
-        <location filename="../data/productsdata.cpp" line="44"/>
+        <location filename="../data/productsdata.cpp" line="30"/>
+        <location filename="../data/productsdata.cpp" line="48"/>
         <source>Note</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="40"/>
+        <location filename="../data/productsdata.cpp" line="44"/>
         <source>Subproduct ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="41"/>
+        <location filename="../data/productsdata.cpp" line="45"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="42"/>
+        <location filename="../data/productsdata.cpp" line="46"/>
+        <location filename="../data/productsdata.cpp" line="197"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="43"/>
+        <location filename="../data/productsdata.cpp" line="47"/>
         <source>Barcode</source>
         <translation type="unfinished"></translation>
     </message>

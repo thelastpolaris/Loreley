@@ -61,7 +61,7 @@ public:
     bool hasProducts();
     bool hasSubProducts();
 
-    void printBarcode(QModelIndex subProduct);
+    void printBarcode(QModelIndex subProduct, QModelIndex product);
 
 protected:
     ProductsData();

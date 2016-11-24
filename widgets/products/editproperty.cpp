@@ -11,8 +11,9 @@ EditProperty::EditProperty(QWidget *parent) :
     ui(new Ui::EditProperty)
 {
     ui->setupUi(this);
-    connect(ui->addProperty, SIGNAL(clicked(bool)), SLOT(addProperty()));
+    connect(ui->addProperty, SIGNAL(clicked()), SLOT(addProperty()));
     connect(ui->removeProperty, SIGNAL(clicked()), SLOT(removeProperty()));
+    connect(ui->editProperty, SIGNAL(clicked()), SLOT(editPropertySlot()));
 }
 
 EditProperty::~EditProperty()
@@ -42,15 +43,37 @@ void EditProperty::removeProperty() {
     ProductsData* prodData = ProductsData::Instance();
 
     bool status;
-    QString delPropName = ui->listView->currentIndex().data().toString();
+    QString delPropName = ui->propertiesLV->currentIndex().data().toString();
     int response = QMessageBox::question(this, tr("Delete property"),tr("Are you sure you want to delete <b>%1</b>?").arg(delPropName), QMessageBox::Ok, QMessageBox::Cancel);
     if(response == QMessageBox::Ok) {
         if(prodData->removeProperty(tableName, delPropName)) {
-            QMessageBox::information(this, tr("Success!"), tr("Successfully deleted property <b>%2</b>").arg(delPropName));
+            QMessageBox::information(this, tr("Success!"), tr("Successfully deleted property <b>%1</b>").arg(delPropName));
             emit propertiesChanged(tableName);
         } else {
             QSqlError err = QSqlDatabase::database().lastError();
-            QMessageBox::information(this,tr("Error!"), tr("Error - property was not deleted to the database due to the following errors"
+            QMessageBox::information(this,tr("Error!"), tr("Error - property was not deleted due to the following errors"
+                                                           "<br> <b>Database Error:</b> %1"
+                                                           "<br> <b>Driver Error:</b> %2").arg(err.databaseText(), err.driverText() ));
+        }
+    }
+}
+
+void EditProperty::editPropertySlot() {
+    ProductsData* prodData = ProductsData::Instance();
+    QString propName = ui->propertiesLV->currentIndex().data().toString();
+
+    bool status;
+    QString newPropName = QInputDialog::getText(this, tr("Edit <b>%1</b> property").arg(propName),
+                          tr("Enter the new name"), QLineEdit::Normal,
+                          propName, &status);
+    if(status) {
+        if(prodData->editProperty(tableName, propName, newPropName)) {
+            QMessageBox::information(this, tr("Success!"), tr("Successfully changed name of property <b>%1</b> to <b>%2</b>").arg(propName, newPropName));
+            emit propertiesChanged(tableName);
+            emit propertyEdited();
+        } else {
+            QSqlError err = QSqlDatabase::database().lastError();
+            QMessageBox::information(this,tr("Error!"), tr("Error - property was not changed due to the following errors"
                                                            "<br> <b>Database Error:</b> %1"
                                                            "<br> <b>Driver Error:</b> %2").arg(err.databaseText(), err.driverText() ));
         }

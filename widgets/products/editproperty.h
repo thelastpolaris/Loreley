@@ -19,8 +19,10 @@ public slots:
     void show(QString _propertyName, QString _tableName, bool color = false);
     void addProperty();
     void removeProperty();
+    void editPropertySlot();
 signals:
     void propertiesChanged(QString _tableName);
+    void propertyEdited();
 private:
     Ui::EditProperty *ui;
     QString propertyName;

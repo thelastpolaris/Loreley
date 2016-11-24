@@ -30,8 +30,8 @@ protected:
     virtual ~Products() override;
 
 public slots:
-    void updateSubProducts(const QItemSelection & selected, const QItemSelection & deselected);
-    void subProdSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected);
+    void updateSubProducts(const QItemSelection & selected = QItemSelection(), const QItemSelection & deselected = QItemSelection());
+    void subProdSelectionChanged(const QItemSelection & selected = QItemSelection(), const QItemSelection & deselected = QItemSelection());
     //Products
     bool startDeletingProduct();
     //Subproducts

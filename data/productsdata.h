@@ -57,6 +57,7 @@ public:
 
     bool addNewProperty(QString table, QString name);
     bool removeProperty(QString table, QString name);
+    bool editProperty(QString table, QString name, QString newName);
 
     bool hasProducts();
     bool hasSubProducts();

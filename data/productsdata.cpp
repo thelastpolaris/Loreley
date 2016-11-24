@@ -19,7 +19,7 @@ ProductsData::ProductsData()
 {
     //Setup productsModel
     productsModel.setTable("products");
-    productsModel.setEditStrategy(QSqlRelationalTableModel::OnRowChange);
+    productsModel.setEditStrategy(QSqlRelationalTableModel::OnFieldChange);
     //Name headers
     productsModel.setHeaderData(PROD_ID, Qt::Horizontal, tr("Product ID"));
     productsModel.setHeaderData(PROD_NAME, Qt::Horizontal, tr("Name"));
@@ -98,16 +98,22 @@ bool ProductsData::addNewProperty(QString table, QString name) {
     addProperty.prepare("INSERT INTO " + table + " (name) "
                              "VALUES (:name)");
     addProperty.bindValue(":name", name);
-    bool status = addProperty.exec();
-    return status;
+    return addProperty.exec();
 }
 
 bool ProductsData::removeProperty(QString table, QString name) {
     QSqlQuery removeProperty;
     removeProperty.prepare("DELETE FROM " + table + " WHERE name=:name");
     removeProperty.bindValue(":name", name);
-    bool status = removeProperty.exec();
-    return status;
+    return removeProperty.exec();
+}
+
+bool ProductsData::editProperty(QString table, QString name, QString newName) {
+    QSqlQuery editProperty;
+    editProperty.prepare("UPDATE " + table + " SET name=:newName WHERE name=:name");
+    editProperty.bindValue(":newName", newName);
+    editProperty.bindValue(":name", name);
+    return editProperty.exec();
 }
 
 bool ProductsData::hasProducts() {
@@ -165,7 +171,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     painter.drawText(nameBound, Qt::TextWrapAnywhere,  barcodeName, &nameBound);
     /***********************************************************/
 
-    int blockWidth = nameBound.width()/3;
+    int blockWidth = nameBound.width()/2.5;
     //Draw price
     /***********************************************************/
     painter.setFont(QFont("Arial", 12, QFont::Bold));

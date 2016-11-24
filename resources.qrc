@@ -13,5 +13,29 @@
         <file>images/icons/print@3x.png</file>
         <file>images/icons/print@2x.png</file>
         <file>images/icons/print.png</file>
+        <file>images/icons/settings@4x.png</file>
+        <file>images/icons/settings@3x.png</file>
+        <file>images/icons/settings@2x.png</file>
+        <file>images/icons/settings.png</file>
+        <file>images/icons/search@4x.png</file>
+        <file>images/icons/search@3x.png</file>
+        <file>images/icons/search@2x.png</file>
+        <file>images/icons/search.png</file>
+        <file>images/icons/save@4x.png</file>
+        <file>images/icons/save@3x.png</file>
+        <file>images/icons/save@2x.png</file>
+        <file>images/icons/save.png</file>
+        <file>images/icons/previous@4x.png</file>
+        <file>images/icons/previous@3x.png</file>
+        <file>images/icons/previous@2x.png</file>
+        <file>images/icons/previous.png</file>
+        <file>images/icons/next@4x.png</file>
+        <file>images/icons/next@3x.png</file>
+        <file>images/icons/next@2x.png</file>
+        <file>images/icons/next.png</file>
+        <file>images/icons/edit@4x.png</file>
+        <file>images/icons/edit@3x.png</file>
+        <file>images/icons/edit@2x.png</file>
+        <file>images/icons/edit.png</file>
     </qresource>
 </RCC>

@@ -36,7 +36,7 @@ void AddProductDialog::finishAddingProduct() {
     if(prod->addProduct(
                 name,
                 ui->categoryCB->currentData(),
-                ui->priceEdit->text().toInt(),
+                ui->priceEdit->text().remove(" ").toInt(),
                 ui->colorCB->currentData(),
                 ui->brandCB->currentData(),
                 ui->noteTextEdit->toPlainText()))

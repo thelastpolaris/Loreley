@@ -68,7 +68,6 @@ Products::Products() :
     //Setup buttons for subProducts
     connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
     connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
-    connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
 
     connect(this, SIGNAL(productSelected(bool)), ui->addSubProductButton, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(productSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
@@ -80,9 +79,14 @@ Products::Products() :
     });
 
     connect(editPropertyWindow, SIGNAL(propertiesChanged(QString)), SLOT(setupPropertyDelegates(QString)));
+    //TODO - Find better solution
+    connect(editPropertyWindow, &EditProperty::propertyEdited, [=]() {
+       prodData->getProductsModel()->select();
+       updateSubProducts();
+    });
 
     //Setup menu buttons for editing various properties
-    editPropertyWindow->getUI()->listView->setModel(propertiesModel);
+    editPropertyWindow->getUI()->propertiesLV->setModel(propertiesModel);
     connect(MainWindow::Instance(), SIGNAL(categoriesTriggered(bool)), SLOT(showEditCategories()));
     connect(MainWindow::Instance(), SIGNAL(colorsTriggered(bool)), SLOT(showEditColors()));
     connect(MainWindow::Instance(), SIGNAL(brandsTriggered(bool)), SLOT(showEditBrands()));
@@ -178,6 +182,7 @@ bool Products::startDeletingProduct() {
                 emit productSelected(false); // No products in table. Disable delete button
                 emit subProductSelected(false); // No products. Disable add and delete subprod. buttons
             }
+            QMessageBox::information(this, tr("Success!"), tr("Successfully deleted product <b>%1</b>").arg(name));
             return true;
         }
     } else {
@@ -201,6 +206,7 @@ bool Products::startDeletingSubProduct() {
             if(!prodData->hasSubProducts()) {
                 emit subProductSelected(false);
             }
+            QMessageBox::information(this, tr("Success!"), tr("Successfully deleted subproduct of product %1").arg(name));
             return true;
         }
     } else {

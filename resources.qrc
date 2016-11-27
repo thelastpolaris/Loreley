@@ -37,5 +37,9 @@
         <file>images/icons/edit@3x.png</file>
         <file>images/icons/edit@2x.png</file>
         <file>images/icons/edit.png</file>
+        <file>images/icons/minus@4x.png</file>
+        <file>images/icons/minus@3x.png</file>
+        <file>images/icons/minus@2x.png</file>
+        <file>images/icons/minus.png</file>
     </qresource>
 </RCC>

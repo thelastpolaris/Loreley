@@ -6,6 +6,7 @@
 #include <QPrinter>
 
 #include "productsmodel.h"
+#include "subproductsmodel.h"
 #include "auxiliary/ean13.h"
 
 class EAN13;
@@ -20,13 +21,16 @@ class EAN13;
 
 #define SUBPROD_ID 0
 #define SUBPROD_PROD_ID 1
-#define SUBPROD_AMOUNT 2
-#define SUBPROD_SIZE 3
-#define SUBPROD_BARCODE 4
-#define SUBPROD_NOTE 5
+#define SUBPROD_SIZE 2
+#define SUBPROD_BARCODE 3
+#define SUBPROD_NOTE 4
+#define SUBPROD_AMOUNT 5
+
+#define SUBPROD_HISTORY_AMOUNT 2
 
 #define PROD_TABLE "products"
 #define SUBPROD_TABLE "subproducts"
+#define SUBPROD_HISTORY_TABLE "subprod_history"
 
 class ProductsData : public QObject
 {
@@ -41,7 +45,7 @@ public:
     bool addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note = QString());
     QSqlError productsLastError() const { return productsModel.lastError(); }
 
-    bool addSubProduct(int product_id, int amount, int size);
+    bool addSubProduct(int product_id, int amount, int size, QDate arrivalDate);
     QSqlError subProductsLastError() const { return subProductsModel.lastError(); }
 
     QHash<int, QString> getNameAndKey(QString table, QString key, QString value);
@@ -70,7 +74,7 @@ protected:
 
 private:
     ProductsModel productsModel;
-    ProductsModel subProductsModel;
+    SubProductsModel subProductsModel;
     EAN13 ean13;
 
     static ProductsData *p_instance;

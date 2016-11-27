@@ -17,8 +17,8 @@ void AddSubProductDialog::finishAddingSubProduct() {
     ProductsData *prod = ProductsData::Instance();
 
     int product_id = prod->getSubProductsModel()->getFilterValue();
-    if(prod->addSubProduct(product_id, ui->amountSB->value(),
-                                               ui->sizeCB->currentData().toInt())) {
+    if(prod->addSubProduct(product_id, ui->amountSB->value(), ui->sizeCB->currentData().toInt(),
+                           ui->arrivalDE->date())) {
         close();
         QMessageBox::information(this,tr("Success!"), tr("Successfully added subproduct to the database"));
     } else {
@@ -37,7 +37,7 @@ void AddSubProductDialog::startAddingSubProduct() {
     for(QHash<int, QString>::const_iterator i = categories.begin(); i != categories.end(); ++i) {
             ui->sizeCB->addItem(i.value(), i.key());
     }
-
+    ui->arrivalDE->setDate(QDate::currentDate());
     show();
 }
 

@@ -51,6 +51,7 @@ Products::Products() :
     ui->tableView_2->setModel(prodData->getSubProductsModel());
 
     ui->tableView_2->setColumnHidden(SUBPROD_PROD_ID,true);
+    ui->tableView_2->horizontalHeader()->moveSection(SUBPROD_AMOUNT, SUBPROD_NOTE);
     setupPropertyDelegates("sizes");
 
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -67,6 +68,7 @@ Products::Products() :
 
     //Setup buttons for subProducts
     connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
+    connect(ui->reduceSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingProduct()));
     connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
 
     connect(this, SIGNAL(productSelected(bool)), ui->addSubProductButton, SLOT(setEnabled(bool)));
@@ -213,6 +215,10 @@ bool Products::startDeletingSubProduct() {
         QMessageBox::warning(this, tr("Error - No subproduct selected"), tr("No subproduct was selected to delete"));
     }
     return false; // Row was not deleted
+}
+
+bool Products::starReducingSubproductAmount() {
+
 }
 
 Products::~Products()

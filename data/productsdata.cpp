@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QPrintDialog>
 #include <QPainter>
+#include <QDate>
 
 #include "productsdata.h"
 #include "auxiliary/ean13.h"
@@ -16,6 +17,7 @@ ProductsData* ProductsData::Create() {
 }
 
 ProductsData::ProductsData()
+    :subProductsModel(SUBPROD_HISTORY_TABLE, SUBPROD_AMOUNT, SUBPROD_ID, SUBPROD_HISTORY_AMOUNT)
 {
     //Setup productsModel
     productsModel.setTable("products");
@@ -41,17 +43,18 @@ ProductsData::ProductsData()
     subProductsModel.setTable("subproducts");
     subProductsModel.setEditStrategy(QSqlRelationalTableModel::OnRowChange);
     //Name headers
-    subProductsModel.setHeaderData(SUBPROD_ID, Qt::Horizontal, tr("Subproduct ID"));
+    subProductsModel.setHeaderData(SUBPROD_ID, Qt::Horizontal, tr("Subproduct ID"));    
     subProductsModel.setHeaderData(SUBPROD_AMOUNT, Qt::Horizontal, tr("Amount"));
     subProductsModel.setHeaderData(SUBPROD_SIZE, Qt::Horizontal, tr("Size"));
     subProductsModel.setHeaderData(SUBPROD_BARCODE, Qt::Horizontal, tr("Barcode"));
     subProductsModel.setHeaderData(SUBPROD_NOTE, Qt::Horizontal, tr("Note"));
     //Set relations
     subProductsModel.setRelation(SUBPROD_SIZE, QSqlRelation("sizes", "id", "name"));
+
     //Initialize filter so that no subproducts are displayed
     filterSubProducts(-1);
     //Setup readonly columns
-    subProductsModel.setReadOnlyCols(QList<int>{SUBPROD_ID, SUBPROD_SIZE, SUBPROD_BARCODE});
+    subProductsModel.setReadOnlyCols(QList<int>{SUBPROD_ID, SUBPROD_AMOUNT, SUBPROD_SIZE, SUBPROD_BARCODE});
     //Select all subproducts
     subProductsModel.select();
 
@@ -247,25 +250,28 @@ bool ProductsData::addProduct(QString name, QVariant category, int price, QVaria
     return status;
 }
 
-bool ProductsData::addSubProduct(int product_id, int amount, int size) {
+bool ProductsData::addSubProduct(int product_id, int amount, int size, QDate arrivalDate) {
     QSqlQuery checkSubProduct(QString("SELECT * FROM `%1` WHERE `product_id`= %2 AND `size`=%3").arg(SUBPROD_TABLE).arg(product_id).arg(size));
 
     if(checkSubProduct.exec()) {
         if(checkSubProduct.size()) {
             QSqlQuery updateSubProduct;
-            updateSubProduct.prepare("UPDATE subproducts SET amount= amount + :amount WHERE product_id=:product_id AND size=:size");
-            updateSubProduct.bindValue(":amount", amount);
-            updateSubProduct.bindValue(":product_id", product_id);
-            updateSubProduct.bindValue(":size", size);
+            checkSubProduct.next();
+            QVariant subprod_id = checkSubProduct.value(SUBPROD_ID);
+            updateSubProduct.prepare("INSERT INTO " + QString(SUBPROD_HISTORY_TABLE) +
+                                     "(subprod_id, amount, arrival_date)"
+                                    "VALUES (:subprod_id, :amount, :arrival_date)");
+            updateSubProduct.bindValue(":subprod_id", QVariant(subprod_id));
+            updateSubProduct.bindValue(":amount", QVariant(amount));
+            updateSubProduct.bindValue(":arrival_date", QVariant(arrivalDate));
             bool status = updateSubProduct.exec();
             subProductsModel.select();
             return status;
         } else {
             QSqlQuery updateSubProduct;
-            updateSubProduct.prepare("INSERT INTO subproducts (product_id, amount, size, barcode) "
-                                     "VALUES (:product_id, :amount, :size, :barcode)");
+            updateSubProduct.prepare("INSERT INTO subproducts (product_id, size, barcode) "
+                                     "VALUES (:product_id, :size, :barcode)");
             updateSubProduct.bindValue(":product_id", product_id);
-            updateSubProduct.bindValue(":amount", amount);
             updateSubProduct.bindValue(":size", size);
             updateSubProduct.bindValue(":barcode", generateBarcode());
             bool status = updateSubProduct.exec();

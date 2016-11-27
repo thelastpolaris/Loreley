@@ -26,7 +26,8 @@ SOURCES += main.cpp\
     data/productsmodel.cpp \
     auxiliary/ean13.cpp \
     widgets/products/editproperty.cpp \
-    auxiliary/propertiesmodel.cpp
+    auxiliary/propertiesmodel.cpp \
+    data/subproductsmodel.cpp
 
 HEADERS  += mainwindow.h \
     widgets/delegates/comboboxitemdelegate.h \
@@ -39,7 +40,8 @@ HEADERS  += mainwindow.h \
     data/productsdata.h \
     auxiliary/ean13.h \
     widgets/products/editproperty.h \
-    auxiliary/propertiesmodel.h
+    auxiliary/propertiesmodel.h \
+    data/subproductsmodel.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \

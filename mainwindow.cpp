@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionColors, SIGNAL(triggered(bool)), SIGNAL(colorsTriggered(bool)));
     connect(ui->actionBrands, SIGNAL(triggered(bool)), SIGNAL(brandsTriggered(bool)));
     connect(ui->actionSize, SIGNAL(triggered(bool)), SIGNAL(sizeTriggered(bool)));
+
+    loadLanguage(QLocale::system().bcp47Name());
 }
 
 MainWindow* MainWindow::Create() {
@@ -48,9 +50,9 @@ void MainWindow::createLanguageMenu(void)
     for (int i = 0; i < fileNames.size(); ++i) {
         // get locale extracted by filename
         QString locale;
-        locale = fileNames[i]; // "Loreley_de.qm"
-        locale.truncate(locale.lastIndexOf('.')); // "Loreley_de"
-        locale.remove(0, locale.indexOf('_') + 1); // "de"
+        locale = fileNames[i]; // "Loreley_ru.qm"
+        locale.truncate(locale.lastIndexOf('.')); // "Loreley_ru"
+        locale.remove(0, locale.indexOf('_') + 1); // "ru"
 
         QString lang = QLocale::languageToString(QLocale(locale).language());
         //        QIcon ico(QString("%1/%2.png").arg(m_langPath).arg(locale));

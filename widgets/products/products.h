@@ -7,11 +7,13 @@
 #include <QSplitter>
 
 class ComboBoxItemDelegate;
-class AddProductDialog;
-class AddSubProductDialog;
 class ProductsModel;
 class EditProperty;
 class PropertiesModel;
+
+class AddProductDialog;
+class AddSubProductDialog;
+class ReduceSubProductDialog;
 
 namespace Ui {
     class Products;
@@ -36,6 +38,7 @@ public slots:
     bool startDeletingProduct();
     //Subproducts
     bool startDeletingSubProduct();
+    bool starReducingSubProductAmount();
     //Edit properties
     void showEditCategories();
     void showEditColors();
@@ -57,6 +60,8 @@ private:
 
     AddProductDialog* addProdDialog;
     AddSubProductDialog* addSubProdDialog;
+    ReduceSubProductDialog* reduceSubProdDialog;
+
     EditProperty* editPropertyWindow;
 
     PropertiesModel* propertiesModel;

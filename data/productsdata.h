@@ -30,7 +30,8 @@ class EAN13;
 
 #define PROD_TABLE "products"
 #define SUBPROD_TABLE "subproducts"
-#define SUBPROD_HISTORY_TABLE "subprod_history"
+#define SUBPROD_ARRIVAL_TABLE "subprod_arrival"
+#define SUBPROD_REDUCE_TABLE "subprod_reduce"
 
 class ProductsData : public QObject
 {
@@ -54,10 +55,11 @@ public:
     QVariant productsData(int row, int column) const;
     QVariant subProductsData(int row, int column) const;
 
-    bool filterSubProducts(int product_id);
+    void filterSubProducts(int product_id);
 
-    bool removeProduct(int product_row);
-    bool removeSubProduct(int subProduct_row);
+    bool removeProduct(int productRow);
+    bool removeSubProduct(int subProductRow);
+    bool reduceSubProduct(int subProductID, int reduceAmount, int reasonID);
 
     bool addNewProperty(QString table, QString name);
     bool removeProperty(QString table, QString name);

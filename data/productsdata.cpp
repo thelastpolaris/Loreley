@@ -17,7 +17,7 @@ ProductsData* ProductsData::Create() {
 }
 
 ProductsData::ProductsData()
-    :subProductsModel(SUBPROD_HISTORY_TABLE, SUBPROD_AMOUNT, SUBPROD_ID, SUBPROD_HISTORY_AMOUNT)
+    :subProductsModel()
 {
     //Setup productsModel
     productsModel.setTable("products");
@@ -43,7 +43,7 @@ ProductsData::ProductsData()
     subProductsModel.setTable("subproducts");
     subProductsModel.setEditStrategy(QSqlRelationalTableModel::OnRowChange);
     //Name headers
-    subProductsModel.setHeaderData(SUBPROD_ID, Qt::Horizontal, tr("Subproduct ID"));    
+    subProductsModel.setHeaderData(SUBPROD_ID, Qt::Horizontal, tr("Subproduct ID"));
     subProductsModel.setHeaderData(SUBPROD_AMOUNT, Qt::Horizontal, tr("Amount"));
     subProductsModel.setHeaderData(SUBPROD_SIZE, Qt::Horizontal, tr("Size"));
     subProductsModel.setHeaderData(SUBPROD_BARCODE, Qt::Horizontal, tr("Barcode"));
@@ -61,8 +61,8 @@ ProductsData::ProductsData()
     //Setup printer
     printer.setPrinterName("QL-570");
     printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
-//    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
-//    printer.setOutputFileName("testBarcode.pdf");
+    //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
+    //    printer.setOutputFileName("testBarcode.pdf");
     printer.setResolution(260);
 }
 
@@ -78,20 +78,34 @@ QVariant ProductsData::subProductsData(int row, int column) const {
     return subProductsModel.data(subProductsModel.index(row,column));
 }
 
-bool ProductsData::filterSubProducts(int product_id) {
+void ProductsData::filterSubProducts(int product_id) {
     subProductsModel.setFilterByInteger("product_id", product_id);
     subProductsModel.select();
 }
 
-bool ProductsData::removeProduct(int product_row) {
-    bool status = productsModel.removeRow(product_row);
+bool ProductsData::removeProduct(int productRow) {
+    bool status = productsModel.removeRow(productRow);
     productsModel.select();
     subProductsModel.select();
     return status;
 }
 
-bool ProductsData::removeSubProduct(int subProduct_row) {
-    bool status = subProductsModel.removeRow(subProduct_row);
+bool ProductsData::removeSubProduct(int subProductRow) {
+    bool status = subProductsModel.removeRow(subProductRow);
+    subProductsModel.select();
+    return status;
+}
+
+bool ProductsData::reduceSubProduct(int subProductID, int reduceAmount, int reasonID) {
+    QSqlQuery reduceSubProd;
+
+    reduceSubProd.prepare("INSERT INTO " + QString(SUBPROD_REDUCE_TABLE) +
+                             "(subprod_id, amount, reason)"
+                             "VALUES (:subprod_id, :amount, :reason)");
+    reduceSubProd.bindValue(":subprod_id", QVariant(subProductID));
+    reduceSubProd.bindValue(":amount", QVariant(reduceAmount));
+    reduceSubProd.bindValue(":reason", QVariant(reasonID));
+    bool status = reduceSubProd.exec();
     subProductsModel.select();
     return status;
 }
@@ -99,7 +113,7 @@ bool ProductsData::removeSubProduct(int subProduct_row) {
 bool ProductsData::addNewProperty(QString table, QString name) {
     QSqlQuery addProperty;
     addProperty.prepare("INSERT INTO " + table + " (name) "
-                             "VALUES (:name)");
+                                                 "VALUES (:name)");
     addProperty.bindValue(":name", name);
     return addProperty.exec();
 }
@@ -170,7 +184,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     QString barcodeName = QString("%1, %2, %3").arg(name, category, color);
     painter.setFont(QFont("Arial", 8));
     QRectF nameBound(beginX, separator_y + SEPARATOR_NAME_DISTANCE, rect.bottomRight().x() - beginX,
-               QFontMetrics(painter.font()).height()*NUM_LINES_NAME);
+                     QFontMetrics(painter.font()).height()*NUM_LINES_NAME);
     painter.drawText(nameBound, Qt::TextWrapAnywhere,  barcodeName, &nameBound);
     /***********************************************************/
 
@@ -187,27 +201,27 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     /***********************************************************/
 
     //Draw discount (to be added)
-//    int blockWidth = nameBound.width()/3;
-//    /***********************************************************/
-//    painter.setFont(QFont("Arial", 8, QFont::Bold));
-//    QRectF priceLabelBound(beginX, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
-//    painter.drawText(priceLabelBound, Qt::TextWrapAnywhere, tr("Price"), &priceLabelBound);
+    //    int blockWidth = nameBound.width()/3;
+    //    /***********************************************************/
+    //    painter.setFont(QFont("Arial", 8, QFont::Bold));
+    //    QRectF priceLabelBound(beginX, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
+    //    painter.drawText(priceLabelBound, Qt::TextWrapAnywhere, tr("Price"), &priceLabelBound);
 
-//    painter.setFont(QFont("Arial", 8));
-//    QRectF priceBound(beginX, priceLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE, priceWidth, QFontMetrics(painter.font()).height());
-//    painter.drawText(priceBound, Qt::TextWrapAnywhere, price, &priceBound);
+    //    painter.setFont(QFont("Arial", 8));
+    //    QRectF priceBound(beginX, priceLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE, priceWidth, QFontMetrics(painter.font()).height());
+    //    painter.drawText(priceBound, Qt::TextWrapAnywhere, price, &priceBound);
     /***********************************************************/
 
     //Draw size
     /***********************************************************/
     painter.setFont(QFont("Arial", 12, QFont::Bold));
     QRectF sizeLabelBound(endX - blockWidth, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE,
-                           blockWidth, QFontMetrics(painter.font()).height());
+                          blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeLabelBound, Qt::TextWrapAnywhere, tr("Size"), &sizeLabelBound);
 
     painter.setFont(QFont("Arial", 12));
     QRectF sizeBound(endX - blockWidth, sizeLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE,
-                      blockWidth, QFontMetrics(painter.font()).height());
+                     blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeBound, Qt::TextWrapAnywhere, size, &sizeBound);
     /***********************************************************/
 
@@ -258,9 +272,9 @@ bool ProductsData::addSubProduct(int product_id, int amount, int size, QDate arr
             QSqlQuery updateSubProduct;
             checkSubProduct.next();
             QVariant subprod_id = checkSubProduct.value(SUBPROD_ID);
-            updateSubProduct.prepare("INSERT INTO " + QString(SUBPROD_HISTORY_TABLE) +
+            updateSubProduct.prepare("INSERT INTO " + QString(SUBPROD_ARRIVAL_TABLE) +
                                      "(subprod_id, amount, arrival_date)"
-                                    "VALUES (:subprod_id, :amount, :arrival_date)");
+                                     "VALUES (:subprod_id, :amount, :arrival_date)");
             updateSubProduct.bindValue(":subprod_id", QVariant(subprod_id));
             updateSubProduct.bindValue(":amount", QVariant(amount));
             updateSubProduct.bindValue(":arrival_date", QVariant(arrivalDate));

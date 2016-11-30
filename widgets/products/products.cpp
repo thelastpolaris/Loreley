@@ -11,9 +11,11 @@
 #include "data/productsmodel.h"
 
 #include "addproductdialog.h"
-#include "ui_addproductdialog.h"
+//#include "ui_addproductdialog.h"
 #include "addsubproductdialog.h"
-#include "ui_addsubproductdialog.h"
+//#include "ui_addsubproductdialog.h"
+#include "reducesubproductdialog.h"
+
 #include "editproperty.h"
 #include "ui_editproperty.h"
 
@@ -34,8 +36,8 @@ Products* Products::Create() {
 
 Products::Products() :
     ui(new Ui::Products), addProdDialog(new AddProductDialog(this)),
-    addSubProdDialog(new AddSubProductDialog(this)), editPropertyWindow(new EditProperty(this)),
-    propertiesModel(new PropertiesModel(this))
+    addSubProdDialog(new AddSubProductDialog(this)), reduceSubProdDialog(new ReduceSubProductDialog(this)),
+    editPropertyWindow(new EditProperty(this)), propertiesModel(new PropertiesModel(this))
 {
     ProductsData* prodData = ProductsData::Instance();
 
@@ -68,12 +70,18 @@ Products::Products() :
 
     //Setup buttons for subProducts
     connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
-    connect(ui->reduceSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingProduct()));
+    connect(ui->reduceSubProductButton, SIGNAL(clicked(bool)), SLOT(starReducingSubProductAmount()));
     connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
 
+    //Add subproduct
     connect(this, SIGNAL(productSelected(bool)), ui->addSubProductButton, SLOT(setEnabled(bool)));
+    //Delete subproduct
     connect(this, SIGNAL(productSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
     connect(this, SIGNAL(subProductSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
+    //Reduce button
+    connect(this, SIGNAL(productSelected(bool)), ui->reduceSubProductButton, SLOT(setEnabled(bool)));
+    connect(this, SIGNAL(subProductSelected(bool)), ui->reduceSubProductButton, SLOT(setEnabled(bool)));
+    //Print button
     connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
 
     connect(editPropertyWindow, &EditProperty::propertiesChanged, [=](const QString &tableName) {
@@ -202,7 +210,8 @@ bool Products::startDeletingSubProduct() {
         int parentProdRow = ui->tableView->selectionModel()->currentIndex().row();
         QString name = prodData->productsData(parentProdRow, PROD_NAME).toString();
 
-        int response = QMessageBox::question(this, tr("Delete subproduct"),tr("Are you sure you want to delete subproduct of product <b>%1</b>?").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
+        int response = QMessageBox::question(this, tr("Delete subproduct"),tr("Are you sure you want to delete subproduct of product <b>%1</b>?<br>"
+                                                                              "This will erase all data associated with subproduct (arrival history, sells)").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
         if(response == QDialogButtonBox::Ok) {
             prodData->removeSubProduct(delRow);
             if(!prodData->hasSubProducts()) {
@@ -217,8 +226,17 @@ bool Products::startDeletingSubProduct() {
     return false; // Row was not deleted
 }
 
-bool Products::starReducingSubproductAmount() {
+bool Products::starReducingSubProductAmount() {
+    ProductsData *prodData = ProductsData::Instance();
 
+    QModelIndex curSubProd = ui->tableView_2->selectionModel()->currentIndex();
+
+    int curAmount = prodData->subProductsData(curSubProd.row(), SUBPROD_AMOUNT).toInt();
+    int subProdID = prodData->subProductsData(curSubProd.row(), SUBPROD_ID).toInt();
+
+
+    reduceSubProdDialog->startReducingSubProduct(subProdID, curAmount);
+    return false;
 }
 
 Products::~Products()

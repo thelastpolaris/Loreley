@@ -4,8 +4,10 @@
 #include <QDialog>
 
 namespace Ui {
-class EditProperty;
+    class EditProperty;
 }
+
+class PropertiesModel;
 
 class EditProperty : public QDialog
 {
@@ -14,9 +16,8 @@ class EditProperty : public QDialog
 public:
     explicit EditProperty(QWidget *parent = 0);
     ~EditProperty();
-    Ui::EditProperty* getUI() const { return ui; }
 public slots:
-    void show(QString _propertyName, QString _tableName, bool color = false);
+    void show(QString _propertyType, QString _tableName, bool color = false);
     void addProperty();
     void removeProperty();
     void editPropertySlot();
@@ -25,8 +26,9 @@ signals:
     void propertyEdited();
 private:
     Ui::EditProperty *ui;
-    QString propertyName;
+    QString propertyType;
     QString tableName;
+    PropertiesModel* propertiesModel;
 };
 
 #endif // EDITPROPERTY_H

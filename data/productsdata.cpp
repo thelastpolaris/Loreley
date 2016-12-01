@@ -133,6 +133,12 @@ bool ProductsData::editProperty(QString table, QString name, QString newName) {
     return editProperty.exec();
 }
 
+QList<int> ProductsData::getIDsOfProperty(QString tableName, int propertyValue) {
+    QSqlQuery getIDs;
+    getIDs.prepare("SELECT * FROM " + tableName + " WHERE ");
+    return QList<int>();
+}
+
 bool ProductsData::hasProducts() {
     return productsModel.rowCount() > 0;
 }

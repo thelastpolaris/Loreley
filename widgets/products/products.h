@@ -9,7 +9,6 @@
 class ComboBoxItemDelegate;
 class ProductsModel;
 class EditProperty;
-class PropertiesModel;
 
 class AddProductDialog;
 class AddSubProductDialog;
@@ -39,12 +38,7 @@ public slots:
     //Subproducts
     bool startDeletingSubProduct();
     bool starReducingSubProductAmount();
-    //Edit properties
-    void showEditCategories();
-    void showEditColors();
-    void showEditBrands();
 
-    void showEditSizes();
     void setupPropertyDelegates(QString propTableName);
 
     void startPrintingBarcode();
@@ -63,8 +57,6 @@ private:
     ReduceSubProductDialog* reduceSubProdDialog;
 
     EditProperty* editPropertyWindow;
-
-    PropertiesModel* propertiesModel;
 };
 
 #endif // PRODUCTS_H

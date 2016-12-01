@@ -22,8 +22,6 @@
 #include "../delegates/datepickeritemdelegate.h"
 #include "../delegates/comboboxitemdelegate.h"
 
-#include "auxiliary/propertiesmodel.h"
-
 #include "mainwindow.h"
 
 Products* Products::p_instance = 0;
@@ -37,7 +35,7 @@ Products* Products::Create() {
 Products::Products() :
     ui(new Ui::Products), addProdDialog(new AddProductDialog(this)),
     addSubProdDialog(new AddSubProductDialog(this)), reduceSubProdDialog(new ReduceSubProductDialog(this)),
-    editPropertyWindow(new EditProperty(this)), propertiesModel(new PropertiesModel(this))
+    editPropertyWindow(new EditProperty(this))
 {
     ProductsData* prodData = ProductsData::Instance();
 
@@ -84,10 +82,6 @@ Products::Products() :
     //Print button
     connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
 
-    connect(editPropertyWindow, &EditProperty::propertiesChanged, [=](const QString &tableName) {
-        propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
-    });
-
     connect(editPropertyWindow, SIGNAL(propertiesChanged(QString)), SLOT(setupPropertyDelegates(QString)));
     //TODO - Find better solution
     connect(editPropertyWindow, &EditProperty::propertyEdited, [=]() {
@@ -96,36 +90,22 @@ Products::Products() :
     });
 
     //Setup menu buttons for editing various properties
-    editPropertyWindow->getUI()->propertiesLV->setModel(propertiesModel);
-    connect(MainWindow::Instance(), SIGNAL(categoriesTriggered(bool)), SLOT(showEditCategories()));
-    connect(MainWindow::Instance(), SIGNAL(colorsTriggered(bool)), SLOT(showEditColors()));
-    connect(MainWindow::Instance(), SIGNAL(brandsTriggered(bool)), SLOT(showEditBrands()));
-
-    connect(MainWindow::Instance(), SIGNAL(sizeTriggered(bool)), SLOT(showEditSizes()));
+    connect(MainWindow::Instance(), &MainWindow::categoriesTriggered, [=]() {
+        editPropertyWindow->show("category", "categories");
+    });
+    connect(MainWindow::Instance(), &MainWindow::colorsTriggered, [=]() {
+        editPropertyWindow->show("color", "colors", true);
+    });
+    connect(MainWindow::Instance(), &MainWindow::brandsTriggered, [=]() {
+        editPropertyWindow->show("brand", "brands");
+    });
+    connect(MainWindow::Instance(), &MainWindow::sizeTriggered, [=]() {
+        editPropertyWindow->show("size", "sizes");
+    });
 
     //Initialize button states
     emit productSelected(false);
     emit subProductSelected(false);
-}
-
-void Products::showEditCategories() {
-    propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey("categories", "id", "name"));
-    editPropertyWindow->show("category", "categories");
-}
-
-void Products::showEditColors() {
-    propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey("colors", "id", "name"));
-    editPropertyWindow->show("color", "colors", true);
-}
-
-void Products::showEditBrands() {
-    propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey("brands", "id", "name"));
-    editPropertyWindow->show("brand", "brands");
-}
-
-void Products::showEditSizes() {
-    propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey("sizes", "id", "name"));
-    editPropertyWindow->show("size", "sizes");
 }
 
 void Products::setupPropertyDelegates(QString propTableName) {

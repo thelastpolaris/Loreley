@@ -65,6 +65,8 @@ public:
     bool removeProperty(QString table, QString name);
     bool editProperty(QString table, QString name, QString newName);
 
+    QList<int> getIDsOfProperty(QString tableName, int propertyValue);
+
     bool hasProducts();
     bool hasSubProducts();
 

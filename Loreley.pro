@@ -12,6 +12,7 @@ TARGET = Loreley
 TEMPLATE = app
 TRANSLATIONS = languages/Loreley_ru.ts \
                 languages/Loreley_en.ts
+CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \

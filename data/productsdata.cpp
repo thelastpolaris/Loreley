@@ -39,7 +39,7 @@ void ProductsData::initModels() {
     productsModel.setEditStrategy(QSqlRelationalTableModel::OnFieldChange);
     //Name headers
     productsModel.setHeaderData(PROD_ID, Qt::Horizontal, tr("Product ID"));
-    productsModel.setHeaderData(PROD_NAME, Qt::Horizontal, tr("Name"));
+    productsModel.setHeaderData(PROD_CHAR, Qt::Horizontal, tr("Characteristic"));
     productsModel.setHeaderData(PROD_CAT, Qt::Horizontal, tr("Category"));
     productsModel.setHeaderData(PROD_PRICE, Qt::Horizontal, tr("Price"));
     productsModel.setHeaderData(PROD_BRAND, Qt::Horizontal, tr("Brand"));
@@ -173,7 +173,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     QString barcode = subProductsModel.data(subProductsModel.index(subProduct.row(),SUBPROD_BARCODE)).toString();
     QString size = subProductsModel.data(subProductsModel.index(subProduct.row(), SUBPROD_SIZE)).toString();
 
-    QString name = productsModel.data(productsModel.index(product.row(), PROD_NAME)).toString();
+    QString name = productsModel.data(productsModel.index(product.row(), PROD_CHAR)).toString();
     QString category = productsModel.data(productsModel.index(product.row(), PROD_CAT)).toString();
     QString color = productsModel.data(productsModel.index(product.row(), PROD_COLOR)).toString();
     QString price = productsModel.data(productsModel.index(product.row(), PROD_PRICE)).toString();
@@ -287,7 +287,7 @@ QString ProductsData::generateBarcode() {
 
 bool ProductsData::addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note) {
     QSqlRecord newRow = productsModel.record();
-    newRow.setValue(PROD_NAME, QVariant(name));
+    newRow.setValue(PROD_CHAR, QVariant(name));
     newRow.setValue(PROD_CAT, category);
     newRow.setValue(PROD_PRICE, QVariant(price));
     newRow.setValue(PROD_COLOR, color);

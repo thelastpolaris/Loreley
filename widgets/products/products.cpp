@@ -107,6 +107,9 @@ Products::Products() :
         editPropertyWindow->show(tr("size"), "sizes", SUBPROD_SIZE, false);
     });
 
+    ui->tableView->hideColumn(PROD_ID);
+    ui->tableView_2->hideColumn(SUBPROD_ID);
+
     //Initialize button states
     emit productSelected(false);
     emit subProductSelected(false);
@@ -166,7 +169,7 @@ bool Products::startDeletingProduct() {
 
     if(currentIndex.isValid()) {
         int delRow = currentIndex.row();
-        QString name = prodData->productsData(delRow, PROD_NAME).toString();
+        QString name = prodData->productsData(delRow, PROD_CHAR).toString();
 
         int response = QMessageBox::question(this, tr("Delete product"),tr("Are you sure you want to delete <b>%1</b>?").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
         if(response == QMessageBox::Ok) {
@@ -192,7 +195,7 @@ bool Products::startDeletingSubProduct() {
     if(currentIndex.isValid()) {
         int delRow = currentIndex.row();
         int parentProdRow = ui->tableView->selectionModel()->currentIndex().row();
-        QString name = prodData->productsData(parentProdRow, PROD_NAME).toString();
+        QString name = prodData->productsData(parentProdRow, PROD_CHAR).toString();
 
         int response = QMessageBox::question(this, tr("Delete subproduct"),tr("Are you sure you want to delete subproduct of product <b>%1</b>?<br>"
                                                                               "This will erase all data associated with subproduct (arrival history, sells)").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);

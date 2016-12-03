@@ -405,68 +405,68 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="132"/>
+        <location filename="../widgets/products/products.cpp" line="135"/>
         <source>Print label for subproduct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="132"/>
+        <location filename="../widgets/products/products.cpp" line="135"/>
         <source>Are you sure that you want to print label for this subproduct?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="171"/>
+        <location filename="../widgets/products/products.cpp" line="174"/>
         <source>Delete product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="171"/>
+        <location filename="../widgets/products/products.cpp" line="174"/>
         <source>Are you sure you want to delete &lt;b&gt;%1&lt;/b&gt;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="179"/>
-        <location filename="../widgets/products/products.cpp" line="204"/>
+        <location filename="../widgets/products/products.cpp" line="182"/>
+        <location filename="../widgets/products/products.cpp" line="207"/>
         <source>Success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="179"/>
+        <location filename="../widgets/products/products.cpp" line="182"/>
         <source>Successfully deleted product &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="183"/>
+        <location filename="../widgets/products/products.cpp" line="186"/>
         <source>Error - No product selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="183"/>
+        <location filename="../widgets/products/products.cpp" line="186"/>
         <source>No product was selected to delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="197"/>
+        <location filename="../widgets/products/products.cpp" line="200"/>
         <source>Delete subproduct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="197"/>
+        <location filename="../widgets/products/products.cpp" line="200"/>
         <source>Are you sure you want to delete subproduct of product &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt;This will erase all data associated with subproduct (arrival history, sells)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="204"/>
+        <location filename="../widgets/products/products.cpp" line="207"/>
         <source>Successfully deleted subproduct of product %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="208"/>
+        <location filename="../widgets/products/products.cpp" line="211"/>
         <source>Error - No subproduct selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="208"/>
+        <location filename="../widgets/products/products.cpp" line="211"/>
         <source>No subproduct was selected to delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -480,7 +480,7 @@
     </message>
     <message>
         <location filename="../data/productsdata.cpp" line="42"/>
-        <source>Name</source>
+        <source>Characteristic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

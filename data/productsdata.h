@@ -12,11 +12,11 @@
 class EAN13;
 
 #define PROD_ID 0
-#define PROD_NAME 1
+#define PROD_BRAND 1
 #define PROD_CAT 2
-#define PROD_PRICE 3
-#define PROD_BRAND 4
-#define PROD_COLOR 5
+#define PROD_CHAR 3
+#define PROD_COLOR 4
+#define PROD_PRICE 5
 #define PROD_NOTE 6
 
 #define SUBPROD_ID 0

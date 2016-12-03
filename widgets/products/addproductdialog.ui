@@ -17,42 +17,14 @@
    <string>Add new product</string>
   </property>
   <layout class="QFormLayout" name="formLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="nameLabel">
-     <property name="text">
-      <string>Name</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="nameEdit">
-     <property name="placeholderText">
-      <string>Enter name of the product</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="categoryLabel">
-     <property name="text">
-      <string>Category</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QComboBox" name="categoryCB">
-     <property name="currentIndex">
-      <number>-1</number>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="priceLabel">
      <property name="text">
       <string>Price</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
+   <item row="6" column="1">
     <widget class="QLineEdit" name="priceEdit">
      <property name="inputMask">
       <string>D9 999 999</string>
@@ -65,46 +37,74 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="colorLabel">
-     <property name="text">
-      <string>Color</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="colorCB"/>
-   </item>
-   <item row="5" column="0">
+   <item row="9" column="0">
     <widget class="QLabel" name="noteLabel">
      <property name="text">
       <string>Note</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="9" column="1">
     <widget class="QTextEdit" name="noteTextEdit">
      <property name="placeholderText">
       <string>(Optional)</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="10" column="1">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
-   <item row="4" column="1">
-    <widget class="QComboBox" name="brandCB"/>
-   </item>
-   <item row="4" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="brandLabel">
      <property name="text">
       <string>Brand</string>
      </property>
     </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="brandCB"/>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="nameEdit">
+     <property name="placeholderText">
+      <string>Enter characteristic of the product</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="categoryLabel">
+     <property name="text">
+      <string>Category</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="categoryCB">
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="nameLabel">
+     <property name="text">
+      <string>Char.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="colorLabel">
+     <property name="text">
+      <string>Color</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QComboBox" name="colorCB"/>
    </item>
   </layout>
  </widget>

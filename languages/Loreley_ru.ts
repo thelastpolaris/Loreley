@@ -423,58 +423,58 @@
         <translation type="unfinished">размер</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="132"/>
+        <location filename="../widgets/products/products.cpp" line="135"/>
         <source>Print label for subproduct</source>
         <translation type="unfinished">Распечатать лэйбл для подпродукта</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="132"/>
+        <location filename="../widgets/products/products.cpp" line="135"/>
         <source>Are you sure that you want to print label for this subproduct?</source>
         <translation type="unfinished">Вы уверены, что хотите распечатать лэйбл для данного подпродукта?</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="171"/>
+        <location filename="../widgets/products/products.cpp" line="174"/>
         <source>Delete product</source>
         <translation type="unfinished">Удалить продукт</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="171"/>
+        <location filename="../widgets/products/products.cpp" line="174"/>
         <source>Are you sure you want to delete &lt;b&gt;%1&lt;/b&gt;?</source>
         <translation type="unfinished">Вы уверены, что хотите удалить &lt;b&gt;%1&lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="179"/>
-        <location filename="../widgets/products/products.cpp" line="204"/>
+        <location filename="../widgets/products/products.cpp" line="182"/>
+        <location filename="../widgets/products/products.cpp" line="207"/>
         <source>Success!</source>
         <translation type="unfinished">Успех!</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="179"/>
+        <location filename="../widgets/products/products.cpp" line="182"/>
         <source>Successfully deleted product &lt;b&gt;%1&lt;/b&gt;</source>
         <translation type="unfinished">Продукт &lt;b&gt;%1&lt;/b&gt; был успешно удален</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="183"/>
+        <location filename="../widgets/products/products.cpp" line="186"/>
         <source>Error - No product selected</source>
         <translation type="unfinished">Ошибка - Ни один продукт не был выбран</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="183"/>
+        <location filename="../widgets/products/products.cpp" line="186"/>
         <source>No product was selected to delete</source>
         <translation type="unfinished">Не был выбран продукт для удаления</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="197"/>
+        <location filename="../widgets/products/products.cpp" line="200"/>
         <source>Delete subproduct</source>
         <translation>Удалить подпродукт</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="197"/>
+        <location filename="../widgets/products/products.cpp" line="200"/>
         <source>Are you sure you want to delete subproduct of product &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt;This will erase all data associated with subproduct (arrival history, sells)</source>
         <translation>Вы уверены, что хотите удалить подпродукт продукта &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt; Это удалить все данные, связанные с этим подпродуктом (история поступлений и продаж)</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="204"/>
+        <location filename="../widgets/products/products.cpp" line="207"/>
         <source>Successfully deleted subproduct of product %1</source>
         <translation>Подпродукт продукта %1 был успешно удален</translation>
     </message>
@@ -483,12 +483,12 @@
         <translation type="obsolete">Вы уверены, что хотите подпродукт продукта &lt;b&gt;%1&lt;/b&gt;?</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="208"/>
+        <location filename="../widgets/products/products.cpp" line="211"/>
         <source>Error - No subproduct selected</source>
         <translation type="unfinished">Ошибка - Ни один подпродукт не был выбран</translation>
     </message>
     <message>
-        <location filename="../widgets/products/products.cpp" line="208"/>
+        <location filename="../widgets/products/products.cpp" line="211"/>
         <source>No subproduct was selected to delete</source>
         <translation type="unfinished">Не был выбран подпродукт для удаления</translation>
     </message>
@@ -501,9 +501,13 @@
         <translation type="unfinished">ID продукта</translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="42"/>
         <source>Name</source>
-        <translation type="unfinished">Название</translation>
+        <translation type="obsolete">Название</translation>
+    </message>
+    <message>
+        <location filename="../data/productsdata.cpp" line="42"/>
+        <source>Characteristic</source>
+        <translation type="unfinished">Хар-ки</translation>
     </message>
     <message>
         <location filename="../data/productsdata.cpp" line="43"/>

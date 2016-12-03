@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
 
     db.setHostName(settings.value("database/hostname", "localhost").toString());
-    db.setDatabaseName(settings.value("database/dbname", "saturnPOS").toString());
-    db.setUserName(settings.value("database/username", "saturnPOS").toString());
+    db.setDatabaseName(settings.value("database/dbname", "loreley").toString());
+    db.setUserName(settings.value("database/username", "loreley").toString());
     db.setPassword(settings.value("database/password", "redwood32").toString());
     Q_ASSERT_X(db.open(),"MainWindow::MainWindow", "Couldn't connect to database");
 

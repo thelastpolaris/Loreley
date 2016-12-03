@@ -11,13 +11,15 @@ public:
 
     explicit PropertiesModel(QObject *parent = 0);
 
-    virtual int rowCount(const QModelIndex&) const { return propertiesList.size(); }
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const { return propertiesList.size(); }
     virtual QVariant data(const QModelIndex &index, int role) const;
 
     virtual QHash<int, QByteArray> roleNames() const;
 
     void setPropertiesList(QVector<QPair<int, QString>> _propertiesList);
     void setPropertiesList(QHash<int, QString> _propertiesList);
+    QStringList getStringList();
+    int getValueFromText(QString text);
 
 private:
     QVector<QPair<int, QString>> propertiesList;

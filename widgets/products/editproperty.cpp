@@ -1,23 +1,21 @@
 #include "editproperty.h"
 #include "ui_editproperty.h"
 #include "data/productsdata.h"
-#include "auxiliary/propertiesmodel.h"
 
 #include <QInputDialog>
 #include <QDebug>
 #include <QMessageBox>
 
 EditProperty::EditProperty(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::EditProperty), propertiesModel(new PropertiesModel(this))
+    QDialog(parent), ui(new Ui::EditProperty), propertiesModel(this)
 {
     ui->setupUi(this);
 
     connect(this, &EditProperty::propertiesChanged, [=](const QString &tableName) {
-        propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
+        propertiesModel.setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
     });
 
-    ui->propertiesLV->setModel(propertiesModel);
+    ui->propertiesLV->setModel(&propertiesModel);
 
     connect(ui->addProperty, SIGNAL(clicked()), SLOT(addProperty()));
     connect(ui->removeProperty, SIGNAL(clicked()), SLOT(removeProperty()));
@@ -31,8 +29,8 @@ EditProperty::~EditProperty()
 
 void EditProperty::addProperty() {
     bool status;
-    QString newPropName = QInputDialog::getText(this, tr("Add new %1").arg(propertyType),
-                          tr("Enter the name of new %1").arg(propertyType), QLineEdit::Normal,
+    QString newPropName = QInputDialog::getText(this, tr("Add new %1").arg(propertySingular),
+                          tr("Enter the name of new %1").arg(propertySingular), QLineEdit::Normal,
                           "", &status);
     if(status) {
         if(ProductsData::Instance()->addNewProperty(tableName, newPropName)) {
@@ -51,14 +49,35 @@ void EditProperty::removeProperty() {
     ProductsData* prodData = ProductsData::Instance();
 
     bool status;
+    if(!ui->propertiesLV->currentIndex().isValid()) return;
     QString delPropName = ui->propertiesLV->currentIndex().data().toString();
-//    int delPropID = ui->propertiesLV->currentIndex().data();
+    int delIDProp = ui->propertiesLV->currentIndex().data(PropertiesModel::PropertyValue).toInt();
     int response = QMessageBox::question(this, tr("Delete property"),tr("Are you sure you want to delete <b>%1</b>?").arg(delPropName), QMessageBox::Ok, QMessageBox::Cancel);
 
-    QList<int> idsProperty = prodData->getIDsOfProperty(tableName, 1);
-
     if(response == QMessageBox::Ok) {
-        if(prodData->removeProperty(tableName, delPropName)) {
+        QList<int> idsProperty = prodData->getRowsWithProperty(fieldID, delIDProp);
+        if(idsProperty.size()) {
+            if(propertiesModel.rowCount() == 1) {
+                QMessageBox::warning(this, tr("Cannot delete property"), tr("You are attempting to delete "
+                                                                           "the last property, which is assigned to some products/subproducts. Please, add at least one more property"));
+                return;
+            }
+            QStringList properties = propertiesModel.getStringList();
+            properties.removeOne(delPropName);
+            bool* assignStatus = new bool;
+            QString newValText = QInputDialog::getItem(this, "Assign products/subproducts to new property",
+                                                       "It looks like there are some products or subproducts that has"
+                                                       "the property, which you want to delete. Please, choosen new property"
+                                                       "for them. Otherwise, this property can not be deleted", properties, 0, false, assignStatus);
+            if(*assignStatus) {
+                int newValue = propertiesModel.getValueFromText(newValText);
+                prodData->setPropertyForProducts(idsProperty, fieldID, newValue);
+            } else {
+                return;
+            }
+        }
+
+        if(prodData->removeProperty(tableName, delIDProp)) {
             QMessageBox::information(this, tr("Success!"), tr("Successfully deleted property <b>%1</b>").arg(delPropName));
             emit propertiesChanged(tableName);
         } else {
@@ -72,6 +91,8 @@ void EditProperty::removeProperty() {
 
 void EditProperty::editPropertySlot() {
     ProductsData* prodData = ProductsData::Instance();
+    if(!ui->propertiesLV->currentIndex().isValid()) return;
+
     QString propName = ui->propertiesLV->currentIndex().data().toString();
 
     bool status;
@@ -92,10 +113,12 @@ void EditProperty::editPropertySlot() {
     }
 }
 
-void EditProperty::show(QString _propertyType, QString _tableName, bool color)  {
-    propertyType = _propertyType;
+void EditProperty::show(QString _propertySingular, QString _tableName, int _fieldID, bool _product)  {
+    propertySingular = _propertySingular;
     tableName = _tableName;
-    propertiesModel->setPropertiesList(ProductsData::Instance()->getNameAndKey(_tableName, "id", "name"));
+    fieldID = _fieldID;
+    product = _product;
+    propertiesModel.setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
 
 //    if(color) {
 //        ui->listView->setViewMode(QListView::IconMode);

@@ -40,6 +40,8 @@ public:
     static ProductsData* Create();
     static ProductsData* Instance() { return p_instance; }
 
+    void initModels();
+
     ProductsModel* getProductsModel() { return &productsModel; }
     ProductsModel* getSubProductsModel() { return &subProductsModel; }
 
@@ -62,10 +64,11 @@ public:
     bool reduceSubProduct(int subProductID, int reduceAmount, int reasonID);
 
     bool addNewProperty(QString table, QString name);
-    bool removeProperty(QString table, QString name);
+    bool removeProperty(QString table, int id);
     bool editProperty(QString table, QString name, QString newName);
 
-    QList<int> getIDsOfProperty(QString tableName, int propertyValue);
+    QList<int> getRowsWithProperty(int fieldID, int propertyValue);
+    bool setPropertyForProducts(QList<int> productIDs, int fieldID, int propertyValue);
 
     bool hasProducts();
     bool hasSubProducts();

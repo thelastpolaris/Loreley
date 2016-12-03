@@ -42,3 +42,20 @@ void PropertiesModel::setPropertiesList(QHash<int, QString> _propertiesList) {
 
     emit endResetModel();
 }
+
+QStringList PropertiesModel::getStringList() {
+    QStringList stringList;
+    for(int i = 0; i < propertiesList.size(); ++i) {
+        stringList.append(propertiesList[i].second);
+    }
+    return stringList;
+}
+
+int PropertiesModel::getValueFromText(QString text) {
+    for(int i = 0; i < propertiesList.size(); ++i) {
+        if(propertiesList[i].second == text) {
+            return propertiesList[i].first;
+        }
+    }
+    return -1; // If nothing was found
+}

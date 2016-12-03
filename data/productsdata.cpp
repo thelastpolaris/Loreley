@@ -19,6 +19,21 @@ ProductsData* ProductsData::Create() {
 ProductsData::ProductsData()
     :subProductsModel()
 {
+    initModels();
+
+    //Setup printer
+    //    printer.setPrinterName("QL-570");
+    printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
+    //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
+    printer.setOutputFileName("testBarcode.pdf");
+    printer.setResolution(260);
+}
+
+ProductsData::~ProductsData() {
+
+}
+
+void ProductsData::initModels() {
     //Setup productsModel
     productsModel.setTable("products");
     productsModel.setEditStrategy(QSqlRelationalTableModel::OnFieldChange);
@@ -57,17 +72,6 @@ ProductsData::ProductsData()
     subProductsModel.setReadOnlyCols(QList<int>{SUBPROD_ID, SUBPROD_AMOUNT, SUBPROD_SIZE, SUBPROD_BARCODE});
     //Select all subproducts
     subProductsModel.select();
-
-    //Setup printer
-    printer.setPrinterName("QL-570");
-    printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
-    //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
-    //    printer.setOutputFileName("testBarcode.pdf");
-    printer.setResolution(260);
-}
-
-ProductsData::~ProductsData() {
-
 }
 
 QVariant ProductsData::productsData(int row, int column) const {
@@ -100,8 +104,8 @@ bool ProductsData::reduceSubProduct(int subProductID, int reduceAmount, int reas
     QSqlQuery reduceSubProd;
 
     reduceSubProd.prepare("INSERT INTO " + QString(SUBPROD_REDUCE_TABLE) +
-                             "(subprod_id, amount, reason)"
-                             "VALUES (:subprod_id, :amount, :reason)");
+                          "(subprod_id, amount, reason)"
+                          "VALUES (:subprod_id, :amount, :reason)");
     reduceSubProd.bindValue(":subprod_id", QVariant(subProductID));
     reduceSubProd.bindValue(":amount", QVariant(reduceAmount));
     reduceSubProd.bindValue(":reason", QVariant(reasonID));
@@ -118,10 +122,10 @@ bool ProductsData::addNewProperty(QString table, QString name) {
     return addProperty.exec();
 }
 
-bool ProductsData::removeProperty(QString table, QString name) {
+bool ProductsData::removeProperty(QString table, int id) {
     QSqlQuery removeProperty;
-    removeProperty.prepare("DELETE FROM " + table + " WHERE name=:name");
-    removeProperty.bindValue(":name", name);
+    removeProperty.prepare("DELETE FROM " + table + " WHERE id=:id");
+    removeProperty.bindValue(":id", id);
     return removeProperty.exec();
 }
 
@@ -133,10 +137,28 @@ bool ProductsData::editProperty(QString table, QString name, QString newName) {
     return editProperty.exec();
 }
 
-QList<int> ProductsData::getIDsOfProperty(QString tableName, int propertyValue) {
-    QSqlQuery getIDs;
-    getIDs.prepare("SELECT * FROM " + tableName + " WHERE ");
-    return QList<int>();
+QList<int> ProductsData::getRowsWithProperty(int fieldID, int propertyValue) {
+    QList<int> productRows;
+    for(int i = 0; i < productsModel.rowCount(); ++i) {
+        if(productsModel.getOriginalRecord(i).value(fieldID).toInt() == propertyValue) {
+            productRows.append(i);
+        }
+    }
+
+    return productRows;
+}
+
+bool ProductsData::setPropertyForProducts(QList<int> productRows, int fieldID, int propertyValue) {
+    for(int i = 0; i < productsModel.rowCount(); ++i) {
+        if(productRows.contains(i)) {
+            //            if() {
+            //                return false;
+            //            }
+            bool st = productsModel.setData(productsModel.index(i, fieldID), QVariant(propertyValue));
+            qDebug() << st;
+        }
+    }
+    return true;
 }
 
 bool ProductsData::hasProducts() {
@@ -156,11 +178,11 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     QString color = productsModel.data(productsModel.index(product.row(), PROD_COLOR)).toString();
     QString price = productsModel.data(productsModel.index(product.row(), PROD_PRICE)).toString();
 
-    QPixmap pixmap(540, 170);
-    ean13.EAN13ToImage(pixmap, barcode);
+    QPixmap barcodePixmap(540, 170);
+    ean13.EAN13ToImage(barcodePixmap, barcode);
 
     QPainter painter;
-    pixmap.save("/home/polaris/test.png");
+    barcodePixmap.save("/home/polaris/test.png");
 
 #define SEPARATOR_LINE_WIDTH 3
 #define BARCODE_SEPARATOR_DISTANCE 10
@@ -173,28 +195,28 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
     painter.begin(&printer);
     //Draw label
-    QRect rect(pixmap.rect());
-    int beginX = rect.bottomLeft().x();
-    int endX = rect.bottomRight().x();
+    QRect barcodeRect(barcodePixmap.rect());
+    int beginX = barcodeRect.bottomLeft().x();
+    int endX = barcodeRect.bottomRight().x();
 
     QRect devRect(0,0,painter.device()->width(), painter.device()->height());
-    rect.moveCenter(devRect.center());
-    painter.drawPixmap(rect.topLeft().x(), 0, pixmap);
+    barcodeRect.moveCenter(devRect.center());
+    painter.drawPixmap(barcodeRect.topLeft().x(), 0, barcodePixmap);
 
     painter.setPen(QPen(painter.brush(), SEPARATOR_LINE_WIDTH));
-    int separator_y = pixmap.height() + BARCODE_SEPARATOR_DISTANCE;
-    painter.drawLine(beginX, separator_y, rect.bottomRight().x(), separator_y );
+    int separator_y = barcodePixmap.height() + BARCODE_SEPARATOR_DISTANCE;
+    painter.drawLine(beginX, separator_y, barcodeRect.bottomRight().x(), separator_y );
 
     //Draw name, category and color
     /***********************************************************/
     QString barcodeName = QString("%1, %2, %3").arg(name, category, color);
     painter.setFont(QFont("Arial", 8));
-    QRectF nameBound(beginX, separator_y + SEPARATOR_NAME_DISTANCE, rect.bottomRight().x() - beginX,
+    QRectF nameBound(beginX, separator_y + SEPARATOR_NAME_DISTANCE, barcodeRect.bottomRight().x() - beginX,
                      QFontMetrics(painter.font()).height()*NUM_LINES_NAME);
     painter.drawText(nameBound, Qt::TextWrapAnywhere,  barcodeName, &nameBound);
     /***********************************************************/
 
-    int blockWidth = nameBound.width()/2.5;
+    int blockWidth = (barcodeRect.bottomRight().x())/3;
     //Draw price
     /***********************************************************/
     painter.setFont(QFont("Arial", 12, QFont::Bold));
@@ -220,13 +242,20 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
     //Draw size
     /***********************************************************/
+    // Determine maximum width
+    QString sizeLabel = tr("Size");
+    int sizeLabelWidth = QFontMetrics(painter.font()).width(sizeLabel);
+    int sizeWidth = QFontMetrics(painter.font()).width(size);
+
+    double maxWidth = sizeLabelWidth > sizeWidth ? sizeLabelWidth : sizeWidth;
+
     painter.setFont(QFont("Arial", 12, QFont::Bold));
-    QRectF sizeLabelBound(endX - blockWidth, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE,
+    QRectF sizeLabelBound(endX - maxWidth, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE,
                           blockWidth, QFontMetrics(painter.font()).height());
-    painter.drawText(sizeLabelBound, Qt::TextWrapAnywhere, tr("Size"), &sizeLabelBound);
+    painter.drawText(sizeLabelBound, Qt::TextWrapAnywhere, sizeLabel, &sizeLabelBound);
 
     painter.setFont(QFont("Arial", 12));
-    QRectF sizeBound(endX - blockWidth, sizeLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE,
+    QRectF sizeBound(endX - maxWidth, sizeLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE,
                      blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeBound, Qt::TextWrapAnywhere, size, &sizeBound);
     /***********************************************************/
@@ -271,34 +300,36 @@ bool ProductsData::addProduct(QString name, QVariant category, int price, QVaria
 }
 
 bool ProductsData::addSubProduct(int product_id, int amount, int size, QDate arrivalDate) {
-    QSqlQuery checkSubProduct(QString("SELECT * FROM `%1` WHERE `product_id`= %2 AND `size`=%3").arg(SUBPROD_TABLE).arg(product_id).arg(size));
+    QSqlQuery checkSubProduct;
 
-    if(checkSubProduct.exec()) {
-        if(checkSubProduct.size()) {
-            QSqlQuery updateSubProduct;
-            checkSubProduct.next();
-            QVariant subprod_id = checkSubProduct.value(SUBPROD_ID);
-            updateSubProduct.prepare("INSERT INTO " + QString(SUBPROD_ARRIVAL_TABLE) +
-                                     "(subprod_id, amount, arrival_date)"
-                                     "VALUES (:subprod_id, :amount, :arrival_date)");
-            updateSubProduct.bindValue(":subprod_id", QVariant(subprod_id));
-            updateSubProduct.bindValue(":amount", QVariant(amount));
-            updateSubProduct.bindValue(":arrival_date", QVariant(arrivalDate));
-            bool status = updateSubProduct.exec();
-            subProductsModel.select();
-            return status;
-        } else {
+    if(checkSubProduct.exec(QString("SELECT * FROM `%1` WHERE `product_id`= %2 "
+                                    "AND `size`=%3").arg(SUBPROD_TABLE).arg(product_id).arg(size)))
+    {
+        QVariant subprod_id;
+        if(!checkSubProduct.size()) {
             QSqlQuery updateSubProduct;
             updateSubProduct.prepare("INSERT INTO subproducts (product_id, size, barcode) "
                                      "VALUES (:product_id, :size, :barcode)");
             updateSubProduct.bindValue(":product_id", product_id);
             updateSubProduct.bindValue(":size", size);
             updateSubProduct.bindValue(":barcode", generateBarcode());
-            bool status = updateSubProduct.exec();
-            subProductsModel.select();
-            return status;
+            if(!updateSubProduct.exec()) return false;
+            else checkSubProduct.exec(); //If subProduct was added retrieve its ID
         }
-    }
 
+        checkSubProduct.next();
+        subprod_id = checkSubProduct.value(SUBPROD_ID);
+
+        QSqlQuery updateSubProduct;
+        updateSubProduct.prepare("INSERT INTO " + QString(SUBPROD_ARRIVAL_TABLE) +
+                                 "(subprod_id, amount, arrival_date)"
+                                 "VALUES (:subprod_id, :amount, :arrival_date)");
+        updateSubProduct.bindValue(":subprod_id", QVariant(subprod_id));
+        updateSubProduct.bindValue(":amount", QVariant(amount));
+        updateSubProduct.bindValue(":arrival_date", QVariant(arrivalDate));
+        bool status = updateSubProduct.exec();
+        subProductsModel.select();
+        return status;
+    }
     return false;
 }

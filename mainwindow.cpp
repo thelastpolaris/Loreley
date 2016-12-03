@@ -87,7 +87,9 @@ void MainWindow::changeEvent(QEvent* event)
             QString locale = QLocale::system().name();
             locale.truncate(locale.lastIndexOf('_'));
             loadLanguage(locale);
+            break;
         }
+        default:
             break;
         }
     }

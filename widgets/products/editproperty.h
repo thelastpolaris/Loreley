@@ -2,6 +2,7 @@
 #define EDITPROPERTY_H
 
 #include <QDialog>
+#include "auxiliary/propertiesmodel.h"
 
 namespace Ui {
     class EditProperty;
@@ -17,7 +18,7 @@ public:
     explicit EditProperty(QWidget *parent = 0);
     ~EditProperty();
 public slots:
-    void show(QString _propertyType, QString _tableName, bool color = false);
+    void show(QString _propertySingular, QString _tableName, int _fieldID, bool _product = true);
     void addProperty();
     void removeProperty();
     void editPropertySlot();
@@ -26,9 +27,11 @@ signals:
     void propertyEdited();
 private:
     Ui::EditProperty *ui;
-    QString propertyType;
+    QString propertySingular;
     QString tableName;
-    PropertiesModel* propertiesModel;
+    int fieldID;
+    bool product;
+    PropertiesModel propertiesModel;
 };
 
 #endif // EDITPROPERTY_H

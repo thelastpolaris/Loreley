@@ -82,7 +82,11 @@ Products::Products() :
     //Print button
     connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
 
-    connect(editPropertyWindow, SIGNAL(propertiesChanged(QString)), SLOT(setupPropertyDelegates(QString)));
+    connect(editPropertyWindow, &EditProperty::propertiesChanged, [=](QString table) {
+        setupPropertyDelegates(table);
+        prodData->initModels(); //Re-initialize models to allow to choose new property
+    });
+
     //TODO - Find better solution
     connect(editPropertyWindow, &EditProperty::propertyEdited, [=]() {
        prodData->getProductsModel()->select();
@@ -91,16 +95,16 @@ Products::Products() :
 
     //Setup menu buttons for editing various properties
     connect(MainWindow::Instance(), &MainWindow::categoriesTriggered, [=]() {
-        editPropertyWindow->show("category", "categories");
+        editPropertyWindow->show("category", "categories", PROD_CAT);
     });
     connect(MainWindow::Instance(), &MainWindow::colorsTriggered, [=]() {
-        editPropertyWindow->show("color", "colors", true);
+        editPropertyWindow->show("color", "colors", PROD_COLOR);
     });
     connect(MainWindow::Instance(), &MainWindow::brandsTriggered, [=]() {
-        editPropertyWindow->show("brand", "brands");
+        editPropertyWindow->show("brand", "brands", PROD_BRAND);
     });
     connect(MainWindow::Instance(), &MainWindow::sizeTriggered, [=]() {
-        editPropertyWindow->show("size", "sizes");
+        editPropertyWindow->show("size", "sizes", SUBPROD_SIZE, false);
     });
 
     //Initialize button states

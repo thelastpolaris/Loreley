@@ -1,4 +1,5 @@
 #include "productsmodel.h"
+#include <QSqlRecord>
 
 ProductsModel::ProductsModel(QObject *parent)
     :QSqlRelationalTableModel(parent)
@@ -12,6 +13,18 @@ Qt::ItemFlags ProductsModel::flags(const QModelIndex &index) const {
     } else {
         return QSqlRelationalTableModel::flags(index);
     }
+}
+
+QSqlRecord ProductsModel::getOriginalRecord(int row) const
+{
+    QSqlTableModel mod;
+    QSqlRecord rec = QSqlQueryModel::record(row);
+
+    mod.setTable(tableName());
+    mod.select();
+    mod.setFilter(QString("id = %2").arg(rec.value("id").toInt()));
+
+    return mod.record(0);
 }
 
 void ProductsModel::setFilterByInteger(const QString &field, int value) {

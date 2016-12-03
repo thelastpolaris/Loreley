@@ -11,6 +11,7 @@ public:
     virtual ~ProductsModel() { }
     void setFilterByInteger(const QString &field, int value);
     virtual Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QSqlRecord getOriginalRecord(int row) const;
     void setReadOnlyCols(QList<int> cols) { readOnlyCols = cols; }
 
     QString getFilterField() const { return filterField; }

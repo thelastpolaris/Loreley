@@ -22,10 +22,10 @@ ProductsData::ProductsData()
     initModels();
 
     //Setup printer
-    //    printer.setPrinterName("QL-570");
+    printer.setPrinterName("QL-570");
     printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
     //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
-    printer.setOutputFileName("testBarcode.pdf");
+//    printer.setOutputFileName("testBarcode.pdf");
     printer.setResolution(260);
 }
 
@@ -178,7 +178,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     QString color = productsModel.data(productsModel.index(product.row(), PROD_COLOR)).toString();
     QString price = productsModel.data(productsModel.index(product.row(), PROD_PRICE)).toString();
 
-    QPixmap barcodePixmap(540, 170);
+    QPixmap barcodePixmap(540, 160);
     ean13.EAN13ToImage(barcodePixmap, barcode);
 
     QPainter painter;
@@ -219,11 +219,11 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     int blockWidth = (barcodeRect.bottomRight().x())/3;
     //Draw price
     /***********************************************************/
-    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.setFont(QFont("Arial", 12));
     QRectF priceLabelBound(beginX, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(priceLabelBound, Qt::TextWrapAnywhere, tr("Price"), &priceLabelBound);
 
-    painter.setFont(QFont("Arial", 12));
+    painter.setFont(QFont("Arial", 12, QFont::Bold));
     QRectF priceBound(beginX, priceLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(priceBound, Qt::TextWrapAnywhere, price, &priceBound);
     /***********************************************************/
@@ -249,12 +249,12 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
     double maxWidth = sizeLabelWidth > sizeWidth ? sizeLabelWidth : sizeWidth;
 
-    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.setFont(QFont("Arial", 12));
     QRectF sizeLabelBound(endX - maxWidth, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE,
                           blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeLabelBound, Qt::TextWrapAnywhere, sizeLabel, &sizeLabelBound);
 
-    painter.setFont(QFont("Arial", 12));
+    painter.setFont(QFont("Arial", 12, QFont::Bold));
     QRectF sizeBound(endX - maxWidth, sizeLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE,
                      blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeBound, Qt::TextWrapAnywhere, size, &sizeBound);

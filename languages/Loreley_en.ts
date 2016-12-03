@@ -59,43 +59,73 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="27"/>
         <source>Name was not entered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="27"/>
         <source>Please enter name of the product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="30"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="31"/>
         <source>Price was not entered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="30"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="31"/>
         <source>Please enter price of the product</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="45"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="46"/>
         <source>Success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="45"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="46"/>
         <source>Successfully added product &lt;b&gt;%1&lt;/b&gt; to the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="48"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="49"/>
         <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="48"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="49"/>
         <source>Error - Product &lt;b&gt;%1&lt;/b&gt; was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %2&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="75"/>
+        <source>Add category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="75"/>
+        <source>Please, add at least one category, before adding product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="78"/>
+        <source>Add color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="78"/>
+        <source>Please, add at least one color, before adding product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="81"/>
+        <source>Add brand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="81"/>
+        <source>Please, add at least one brand, before adding product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -122,23 +152,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="23"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="24"/>
         <source>Success!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="23"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="24"/>
         <source>Successfully added subproduct to the database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="27"/>
         <source>Error!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="27"/>
         <source>Error - subproduct was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %1&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="44"/>
+        <source>Add size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="44"/>
+        <source>Please, add at least one size, before adding product</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -209,6 +249,16 @@
     <message>
         <location filename="../widgets/products/editproperty.cpp" line="61"/>
         <source>You are attempting to delete the last property, which is assigned to some products/subproducts. Please, add at least one more property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="68"/>
+        <source>Assign products/subproducts to new property</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="69"/>
+        <source>It looks like there are some products or subproducts that has&lt;br&gt;the property, which you want to delete. Please, choose new property&lt;br&gt;for them. Otherwise, this property can not be deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -296,17 +346,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="18"/>
-        <source>Yes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="19"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="131"/>
+        <location filename="../mainwindow.cpp" line="128"/>
         <source>Current Language changed to %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -342,6 +382,26 @@
     <message>
         <location filename="../widgets/products/products.ui" line="202"/>
         <source>Ctrl+4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="98"/>
+        <source>category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="101"/>
+        <source>color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="104"/>
+        <source>brand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="107"/>
+        <source>size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

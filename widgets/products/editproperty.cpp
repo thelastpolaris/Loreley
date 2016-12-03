@@ -65,10 +65,10 @@ void EditProperty::removeProperty() {
             QStringList properties = propertiesModel.getStringList();
             properties.removeOne(delPropName);
             bool* assignStatus = new bool;
-            QString newValText = QInputDialog::getItem(this, "Assign products/subproducts to new property",
-                                                       "It looks like there are some products or subproducts that has"
-                                                       "the property, which you want to delete. Please, choosen new property"
-                                                       "for them. Otherwise, this property can not be deleted", properties, 0, false, assignStatus);
+            QString newValText = QInputDialog::getItem(this, tr("Assign products/subproducts to new property"),
+                                                       tr("It looks like there are some products or subproducts that has<br>"
+                                                       "the property, which you want to delete. Please, choose new property<br>"
+                                                       "for them. Otherwise, this property can not be deleted"), properties, 0, false, assignStatus);
             if(*assignStatus) {
                 int newValue = propertiesModel.getValueFromText(newValText);
                 prodData->setPropertyForProducts(idsProperty, fieldID, newValue);

@@ -95,16 +95,16 @@ Products::Products() :
 
     //Setup menu buttons for editing various properties
     connect(MainWindow::Instance(), &MainWindow::categoriesTriggered, [=]() {
-        editPropertyWindow->show("category", "categories", PROD_CAT);
+        editPropertyWindow->show(tr("category"), "categories", PROD_CAT);
     });
     connect(MainWindow::Instance(), &MainWindow::colorsTriggered, [=]() {
-        editPropertyWindow->show("color", "colors", PROD_COLOR);
+        editPropertyWindow->show(tr("color"), "colors", PROD_COLOR);
     });
     connect(MainWindow::Instance(), &MainWindow::brandsTriggered, [=]() {
-        editPropertyWindow->show("brand", "brands", PROD_BRAND);
+        editPropertyWindow->show(tr("brand"), "brands", PROD_BRAND);
     });
     connect(MainWindow::Instance(), &MainWindow::sizeTriggered, [=]() {
-        editPropertyWindow->show("size", "sizes", SUBPROD_SIZE, false);
+        editPropertyWindow->show(tr("size"), "sizes", SUBPROD_SIZE, false);
     });
 
     //Initialize button states

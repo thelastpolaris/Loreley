@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     ProductsData::Create();
 
     MainWindow* win = MainWindow::Create();
-    win->setCentralWidget(Products::Instance());
+    win->openProducts();
     win->show();
 
     return a.exec();

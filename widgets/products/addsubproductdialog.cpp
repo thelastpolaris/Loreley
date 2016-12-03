@@ -3,6 +3,7 @@
 #include "data/productsmodel.h"
 #include "data/productsdata.h"
 #include <QMessageBox>
+#include "mainwindow.h"
 
 AddSubProductDialog::AddSubProductDialog(QWidget *parent) :
     QDialog(parent),
@@ -38,6 +39,12 @@ void AddSubProductDialog::startAddingSubProduct() {
             ui->sizeCB->addItem(i.value(), i.key());
     }
     ui->arrivalDE->setDate(QDate::currentDate());
+
+    if(!ui->sizeCB->count()) {
+        QMessageBox::warning(MainWindow::Instance(), tr("Add size"), tr("Please, add at least one size, before adding product"));
+        return;
+    }
+
     show();
 }
 

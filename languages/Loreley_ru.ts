@@ -59,44 +59,74 @@
         <translation type="unfinished">Бренд</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="27"/>
         <source>Name was not entered</source>
         <translation type="unfinished">Название не было введено</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="27"/>
         <source>Please enter name of the product</source>
         <translation type="unfinished">Пожалуйста, введите название продукта</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="30"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="31"/>
         <source>Price was not entered</source>
         <translation type="unfinished">Цена не была введена</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="30"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="31"/>
         <source>Please enter price of the product</source>
         <translation type="unfinished">Пожалуйста, введите цену продукта</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="45"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="46"/>
         <source>Success!</source>
         <translation type="unfinished">Успех!</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="45"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="46"/>
         <source>Successfully added product &lt;b&gt;%1&lt;/b&gt; to the database</source>
         <translation type="unfinished">Продукт &lt;b&gt;%1&lt;/b&gt; был успешно добавлен в базу</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="48"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="49"/>
         <source>Error!</source>
         <translation type="unfinished">Ошибка!</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.cpp" line="48"/>
+        <location filename="../widgets/products/addproductdialog.cpp" line="49"/>
         <source>Error - Product &lt;b&gt;%1&lt;/b&gt; was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %2&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %3</source>
         <translation type="unfinished">Ошибка - Продукт &lt;b&gt;%1&lt;/b&gt; не был добавлен в базу из-за следующих ошибок&lt;br&gt;.&lt;b&gt;Ошибка БД:&lt;/b&gt;.%2&lt;br&gt;.&lt;b&gt;Ошибка драйвера:&lt;/b&gt; %3</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="75"/>
+        <source>Add category</source>
+        <translation type="unfinished">Добавление категории</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="75"/>
+        <source>Please, add at least one category, before adding product</source>
+        <translation type="unfinished">Пожалуйста, добавьте хотя бы одну категорию перед добавлением продукта</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="78"/>
+        <source>Add color</source>
+        <translation type="unfinished">Добавление цвета</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="78"/>
+        <source>Please, add at least one color, before adding product</source>
+        <translation type="unfinished">Пожалуйста, добавьте хотя бы один цвет перед добавлением продукта</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="81"/>
+        <source>Add brand</source>
+        <translation type="unfinished">Добавление бренда</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.cpp" line="81"/>
+        <source>Please, add at least one brand, before adding product</source>
+        <translation type="unfinished">Пожалуйста, добавьте хотя бы один бренд перед добавлением продукта</translation>
     </message>
 </context>
 <context>
@@ -123,24 +153,34 @@
 поступления</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="23"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="24"/>
         <source>Success!</source>
         <translation type="unfinished">Успех!</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="23"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="24"/>
         <source>Successfully added subproduct to the database</source>
         <translation type="unfinished">Подпродукт был успешно добавлен в базу данных</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="27"/>
         <source>Error!</source>
         <translation type="unfinished">Ошибка!</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addsubproductdialog.cpp" line="26"/>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="27"/>
         <source>Error - subproduct was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %1&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %2</source>
         <translation type="unfinished">Ошибка - подпродукт не был добавлен в базу из-за следующих ошибок&lt;br&gt;.&lt;b&gt;Ошибка БД:&lt;/b&gt;.%1&lt;br&gt;.&lt;b&gt;Ошибка драйвера:&lt;/b&gt; %2</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="44"/>
+        <source>Add size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addsubproductdialog.cpp" line="44"/>
+        <source>Please, add at least one size, before adding product</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error - subproduct was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %2&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %3</source>
@@ -170,7 +210,7 @@
     <message>
         <location filename="../widgets/products/editproperty.cpp" line="33"/>
         <source>Enter the name of new %1</source>
-        <translation type="unfinished">Введити имя нового параметра типа &quot;%1&quot;</translation>
+        <translation type="unfinished">Введите имя нового параметра типа &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../widgets/products/editproperty.cpp" line="37"/>
@@ -215,6 +255,24 @@
         <location filename="../widgets/products/editproperty.cpp" line="61"/>
         <source>You are attempting to delete the last property, which is assigned to some products/subproducts. Please, add at least one more property</source>
         <translation type="unfinished">Вы собираетесь удалить последний параметр, который присвоен нескольким продуктам/подпродуктам. Пожалуйста, добавьте хотя бы еще один параметр</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="68"/>
+        <source>Assign products/subproducts to new property</source>
+        <translation type="unfinished">Необходимо изменить значение параметра у продуктов/подпродуктов</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/editproperty.cpp" line="69"/>
+        <source>It looks like there are some products or subproducts that has&lt;br&gt;the property, which you want to delete. Please, choose new property&lt;br&gt;for them. Otherwise, this property can not be deleted</source>
+        <translation type="unfinished">Некоторые продукты/подпродукты определены со значением&lt;br&gt; параметра, которое вы хотите удалите. Пожалуйста, &lt;br&gt;выберите новое значение параметра для них. В противном случае данное&lt;br&gt; значение параметра не может быть удалено</translation>
+    </message>
+    <message>
+        <source>It looks like there are some products or subproducts that has the property, which you want to delete. Please, choose new property for them. Otherwise, this property can not be deleted</source>
+        <translation type="obsolete">Некоторые продукты/подпродукты определены со значением параметра, которое вы хотите удалите. Пожалуйста,  выберите новое значение параметра для них. В противном случае данное значение параметра не может быть удалено</translation>
+    </message>
+    <message>
+        <source>It looks like there are some products or subproducts that has the property, which you want to delete. Please, choosen new property for them. Otherwise, this property can not be deleted</source>
+        <translation type="obsolete">Некоторые продукты/подпродукты определены со значением параметра, которое вы хотите удалите. Пожалуйста, </translation>
     </message>
     <message>
         <location filename="../widgets/products/editproperty.cpp" line="81"/>
@@ -301,18 +359,12 @@
         <translation type="unfinished">Размер</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="18"/>
         <source>Yes</source>
         <translatorcomment>Нет</translatorcomment>
-        <translation type="unfinished">Да</translation>
+        <translation type="obsolete">Да</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="19"/>
-        <source>No</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="131"/>
+        <location filename="../mainwindow.cpp" line="128"/>
         <source>Current Language changed to %1</source>
         <translation type="unfinished">Текущий язык был изменен на %1</translation>
     </message>
@@ -349,6 +401,26 @@
         <location filename="../widgets/products/products.ui" line="202"/>
         <source>Ctrl+4</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="98"/>
+        <source>category</source>
+        <translation type="unfinished">категория</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="101"/>
+        <source>color</source>
+        <translation type="unfinished">цвет</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="104"/>
+        <source>brand</source>
+        <translation type="unfinished">бренд</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/products.cpp" line="107"/>
+        <source>size</source>
+        <translation type="unfinished">размер</translation>
     </message>
     <message>
         <location filename="../widgets/products/products.cpp" line="132"/>
@@ -394,17 +466,17 @@
     <message>
         <location filename="../widgets/products/products.cpp" line="197"/>
         <source>Delete subproduct</source>
-        <translation type="unfinished">Удалить подпродукт</translation>
+        <translation>Удалить подпродукт</translation>
     </message>
     <message>
         <location filename="../widgets/products/products.cpp" line="197"/>
         <source>Are you sure you want to delete subproduct of product &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt;This will erase all data associated with subproduct (arrival history, sells)</source>
-        <translation type="unfinished">Вы уверены, что хотите удалить подпродукт продукта &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt; Это удалить все данные, связанные с этим подпродуктом (история поступлений и продаж)</translation>
+        <translation>Вы уверены, что хотите удалить подпродукт продукта &lt;b&gt;%1&lt;/b&gt;?&lt;br&gt; Это удалить все данные, связанные с этим подпродуктом (история поступлений и продаж)</translation>
     </message>
     <message>
         <location filename="../widgets/products/products.cpp" line="204"/>
         <source>Successfully deleted subproduct of product %1</source>
-        <translation type="unfinished">Подпродукт продукта %1 был успешно удален</translation>
+        <translation>Подпродукт продукта %1 был успешно удален</translation>
     </message>
     <message>
         <source>Are you sure you want to delete subproduct of product &lt;b&gt;%1&lt;/b&gt;?</source>
@@ -497,7 +569,7 @@
     <message>
         <location filename="../widgets/products/reducesubproductdialog.ui" line="30"/>
         <source>Reason</source>
-        <translation type="unfinished">Причина уменьшения</translation>
+        <translation type="unfinished">Причина</translation>
     </message>
     <message>
         <location filename="../widgets/products/reducesubproductdialog.cpp" line="21"/>

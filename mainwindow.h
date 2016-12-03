@@ -36,7 +36,7 @@ protected slots:
     // this slot is called by the language menu actions
     void slotLanguageChanged(QAction* action);
 
-private slots:
+public slots:
     void openProducts();
 
 private:

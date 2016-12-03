@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include "data/productsdata.h"
+#include "mainwindow.h"
 
 AddProductDialog::AddProductDialog(QWidget *parent) :
     QDialog(parent),
@@ -68,6 +69,17 @@ void AddProductDialog::startAddingProduct() {
     QHash<int, QString> brands = prod->getNameAndKey("brands", "id", "name");
     for(QHash<int, QString>::const_iterator i = brands.begin(); i != brands.end(); ++i) {
             ui->brandCB->addItem(i.value(), i.key());
+    }
+
+    if(!ui->categoryCB->count()) {
+        QMessageBox::warning(MainWindow::Instance(), tr("Add category"), tr("Please, add at least one category, before adding product"));
+        return;
+    } else if(!ui->colorCB->count()) {
+        QMessageBox::warning(MainWindow::Instance(), tr("Add color"), tr("Please, add at least one color, before adding product"));
+        return;
+    } else if(!ui->brandCB->count()) {
+        QMessageBox::warning(MainWindow::Instance(), tr("Add brand"), tr("Please, add at least one brand, before adding product"));
+        return;
     }
 
     show();

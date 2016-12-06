@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2016 at 01:01 PM
+-- Generation Time: Dec 06, 2016 at 03:43 PM
 -- Server version: 5.7.13-0ubuntu0.16.04.2
 -- PHP Version: 7.0.8-0ubuntu0.16.04.3
 
@@ -36,8 +36,7 @@ CREATE TABLE `brands` (
 --
 
 INSERT INTO `brands` (`id`, `name`) VALUES
-(2, 'Mertex'),
-(3, '-----');
+(4, 'Mertex');
 
 -- --------------------------------------------------------
 
@@ -55,9 +54,8 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`) VALUES
-(24, '777'),
-(25, '111'),
-(26, '333');
+(28, 'Блузки'),
+(29, 'Рубашки');
 
 -- --------------------------------------------------------
 
@@ -88,9 +86,7 @@ CREATE TABLE `colors` (
 --
 
 INSERT INTO `colors` (`id`, `name`, `color`) VALUES
-(1, 'Черный', '#000'),
-(2, 'Белый', '#fff'),
-(3, 'аа', NULL);
+(4, 'Красный', NULL);
 
 -- --------------------------------------------------------
 
@@ -100,11 +96,11 @@ INSERT INTO `colors` (`id`, `name`, `color`) VALUES
 
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
-  `name` varchar(256) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `price` decimal(10,0) NOT NULL,
   `brand` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `characteristic` varchar(256) NOT NULL,
   `color` int(11) NOT NULL,
+  `price` decimal(10,0) NOT NULL,
   `note` mediumtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -112,10 +108,9 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `category_id`, `price`, `brand`, `color`, `note`) VALUES
-(45, '333', 20, '12555', 2, 2, ''),
-(46, '333', 20, '12555', 3, 3, ''),
-(47, 'Тестовый продукт', 25, '12500', 2, 2, '	');
+INSERT INTO `products` (`id`, `brand`, `category_id`, `characteristic`, `color`, `price`, `note`) VALUES
+(48, 4, 28, 'Джинса', 4, '32100', '312312'),
+(49, 4, 28, 'Джинса', 4, '12300', '');
 
 --
 -- Triggers `products`
@@ -141,9 +136,9 @@ CREATE TABLE `sizes` (
 --
 
 INSERT INTO `sizes` (`id`, `name`) VALUES
-(1, '32'),
-(2, '36'),
-(4, '38');
+(5, '38'),
+(6, '32'),
+(7, '36');
 
 -- --------------------------------------------------------
 
@@ -164,9 +159,10 @@ CREATE TABLE `subproducts` (
 --
 
 INSERT INTO `subproducts` (`id`, `product_id`, `size`, `barcode`, `note`) VALUES
-(74, 47, 4, '2030000000005', NULL),
-(75, 47, 1, '2030000000746', NULL),
-(76, 47, 2, '2030000000753', NULL);
+(77, 48, 6, '2030000000005', NULL),
+(78, 48, 7, '2030000000777', NULL),
+(79, 48, 5, '2030000000784', NULL),
+(80, 49, 5, '2030000000791', NULL);
 
 --
 -- Triggers `subproducts`
@@ -198,13 +194,10 @@ CREATE TABLE `subprod_arrival` (
 --
 
 INSERT INTO `subprod_arrival` (`id`, `subprod_id`, `amount`, `arrival_date`) VALUES
-(16, 74, 1, '2016-12-03'),
-(17, 74, 1, '2016-12-03'),
-(18, 75, 1, '2016-12-03'),
-(19, 76, 1, '2016-12-03'),
-(20, 76, 1, '2016-12-03'),
-(21, 76, 1, '2016-12-03'),
-(22, 76, 1, '2016-12-03');
+(23, 77, 1, '2016-12-03'),
+(24, 78, 1, '2016-12-03'),
+(25, 79, 1, '2016-12-03'),
+(26, 80, 1, '2016-12-03');
 
 -- --------------------------------------------------------
 
@@ -236,13 +229,6 @@ CREATE TABLE `subprod_reduce` (
   `amount` int(11) NOT NULL,
   `reason` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subprod_reduce`
---
-
-INSERT INTO `subprod_reduce` (`id`, `subprod_id`, `amount`, `reason`) VALUES
-(6, 74, 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -277,7 +263,7 @@ ALTER TABLE `colors`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `index_name` (`name`) USING BTREE;
+  ADD KEY `index_name` (`characteristic`) USING BTREE;
 
 --
 -- Indexes for table `sizes`
@@ -317,12 +303,12 @@ ALTER TABLE `subprod_reduce`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `category_sizes`
 --
@@ -332,27 +318,27 @@ ALTER TABLE `category_sizes`
 -- AUTO_INCREMENT for table `colors`
 --
 ALTER TABLE `colors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `subproducts`
 --
 ALTER TABLE `subproducts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
 --
 -- AUTO_INCREMENT for table `subprod_arrival`
 --
 ALTER TABLE `subprod_arrival`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT for table `subprod_reasons`
 --
@@ -362,7 +348,7 @@ ALTER TABLE `subprod_reasons`
 -- AUTO_INCREMENT for table `subprod_reduce`
 --
 ALTER TABLE `subprod_reduce`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

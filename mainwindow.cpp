@@ -42,9 +42,7 @@ void MainWindow::createLanguageMenu(void)
     QString defaultLocale = QLocale::system().name(); // e.g. "de_DE"
     defaultLocale.truncate(defaultLocale.lastIndexOf('_')); // e.g. "de"
 
-    m_langPath = QApplication::applicationDirPath();
-    m_langPath.append("/languages");
-    QDir dir(m_langPath);
+    QDir dir(":/languages");
     QStringList fileNames = dir.entryList(QStringList("Loreley_*.qm"));
 
     for (int i = 0; i < fileNames.size(); ++i) {
@@ -123,7 +121,7 @@ void MainWindow::loadLanguage(const QString& rLanguage)
         QLocale locale = QLocale(m_currLang);
         QLocale::setDefault(locale);
         QString languageName = QLocale::languageToString(locale.language());
-        switchTranslator(m_translator, QString("languages/Loreley_%1.qm").arg(rLanguage));
+        switchTranslator(m_translator, QString(":languages/Loreley_%1.qm").arg(rLanguage));
         switchTranslator(m_translatorQt, QString("qt_%1.qm").arg(rLanguage));
         ui->statusBar->showMessage(tr("Current Language changed to %1").arg(languageName));
         productsData = ProductsData::Create();

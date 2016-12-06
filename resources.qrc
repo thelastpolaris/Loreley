@@ -41,5 +41,10 @@
         <file>images/icons/minus@3x.png</file>
         <file>images/icons/minus@2x.png</file>
         <file>images/icons/minus.png</file>
+        <file>languages/Loreley_en.qm</file>
+        <file>languages/Loreley_en.ts</file>
+        <file>languages/Loreley_ru.qm</file>
+        <file>languages/Loreley_ru.ts</file>
+        <file>languages/project_ru.ts</file>
     </qresource>
 </RCC>

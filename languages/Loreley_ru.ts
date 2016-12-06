@@ -9,52 +9,60 @@
         <translation type="unfinished">Добавить новый продукт</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="23"/>
         <source>Name</source>
-        <translation type="unfinished">Название</translation>
+        <translation type="obsolete">Название</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="30"/>
         <source>Enter name of the product</source>
-        <translation type="unfinished">Введите название продукта</translation>
+        <translation type="obsolete">Введите название продукта</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="37"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="81"/>
         <source>Category</source>
         <translation type="unfinished">Категория</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="51"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="23"/>
         <source>Price</source>
         <translation type="unfinished">Цена</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="58"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="30"/>
         <source>D9 999 999</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="64"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="36"/>
         <source>Enter price (Max. 6 digits)</source>
         <translation type="unfinished">Введите стоимость (Максимум 6 цифр)</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="71"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="74"/>
+        <source>Enter characteristic of the product</source>
+        <translation type="unfinished">Введите характеристику товара</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.ui" line="95"/>
+        <source>Char.</source>
+        <translation type="unfinished">Хар-ка.</translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.ui" line="102"/>
         <source>Color</source>
         <translation type="unfinished">Цвет</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="81"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="43"/>
         <source>Note</source>
         <translation type="unfinished">Заметка</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="88"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="50"/>
         <source>(Optional)</source>
         <translation type="unfinished">(Необязательно)</translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="105"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="64"/>
         <source>Brand</source>
         <translation type="unfinished">Бренд</translation>
     </message>
@@ -175,12 +183,12 @@
     <message>
         <location filename="../widgets/products/addsubproductdialog.cpp" line="44"/>
         <source>Add size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Добавить размер</translation>
     </message>
     <message>
         <location filename="../widgets/products/addsubproductdialog.cpp" line="44"/>
         <source>Please, add at least one size, before adding product</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пожалуйста, добавьте хотя бы один размер</translation>
     </message>
     <message>
         <source>Error - subproduct was not added to the database due to the following errors&lt;br&gt; &lt;b&gt;Database Error:&lt;/b&gt; %2&lt;br&gt; &lt;b&gt;Driver Error:&lt;/b&gt; %3</source>

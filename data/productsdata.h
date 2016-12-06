@@ -45,7 +45,7 @@ public:
     ProductsModel* getProductsModel() { return &productsModel; }
     ProductsModel* getSubProductsModel() { return &subProductsModel; }
 
-    bool addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note = QString());
+    bool addProduct(QString characteristics, QVariant category, int price, QVariant color, QVariant brand, QString note = QString());
     QSqlError productsLastError() const { return productsModel.lastError(); }
 
     bool addSubProduct(int product_id, int amount, int size, QDate arrivalDate);

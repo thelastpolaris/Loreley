@@ -265,7 +265,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
 
 QHash<int, QString> ProductsData::getNameAndKey(QString table, QString key, QString value) {
-    QSqlQuery query("SELECT * from `" + table + "`");
+    QSqlQuery query("SELECT * from " + table + "");
     query.exec();
 
     QHash<int, QString> values;
@@ -285,9 +285,10 @@ QString ProductsData::generateBarcode() {
     return ean13.generateBarcode(barcode);
 }
 
-bool ProductsData::addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note) {
+bool ProductsData::addProduct(QString characteristics, QVariant category, int price, QVariant color, QVariant brand, QString note) {
+#if (QT_VERSION > QT_VERSION_CHECK(5, 5, 1)) // We provide sql query for old Qt versions where insertRecord always returns false
     QSqlRecord newRow = productsModel.record();
-    newRow.setValue(PROD_CHAR, QVariant(name));
+    newRow.setValue(PROD_CHAR, QVariant(characteristics));
     newRow.setValue(PROD_CAT, category);
     newRow.setValue(PROD_PRICE, QVariant(price));
     newRow.setValue(PROD_COLOR, color);
@@ -297,13 +298,28 @@ bool ProductsData::addProduct(QString name, QVariant category, int price, QVaria
     bool status = productsModel.insertRecord(-1, newRow);
     productsModel.select();
     return status;
+#else
+    QSqlQuery addProduct;
+    addProduct.prepare("INSERT INTO " + QString(PROD_TABLE) +
+                             "(brand, category_id, characteristic, color, price, note)"
+                             "VALUES (:brand, :category, :characteristics, :color, :price, :note)");
+    addProduct.bindValue(":brand", brand);
+    addProduct.bindValue(":category", QVariant(category));
+    addProduct.bindValue(":characteristics", QVariant(characteristics));
+    addProduct.bindValue(":color", QVariant(color));
+    addProduct.bindValue(":price", QVariant(price));
+    addProduct.bindValue(":note", QVariant(note));
+    bool status = addProduct.exec();
+    productsModel.select();
+    return status;
+#endif
 }
 
 bool ProductsData::addSubProduct(int product_id, int amount, int size, QDate arrivalDate) {
     QSqlQuery checkSubProduct;
 
-    if(checkSubProduct.exec(QString("SELECT * FROM `%1` WHERE `product_id`= %2 "
-                                    "AND `size`=%3").arg(SUBPROD_TABLE).arg(product_id).arg(size)))
+    if(checkSubProduct.exec(QString("SELECT * FROM %1 WHERE product_id= %2 "
+                                    "AND size=%3").arg(SUBPROD_TABLE).arg(product_id).arg(size)))
     {
         QVariant subprod_id;
         if(!checkSubProduct.size()) {

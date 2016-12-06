@@ -9,52 +9,52 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="23"/>
-        <source>Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="30"/>
-        <source>Enter name of the product</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="37"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="81"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="51"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="23"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="58"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="30"/>
         <source>D9 999 999</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="64"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="36"/>
         <source>Enter price (Max. 6 digits)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="71"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="74"/>
+        <source>Enter characteristic of the product</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.ui" line="95"/>
+        <source>Char.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/products/addproductdialog.ui" line="102"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="81"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="43"/>
         <source>Note</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="88"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="50"/>
         <source>(Optional)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/products/addproductdialog.ui" line="105"/>
+        <location filename="../widgets/products/addproductdialog.ui" line="64"/>
         <source>Brand</source>
         <translation type="unfinished"></translation>
     </message>

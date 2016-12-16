@@ -24,14 +24,6 @@
 
 #include "mainwindow.h"
 
-Products* Products::p_instance = 0;
-
-Products* Products::Create() {
-    if(p_instance) delete p_instance;
-    p_instance = new Products;
-    return p_instance;
-}
-
 Products::Products() :
     ui(new Ui::Products), addProdDialog(new AddProductDialog(this)),
     addSubProdDialog(new AddSubProductDialog(this)), reduceSubProdDialog(new ReduceSubProductDialog(this)),

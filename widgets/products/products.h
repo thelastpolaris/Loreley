@@ -23,10 +23,6 @@ class Products : public QWidget
     Q_OBJECT
 
 public:
-    static Products* Create();
-    static Products* Instance() { return p_instance; }
-
-protected:
     explicit Products();
     virtual ~Products() override;
 

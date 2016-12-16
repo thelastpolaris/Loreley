@@ -11,6 +11,8 @@ namespace Ui {
 }
 
 class Products;
+class Home;
+class Sell;
 
 class MainWindow : public QMainWindow
 {
@@ -19,12 +21,23 @@ class MainWindow : public QMainWindow
 public:
     static MainWindow* Create();
     static MainWindow* Instance() { return pinstance; }
+    /**
+     * @brief loadLanguage - loads a language by the given language shortcur (e.g. de, en)
+     * Use this function to initialize widgets
+     * @param rLanguage - BCP47 Name of language
+     */
+    void loadLanguage(const QString& rLanguage);
 
 protected:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     // this event is called, when a new translator is loaded or the system language is changed
     void changeEvent(QEvent*);
+
+    /**
+     * @brief prepareCentralWidget - changes the ownership of central widget
+     */
+    void prepareCentralWidget();
 
 signals:
     void categoriesTriggered(bool state);
@@ -38,17 +51,22 @@ protected slots:
 
 public slots:
     void openProducts();
+    void openHome();
+    void openSell();
 
 private:
     Ui::MainWindow *ui;
     ProductsData* productsData;
 
+    Products *p_products;
+    Home *p_home;
+    Sell *p_sell;
+
     static MainWindow* pinstance;
 
     void createActions();
 
-    // loads a language by the given language shortcur (e.g. de, en)
-    void loadLanguage(const QString& rLanguage);
+    void Initialize();
 
     // creates the language menu dynamically from the content of m_langPath
     void createLanguageMenu(void);

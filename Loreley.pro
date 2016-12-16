@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     widgets/products/editproperty.cpp \
     auxiliary/propertiesmodel.cpp \
     data/subproductsmodel.cpp \
-    widgets/products/reducesubproductdialog.cpp
+    widgets/products/reducesubproductdialog.cpp \
+    widgets/home.cpp \
+    widgets/sell/sell.cpp
 
 HEADERS  += mainwindow.h \
     widgets/delegates/comboboxitemdelegate.h \
@@ -44,14 +46,18 @@ HEADERS  += mainwindow.h \
     widgets/products/editproperty.h \
     auxiliary/propertiesmodel.h \
     data/subproductsmodel.h \
-    widgets/products/reducesubproductdialog.h
+    widgets/products/reducesubproductdialog.h \
+    widgets/home.h \
+    widgets/sell/sell.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \
     widgets/products/addproductdialog.ui \
     widgets/products/addsubproductdialog.ui \
     widgets/products/editproperty.ui \
-    widgets/products/reducesubproductdialog.ui
+    widgets/products/reducesubproductdialog.ui \
+    widgets/home.ui \
+    widgets/sell/sell.ui
 
 RESOURCES += \
     resources.qrc

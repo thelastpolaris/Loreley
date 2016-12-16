@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "widgets/products/products.h"
+#include "widgets/sell/sell.h"
 
+#include "widgets/home.h"
 #include <QDir>
 #include <QDebug>
 #include <QSettings>
@@ -9,9 +11,12 @@
 MainWindow* MainWindow::pinstance = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow)
+    QMainWindow(parent), ui(new Ui::MainWindow), p_products(NULL), p_home(NULL), p_sell(NULL)
 {
     ui->setupUi(this);
+    ui->mainToolBar->hide();
+    setCentralWidget(p_home);
+
     createActions();
     createLanguageMenu();
 
@@ -19,15 +24,23 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionColors, SIGNAL(triggered(bool)), SIGNAL(colorsTriggered(bool)));
     connect(ui->actionBrands, SIGNAL(triggered(bool)), SIGNAL(brandsTriggered(bool)));
     connect(ui->actionSize, SIGNAL(triggered(bool)), SIGNAL(sizeTriggered(bool)));
-
-    loadLanguage(QLocale::system().bcp47Name());
 }
 
 MainWindow* MainWindow::Create() {
     if(pinstance) delete pinstance;
     pinstance = new MainWindow;
-    Products::Create();
     return pinstance;
+}
+
+void MainWindow::Initialize() {
+    if(p_products) delete p_products;
+    p_products = new Products;
+
+    if(p_home) delete p_home;
+    p_home = new Home;
+
+    if(p_sell) delete p_sell;
+    p_sell = new Sell;
 }
 
 // we create the menu entries dynamically, dependent on the existing translations.
@@ -125,7 +138,7 @@ void MainWindow::loadLanguage(const QString& rLanguage)
         switchTranslator(m_translatorQt, QString("qt_%1.qm").arg(rLanguage));
         ui->statusBar->showMessage(tr("Current Language changed to %1").arg(languageName));
         productsData = ProductsData::Create();
-        Products::Create();
+        Initialize();
     }
 }
 
@@ -138,17 +151,30 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::openProducts() {
-    ui->mainToolBar->hide();
-    setCentralWidget(Products::Instance());
+void MainWindow::prepareCentralWidget() {
+    if(centralWidget()) {
+        centralWidget()->setParent(0);
+    }
+}
 
-    //    qDeleteAll(ui->mainToolBar->actions());
-    //    QAction *addProd = ui->mainToolBar->addAction(QIcon(":/images/icons/add.png"), tr("Add Product"));
-    //    connect(addProd,SIGNAL(triggered(bool)), products, SLOT(startAddingProduct()));
-    //    QAction *delProd = ui->mainToolBar->addAction(QIcon(":/images/icons/remove.png"), tr("Remove Product"));
-    //    connect(delProd,SIGNAL(triggered(bool)), products, SLOT(startDeleteProduct()));
+void MainWindow::openProducts() {
+    prepareCentralWidget();
+    setCentralWidget(p_products);
+}
+
+void MainWindow::openHome() {
+    prepareCentralWidget();
+    setCentralWidget(p_home);
+}
+
+void MainWindow::openSell() {
+    prepareCentralWidget();
+    setCentralWidget(p_sell);
 }
 
 void MainWindow::createActions() {
+    connect(ui->actionHome, &QAction::triggered, this, &MainWindow::openHome);
+    /******* Separator ********/
     connect(ui->actionProducts, &QAction::triggered, this, &MainWindow::openProducts);
+    connect(ui->actionSell, &QAction::triggered, this, &MainWindow::openSell);
 }

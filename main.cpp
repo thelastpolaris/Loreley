@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QSettings>
+#include <QDebug>
 #include "widgets/products/products.h"
 
 int main(int argc, char *argv[])
@@ -24,7 +25,9 @@ int main(int argc, char *argv[])
     ProductsData::Create();
 
     MainWindow* win = MainWindow::Create();
-    win->openProducts();
+    win->loadLanguage(QLocale::system().bcp47Name());
+
+    win->openHome();
     win->show();
 
     return a.exec();

@@ -13,13 +13,15 @@ class AddProductDialog : public QDialog
 
 public:
     explicit AddProductDialog(QWidget *parent = 0);
-    void clearFields();
 
     ~AddProductDialog();
     Ui::AddProductDialog *ui;
 public slots:
     void finishAddingProduct();
     void startAddingProduct();
+
+private:
+    void clearFields();
 
 };
 

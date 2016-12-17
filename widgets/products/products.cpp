@@ -21,13 +21,14 @@
 
 #include "../delegates/datepickeritemdelegate.h"
 #include "../delegates/comboboxitemdelegate.h"
+#include "searchproductdialog.h"
 
 #include "mainwindow.h"
 
 Products::Products() :
     ui(new Ui::Products), addProdDialog(new AddProductDialog(this)),
     addSubProdDialog(new AddSubProductDialog(this)), reduceSubProdDialog(new ReduceSubProductDialog(this)),
-    editPropertyWindow(new EditProperty(this))
+    editPropertyWindow(new EditProperty(this)), searchProdDialog(new SearchProductDialog(this))
 {
     ProductsData* prodData = ProductsData::Instance();
 
@@ -55,6 +56,13 @@ Products::Products() :
     connect(ui->addProductButton, SIGNAL(clicked(bool)), addProdDialog, SLOT(startAddingProduct()));
     connect(ui->deleteProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingProduct()));
     connect(ui->printBarcodeButton, SIGNAL(clicked(bool)), SLOT(startPrintingBarcode()));
+    connect(ui->searchButton, SIGNAL(clicked(bool)), searchProdDialog, SLOT(startSearch()));
+    //Setup cancel filter button and text
+    connect(prodData, SIGNAL(productsFilterChanged(QString)), this, SLOT(updateFilter(QString)));
+    connect(ui->cancelFilterButton, &QPushButton::clicked, [=]() {
+        prodData->cancelProductsFilter();
+    });
+    updateFilter(prodData->getProductsFilter());
 
     connect(this, SIGNAL(productSelected(bool)), ui->deleteProductButton, SLOT(setEnabled(bool)));
 
@@ -161,7 +169,7 @@ bool Products::startDeletingProduct() {
 
     if(currentIndex.isValid()) {
         int delRow = currentIndex.row();
-        QString name = prodData->productsData(delRow, PROD_CHAR).toString();
+        QString name = prodData->productsData(delRow, PROD_NAME).toString();
 
         int response = QMessageBox::question(this, tr("Delete product"),tr("Are you sure you want to delete <b>%1</b>?").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
         if(response == QMessageBox::Ok) {
@@ -187,7 +195,7 @@ bool Products::startDeletingSubProduct() {
     if(currentIndex.isValid()) {
         int delRow = currentIndex.row();
         int parentProdRow = ui->tableView->selectionModel()->currentIndex().row();
-        QString name = prodData->productsData(parentProdRow, PROD_CHAR).toString();
+        QString name = prodData->productsData(parentProdRow, PROD_NAME).toString();
 
         int response = QMessageBox::question(this, tr("Delete subproduct"),tr("Are you sure you want to delete subproduct of product <b>%1</b>?<br>"
                                                                               "This will erase all data associated with subproduct (arrival history, sells)").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
@@ -216,6 +224,17 @@ bool Products::starReducingSubProductAmount() {
 
     reduceSubProdDialog->startReducingSubProduct(subProdID, curAmount);
     return false;
+}
+
+void Products::updateFilter(QString newFilter) {
+    bool visible = false;
+    if(!newFilter.isEmpty()) {
+        visible = true;
+        ui->filterText->setText(newFilter);
+    }
+
+    ui->cancelFilterButton->setVisible(visible);
+    ui->filterText->setVisible(visible);
 }
 
 Products::~Products()

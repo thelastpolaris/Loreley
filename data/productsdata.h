@@ -14,7 +14,7 @@ class EAN13;
 #define PROD_ID 0
 #define PROD_BRAND 1
 #define PROD_CAT 2
-#define PROD_CHAR 3
+#define PROD_NAME 3
 #define PROD_COLOR 4
 #define PROD_PRICE 5
 #define PROD_NOTE 6
@@ -42,6 +42,8 @@ public:
 
     void initModels();
 
+    Q_PROPERTY(QString productsFilter READ getProductsFilter WRITE setProductsFilter NOTIFY productsFilterChanged)
+
     ProductsModel* getProductsModel() { return &productsModel; }
     ProductsModel* getSubProductsModel() { return &subProductsModel; }
 
@@ -57,7 +59,17 @@ public:
     QVariant productsData(int row, int column) const;
     QVariant subProductsData(int row, int column) const;
 
+    /**
+     * @brief cancelProductsFilter - cancels filter for productsModel
+     */
+    void cancelProductsFilter();
     void filterSubProducts(int product_id);
+    /**
+     * @brief searchForValues - filters productModel according to parameters
+     * @return number of rows in filtered row
+     */
+    int searchForValues(QString name, int category, int color, int brand,
+                         int price, QString comment);
 
     bool removeProduct(int productRow);
     bool removeSubProduct(int subProductRow);
@@ -75,6 +87,12 @@ public:
 
     void printBarcode(QModelIndex subProduct, QModelIndex product);
 
+    QString getProductsFilter() const { return m_productsFilter; }
+    void setProductsFilter(QString productsFilter);
+
+signals:
+    void productsFilterChanged(QString productsFilter);
+
 protected:
     ProductsData();
     ~ProductsData();
@@ -83,6 +101,8 @@ private:
     ProductsModel productsModel;
     SubProductsModel subProductsModel;
     EAN13 ean13;
+
+    QString m_productsFilter;
 
     static ProductsData *p_instance;
     QPrinter printer;

@@ -13,6 +13,7 @@ class EditProperty;
 class AddProductDialog;
 class AddSubProductDialog;
 class ReduceSubProductDialog;
+class SearchProductDialog;
 
 namespace Ui {
     class Products;
@@ -39,6 +40,12 @@ public slots:
 
     void startPrintingBarcode();
 
+    /**
+     * @brief updateFilter - updates visibility of "Cancel Filter" button and text of filter.
+     * Makes button and text invisible if newFilter is empty.
+     */
+    void updateFilter(QString newFilter);
+
 signals:
     void productSelected(bool selected);
     void subProductSelected(bool selected);
@@ -51,6 +58,7 @@ private:
     AddProductDialog* addProdDialog;
     AddSubProductDialog* addSubProdDialog;
     ReduceSubProductDialog* reduceSubProdDialog;
+    SearchProductDialog* searchProdDialog;
 
     EditProperty* editPropertyWindow;
 };

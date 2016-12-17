@@ -52,6 +52,15 @@ void AddProductDialog::finishAddingProduct() {
     }
 }
 
+void AddProductDialog::clearFields() {
+    ui->nameEdit->clear();
+    ui->categoryCB->clear();
+    ui->colorCB->clear();
+    ui->brandCB->clear();
+    ui->priceEdit->clear();
+    ui->noteTextEdit->clear();
+}
+
 void AddProductDialog::startAddingProduct() {
     ProductsData *prod = ProductsData::Instance();
     clearFields();
@@ -83,13 +92,4 @@ void AddProductDialog::startAddingProduct() {
     }
 
     show();
-}
-
-void AddProductDialog::clearFields() {
-    ui->nameEdit->clear();
-    ui->categoryCB->clear();
-    ui->colorCB->clear();
-    ui->brandCB->clear();
-    ui->priceEdit->clear();
-    ui->noteTextEdit->clear();
 }

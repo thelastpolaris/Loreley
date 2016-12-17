@@ -39,7 +39,7 @@ void ProductsData::initModels() {
     productsModel.setEditStrategy(QSqlRelationalTableModel::OnFieldChange);
     //Name headers
     productsModel.setHeaderData(PROD_ID, Qt::Horizontal, tr("Product ID"));
-    productsModel.setHeaderData(PROD_CHAR, Qt::Horizontal, tr("Characteristic"));
+    productsModel.setHeaderData(PROD_NAME, Qt::Horizontal, tr("Characteristic"));
     productsModel.setHeaderData(PROD_CAT, Qt::Horizontal, tr("Category"));
     productsModel.setHeaderData(PROD_PRICE, Qt::Horizontal, tr("Price"));
     productsModel.setHeaderData(PROD_BRAND, Qt::Horizontal, tr("Brand"));
@@ -82,9 +82,64 @@ QVariant ProductsData::subProductsData(int row, int column) const {
     return subProductsModel.data(subProductsModel.index(row,column));
 }
 
+void ProductsData::cancelProductsFilter() {
+    productsModel.setFilter("");
+    setProductsFilter("");
+}
+
 void ProductsData::filterSubProducts(int product_id) {
     subProductsModel.setFilterByInteger("product_id", product_id);
     subProductsModel.select();
+}
+
+int ProductsData::searchForValues(QString name, int category, int color, int brand,
+                                    int price, QString comment)
+{
+//    productsModel.setFilter(""); //Reset filters
+    QSqlRecord r = productsModel.getOriginalRecord(-1);
+    QStringList filter;
+    QStringList coolFilter;
+    if(!name.isEmpty()) {
+        filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_NAME) + " LIKE '%" + name + "%'");
+        coolFilter.append(productsModel.headerData(PROD_NAME, Qt::Horizontal).toString() + " - " + name);
+    }
+    if(category >= 0) {
+        filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_CAT) + "=" + QString::number(category));
+        coolFilter.append(productsModel.headerData(PROD_CAT, Qt::Horizontal).toString() + " - " + QString::number(category));
+    }
+    if(color >= 0) {
+        filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_COLOR) + "=" + QString::number(color));
+        coolFilter.append(productsModel.headerData(PROD_COLOR, Qt::Horizontal).toString() + " - " + QString::number(color));
+    }
+    if(brand >= 0) {
+        filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_BRAND) + "=" + QString::number(brand));
+        coolFilter.append(productsModel.headerData(PROD_BRAND, Qt::Horizontal).toString() + " - " + QString::number(brand));
+    }
+    if(price != 0) {
+        filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_PRICE) + "=" + QString::number(price));
+        coolFilter.append(productsModel.headerData(PROD_PRICE, Qt::Horizontal).toString() + " - " + QString::number(price));
+    }
+    if(!comment.isEmpty()) {
+        filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_NOTE) + " LIKE '%" + comment + "%'");
+        coolFilter.append(productsModel.headerData(PROD_NOTE, Qt::Horizontal).toString() + " - " + comment);
+    }
+
+    QString finalFilter;
+    if(filter.size() == 1) {
+        finalFilter = filter[0];
+    } else {
+        finalFilter = filter.join(" AND ");
+    }
+    productsModel.setFilter(finalFilter);
+    filterSubProducts(-1);
+
+    if(coolFilter.size() == 1) {
+        setProductsFilter(coolFilter[0]);
+    } else {
+        setProductsFilter(coolFilter.join(", "));
+    }
+
+    return productsModel.rowCount();
 }
 
 bool ProductsData::removeProduct(int productRow) {
@@ -173,7 +228,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     QString barcode = subProductsModel.data(subProductsModel.index(subProduct.row(),SUBPROD_BARCODE)).toString();
     QString size = subProductsModel.data(subProductsModel.index(subProduct.row(), SUBPROD_SIZE)).toString();
 
-    QString name = productsModel.data(productsModel.index(product.row(), PROD_CHAR)).toString();
+    QString name = productsModel.data(productsModel.index(product.row(), PROD_NAME)).toString();
     QString category = productsModel.data(productsModel.index(product.row(), PROD_CAT)).toString();
     QString color = productsModel.data(productsModel.index(product.row(), PROD_COLOR)).toString();
     QString price = productsModel.data(productsModel.index(product.row(), PROD_PRICE)).toString();
@@ -288,7 +343,7 @@ QString ProductsData::generateBarcode() {
 bool ProductsData::addProduct(QString characteristics, QVariant category, int price, QVariant color, QVariant brand, QString note) {
 #if (QT_VERSION > QT_VERSION_CHECK(5, 5, 1)) // We provide sql query for old Qt versions where insertRecord always returns false
     QSqlRecord newRow = productsModel.record();
-    newRow.setValue(PROD_CHAR, QVariant(characteristics));
+    newRow.setValue(PROD_NAME, QVariant(characteristics));
     newRow.setValue(PROD_CAT, category);
     newRow.setValue(PROD_PRICE, QVariant(price));
     newRow.setValue(PROD_COLOR, color);
@@ -348,4 +403,11 @@ bool ProductsData::addSubProduct(int product_id, int amount, int size, QDate arr
         return status;
     }
     return false;
+}
+
+void ProductsData::setProductsFilter(QString productsFilter) {
+    if(m_productsFilter != productsFilter) {
+        m_productsFilter = productsFilter;
+        emit productsFilterChanged(productsFilter);
+    }
 }

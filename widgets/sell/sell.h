@@ -12,6 +12,7 @@ class Sell : public QWidget
     Q_OBJECT
 public:
     explicit Sell(QWidget *parent = 0);
+    void scanBarCode();
     ~Sell();
 
 private:

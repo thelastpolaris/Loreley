@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql printsupport multimedia multimediawidgets
+QT       += core gui sql printsupport
+include(qtxlsx/qtxlsx.pri)
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -65,42 +66,42 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     resources.qrc
 
-win32 {
-message("Using win32 configuration")
+#win32 {
+#message("Using win32 configuration")
 
-OPENCV_PATH = C:/devel/OpenCV/opencv-2.4.6.0
+#OPENCV_PATH = C:/devel/OpenCV/opencv-2.4.6.0
 
 
-#LIBS_PATH = "$$OPENCV_PATH/build/x86/mingw/lib" #project compiled using MINGW
-LIBS_PATH = "$$OPENCV_PATH/build/x86/vc10/lib" #project compiled using Visual C++ 2010 32bit compiler
+##LIBS_PATH = "$$OPENCV_PATH/build/x86/mingw/lib" #project compiled using MINGW
+#LIBS_PATH = "$$OPENCV_PATH/build/x86/vc10/lib" #project compiled using Visual C++ 2010 32bit compiler
 
-    CONFIG(debug, debug|release) {
-    LIBS     += -L$$LIBS_PATH \
-                -lopencv_core246d \
-                -lopencv_highgui246d
-    }
+#    CONFIG(debug, debug|release) {
+#    LIBS     += -L$$LIBS_PATH \
+#                -lopencv_core246d \
+#                -lopencv_highgui246d
+#    }
 
-    CONFIG(release, debug|release) {
-    LIBS     += -L$$LIBS_PATH \
-                -lopencv_core246 \
-                -lopencv_highgui246
-    }
+#    CONFIG(release, debug|release) {
+#    LIBS     += -L$$LIBS_PATH \
+#                -lopencv_core246 \
+#                -lopencv_highgui246
+#    }
 
-}
+#}
 
-unix {
-message("Using unix configuration")
+#unix { #OpenSuse
+#message("Using unix configuration")
 
-OPENCV_PATH = /usr/local/opencv2/
+#OPENCV_PATH = /usr/local/opencv/
 
-LIBS     += -L$$LIBS_PATH \
-            -lopencv_core \
-            -lopencv_highgui
-}
+#LIBS_PATH = /usr/lib64
 
-INCLUDEPATH += $$OPENCV_PATH/modules/core/include/ \ #core module
-    $$OPENCV_PATH/modules/highgui/include/ #highgui modul
+#LIBS     += -lopencv_core \
+#            -lopencv_highgui \
+#            -lopencv_imgproc \
+#            -lzbar
+#}
 
-message("OpenCV path: $$OPENCV_PATH")
-message("Includes path: $$INCLUDEPATH")
-message("Libraries: $$LIBS")
+#LIBS += -L/usr/lib64 -lopencv_core -lopencv_videoio -lopencv_imgproc -lzbar
+
+INCLUDEPATH += /usr/include

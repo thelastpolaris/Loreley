@@ -18,44 +18,29 @@ QVariant PropertiesModel::data(const QModelIndex &index, int role) const {
         return QVariant();
     }
     if(role == Qt::DisplayRole) {
-        return QVariant(propertiesList[index.row()].second);
+        return propMap.keys().at(index.row());
     } else if(role == PropertyValue) {
-        return QVariant(propertiesList[index.row()].first);
+        return propMap.values().at(index.row());
     }
     return QVariant();
-}
-
-void PropertiesModel::setPropertiesList(QVector<QPair<int, QString>> _propertiesList) {
-    emit beginResetModel();
-    propertiesList = _propertiesList;
-
-    emit endResetModel();
 }
 
 void PropertiesModel::setPropertiesList(QHash<int, QString> _propertiesList) {
     emit beginResetModel();
 
-    propertiesList.clear();
+    propMap.clear();
     for(QHash<int, QString>::iterator i = _propertiesList.begin(); i != _propertiesList.end(); ++i) {
-        propertiesList.append(QPair<int, QString>(i.key(), i.value()));
+        propMap.insert(i.value(), i.key());
     }
 
     emit endResetModel();
 }
 
 QStringList PropertiesModel::getStringList() {
-    QStringList stringList;
-    for(int i = 0; i < propertiesList.size(); ++i) {
-        stringList.append(propertiesList[i].second);
-    }
+    QStringList stringList(propMap.keys());
     return stringList;
 }
 
 int PropertiesModel::getValueFromText(QString text) {
-    for(int i = 0; i < propertiesList.size(); ++i) {
-        if(propertiesList[i].second == text) {
-            return propertiesList[i].first;
-        }
-    }
-    return -1; // If nothing was found
+    return propMap.value(text);
 }

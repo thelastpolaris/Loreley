@@ -7,6 +7,7 @@
 #include <QSqlRecord>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#include <QFileDialog>
 #include "data/productsdata.h"
 #include "data/productsmodel.h"
 
@@ -82,29 +83,35 @@ Products::Products() :
     //Print button
     connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
 
-    connect(editPropertyWindow, &EditProperty::propertiesChanged, [=](QString table) {
+    connect(prodData, &ProductsData::propertiesChanged, [=](QString table) {
         setupPropertyDelegates(table);
         prodData->initModels(); //Re-initialize models to allow to choose new property
     });
 
     //TODO - Find better solution
-    connect(editPropertyWindow, &EditProperty::propertyEdited, [=]() {
+    connect(prodData, &ProductsData::propertyEdited, [=]() {
        prodData->getProductsModel()->select();
        updateSubProducts();
     });
 
     //Setup menu buttons for editing various properties
     connect(MainWindow::Instance(), &MainWindow::categoriesTriggered, [=]() {
-        editPropertyWindow->show(tr("category"), "categories", PROD_CAT);
+        editPropertyWindow->show(tr("Category"), PROP_CAT, PROD_CAT);
     });
     connect(MainWindow::Instance(), &MainWindow::colorsTriggered, [=]() {
-        editPropertyWindow->show(tr("color"), "colors", PROD_COLOR);
+        editPropertyWindow->show(tr("Color"), PROP_COLOR, PROD_COLOR);
     });
     connect(MainWindow::Instance(), &MainWindow::brandsTriggered, [=]() {
-        editPropertyWindow->show(tr("brand"), "brands", PROD_BRAND);
+        editPropertyWindow->show(tr("Brand"), PROP_BRAND, PROD_BRAND);
     });
     connect(MainWindow::Instance(), &MainWindow::sizeTriggered, [=]() {
-        editPropertyWindow->show(tr("size"), "sizes", SUBPROD_SIZE, false);
+        editPropertyWindow->show(tr("Size"), PROP_SIZE, SUBPROD_SIZE, false);
+    });
+    connect(MainWindow::Instance(), &MainWindow::importExcelTriggered, [=]() {
+        QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                        "/home",
+                                                        tr("Excel spreadsheet (*.xlsx)"));
+        prodData->importFromExcel(fileName);
     });
 
     ui->tableView->hideColumn(PROD_ID);

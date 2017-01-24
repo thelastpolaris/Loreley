@@ -1,10 +1,12 @@
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QDebug>
-#include <QPrintDialog>
+//#include <QPrintDialog>
 #include <QPainter>
 #include <QDate>
+#include <QSqlResult>
 
+#include "xlsxdocument.h"
 #include "productsdata.h"
 #include "auxiliary/ean13.h"
 
@@ -17,15 +19,13 @@ ProductsData* ProductsData::Create() {
 }
 
 ProductsData::ProductsData()
-    :subProductsModel()
 {
     initModels();
-
     //Setup printer
     printer.setPrinterName("QL-570");
     printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
     //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
-//    printer.setOutputFileName("testBarcode.pdf");
+    printer.setOutputFileName("testBarcode.pdf");
     printer.setResolution(260);
 }
 
@@ -171,16 +171,20 @@ bool ProductsData::reduceSubProduct(int subProductID, int reduceAmount, int reas
 
 bool ProductsData::addNewProperty(QString table, QString name) {
     QSqlQuery addProperty;
+    name = name;
     addProperty.prepare("INSERT INTO " + table + " (name) "
                                                  "VALUES (:name)");
     addProperty.bindValue(":name", name);
-    return addProperty.exec();
+    bool status = addProperty.exec();
+    emit propertiesChanged(table);
+    return status;
 }
 
 bool ProductsData::removeProperty(QString table, int id) {
     QSqlQuery removeProperty;
     removeProperty.prepare("DELETE FROM " + table + " WHERE id=:id");
     removeProperty.bindValue(":id", id);
+    emit propertiesChanged(table);
     return removeProperty.exec();
 }
 
@@ -189,7 +193,26 @@ bool ProductsData::editProperty(QString table, QString name, QString newName) {
     editProperty.prepare("UPDATE " + table + " SET name=:newName WHERE name=:name");
     editProperty.bindValue(":newName", newName);
     editProperty.bindValue(":name", name);
+    emit propertiesChanged(table);
     return editProperty.exec();
+}
+
+int ProductsData::getPropertyID(QString table, QString name) {
+    QSqlQuery propertyId("SELECT * FROM " + table);
+
+    while (propertyId.next()) {
+        if(propertyId.value("name").toString().toLower().trimmed() == name.toLower().trimmed()) return propertyId.value("id").toInt();
+    }
+
+    return -1;
+}
+
+bool ProductsData::propertyExist(QString table, QString name) {
+    QSqlQuery checkProperty;
+    checkProperty.prepare("SELECT * FROM " + table + " WHERE name=:name");
+    checkProperty.bindValue(":name",name);
+    checkProperty.exec();
+    return checkProperty.size();
 }
 
 QList<int> ProductsData::getRowsWithProperty(int fieldID, int propertyValue) {
@@ -204,16 +227,13 @@ QList<int> ProductsData::getRowsWithProperty(int fieldID, int propertyValue) {
 }
 
 bool ProductsData::setPropertyForProducts(QList<int> productRows, int fieldID, int propertyValue) {
+    bool status = false;
     for(int i = 0; i < productsModel.rowCount(); ++i) {
         if(productRows.contains(i)) {
-            //            if() {
-            //                return false;
-            //            }
-            bool st = productsModel.setData(productsModel.index(i, fieldID), QVariant(propertyValue));
-            qDebug() << st;
+            status = productsModel.setData(productsModel.index(i, fieldID), QVariant(propertyValue));
         }
     }
-    return true;
+    return status;
 }
 
 bool ProductsData::hasProducts() {
@@ -320,8 +340,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
 
 QHash<int, QString> ProductsData::getNameAndKey(QString table, QString key, QString value) {
-    QSqlQuery query("SELECT * from " + table + "");
-    query.exec();
+    QSqlQuery query("SELECT * from " + table);
 
     QHash<int, QString> values;
     while (query.next())
@@ -340,10 +359,10 @@ QString ProductsData::generateBarcode() {
     return ean13.generateBarcode(barcode);
 }
 
-bool ProductsData::addProduct(QString characteristics, QVariant category, int price, QVariant color, QVariant brand, QString note) {
-#if (QT_VERSION > QT_VERSION_CHECK(5, 5, 1)) // We provide sql query for old Qt versions where insertRecord always returns false
+int ProductsData::addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note) {
+#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 1)) // We provide sql query for old Qt versions where insertRecord always returns false
     QSqlRecord newRow = productsModel.record();
-    newRow.setValue(PROD_NAME, QVariant(characteristics));
+    newRow.setValue(PROD_NAME, QVariant(name));
     newRow.setValue(PROD_CAT, category);
     newRow.setValue(PROD_PRICE, QVariant(price));
     newRow.setValue(PROD_COLOR, color);
@@ -351,22 +370,27 @@ bool ProductsData::addProduct(QString characteristics, QVariant category, int pr
     newRow.setValue(PROD_NOTE, QVariant(note));
 
     bool status = productsModel.insertRecord(-1, newRow);
+    if(!status) {
+        qDebug() << productsModel.lastError().text();
+    }
     productsModel.select();
     return status;
 #else
     QSqlQuery addProduct;
     addProduct.prepare("INSERT INTO " + QString(PROD_TABLE) +
-                             "(brand, category_id, characteristic, color, price, note)"
-                             "VALUES (:brand, :category, :characteristics, :color, :price, :note)");
+                             "(brand, category_id, name, color, price, note)"
+                             "VALUES (:brand, :category, :name, :color, :price, :note)");
     addProduct.bindValue(":brand", brand);
     addProduct.bindValue(":category", QVariant(category));
-    addProduct.bindValue(":characteristics", QVariant(characteristics));
+    addProduct.bindValue(":name", QVariant(name));
     addProduct.bindValue(":color", QVariant(color));
     addProduct.bindValue(":price", QVariant(price));
     addProduct.bindValue(":note", QVariant(note));
-    bool status = addProduct.exec();
+    if(!addProduct.exec()) {
+        qDebug() << addProduct.lastError().text();
+    }
     productsModel.select();
-    return status;
+    return addProduct.lastInsertId().toInt();
 #endif
 }
 
@@ -409,5 +433,101 @@ void ProductsData::setProductsFilter(QString productsFilter) {
     if(m_productsFilter != productsFilter) {
         m_productsFilter = productsFilter;
         emit productsFilterChanged(productsFilter);
+    }
+}
+
+void ProductsData::importFromExcel(const QString& importXlsx) {
+#define PROD_COLS 6 //The first column with sizes
+    QXlsx::Document xlsx(importXlsx);
+    //First add sizes
+    int emptyCellCounter = 0;
+    int cellNum = PROD_COLS; //First
+    QMap<int, QString> sizes; //Mapping of sizes to column no.
+    while(emptyCellCounter < 10) {
+        if (QXlsx::Cell *cell = xlsx.cellAt(1, cellNum)) {
+            emptyCellCounter = 0;
+            QString sizeName = cell->value().toString();
+            if(!propertyExist(PROP_SIZE, sizeName)) {
+                addNewProperty(PROP_SIZE, sizeName);
+            }
+            sizes.insert(cellNum, sizeName);
+        } else {
+            emptyCellCounter++;
+        }
+        cellNum++;
+    }
+
+    int emptyRowCounter = 0; /// This variable stores a number of empty rows encountered in a row
+    int row = 2;
+    QList<int> emptyRows; ///No. of rows that wasn't added will be in this list
+
+    while(emptyRowCounter < 50) { /// If we encountered > 50 empty rows then exit, this is an end of the spreadsheet
+        //Add product
+        int category = 0;
+        int brand = 0;
+        QString name = " ";
+        int color = 0;
+        int price = 0;
+        bool isRowEmpty = false;
+
+        if (QXlsx::Cell *cell = xlsx.cellAt(row, 1)) { //Check categories
+            QString prodCat = cell->value().toString();
+            if(!propertyExist(PROP_CAT, prodCat)) {
+                addNewProperty(PROP_CAT, prodCat.toLower());
+            }
+            category = getPropertyID(PROP_CAT, prodCat);
+        } else {
+            isRowEmpty = true;
+        }
+
+        if (QXlsx::Cell *cell = xlsx.cellAt(row, 2)) { //Check brands
+            QString prodBrand = cell->value().toString();
+            if(!propertyExist(PROP_BRAND, prodBrand)) {
+                addNewProperty(PROP_BRAND, prodBrand);
+            }
+            brand = getPropertyID(PROP_BRAND, prodBrand);
+        } else {
+            isRowEmpty = true;
+        }
+
+        if (QXlsx::Cell *cell = xlsx.cellAt(row, 3)) { //Check name
+            name = cell->value().toString();
+        }
+
+        if (QXlsx::Cell *cell = xlsx.cellAt(row, 4)) { //Check categories
+            QString prodColor = cell->value().toString();
+            if(!propertyExist(PROP_COLOR, prodColor)) {
+                addNewProperty(PROP_COLOR, prodColor.toLower());
+            }
+            color = getPropertyID(PROP_COLOR, prodColor);
+        } else {
+            isRowEmpty = true;
+        }
+
+        if (QXlsx::Cell *cell = xlsx.cellAt(row, 5)) { //Check categories
+            price = cell->value().toInt();
+        } else {
+            isRowEmpty = true;
+        }
+
+        int productID = -1;
+        if(isRowEmpty) {
+            emptyRows.append(row);
+            emptyRowCounter++;
+            row++;
+            continue;
+        } else {
+            productID = addProduct(name, QVariant(category),price, QVariant(color), QVariant(brand));
+            emptyRowCounter = 0; //Once we found non-empty row - reset emptyrowCounter
+        }
+        qDebug() << productID;
+
+        //Add subproducts
+        for(QMap<int, QString>::iterator i = sizes.begin(); i != sizes.end(); ++i) {
+            if (QXlsx::Cell *cell = xlsx.cellAt(row, i.key())) { //Check categories
+                addSubProduct(productID, cell->value().toInt(), getPropertyID(PROP_SIZE, i.value()), QDate::currentDate());
+            }
+        }
+        row++;
     }
 }

@@ -33,6 +33,12 @@ class EAN13;
 #define SUBPROD_ARRIVAL_TABLE "subprod_arrival"
 #define SUBPROD_REDUCE_TABLE "subprod_reduce"
 
+//Properties tables
+#define PROP_CAT "categories"
+#define PROP_COLOR "colors"
+#define PROP_BRAND "brands"
+#define PROP_SIZE "sizes"
+
 class ProductsData : public QObject
 {
     Q_OBJECT
@@ -47,7 +53,7 @@ public:
     ProductsModel* getProductsModel() { return &productsModel; }
     ProductsModel* getSubProductsModel() { return &subProductsModel; }
 
-    bool addProduct(QString characteristics, QVariant category, int price, QVariant color, QVariant brand, QString note = QString());
+    int addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note = QString());
     QSqlError productsLastError() const { return productsModel.lastError(); }
 
     bool addSubProduct(int product_id, int amount, int size, QDate arrivalDate);
@@ -78,6 +84,8 @@ public:
     bool addNewProperty(QString table, QString name);
     bool removeProperty(QString table, int id);
     bool editProperty(QString table, QString name, QString newName);
+    bool propertyExist(QString table, QString name);
+    int getPropertyID(QString table, QString name);
 
     QList<int> getRowsWithProperty(int fieldID, int propertyValue);
     bool setPropertyForProducts(QList<int> productIDs, int fieldID, int propertyValue);
@@ -90,8 +98,16 @@ public:
     QString getProductsFilter() const { return m_productsFilter; }
     void setProductsFilter(QString productsFilter);
 
+    /**
+     * @brief importFromExcel - import products from xslx file
+     * @param importXlsx - path to file
+     */
+    void importFromExcel(const QString& importXlsx);
+
 signals:
     void productsFilterChanged(QString productsFilter);
+    void propertiesChanged(QString _tableName);
+    void propertyEdited();
 
 protected:
     ProductsData();

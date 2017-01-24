@@ -44,6 +44,7 @@ signals:
     void colorsTriggered(bool state);
     void brandsTriggered(bool state);
     void sizeTriggered(bool state);
+    void importExcelTriggered(bool state);
 
 protected slots:
     // this slot is called by the language menu actions

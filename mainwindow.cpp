@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionColors, SIGNAL(triggered(bool)), SIGNAL(colorsTriggered(bool)));
     connect(ui->actionBrands, SIGNAL(triggered(bool)), SIGNAL(brandsTriggered(bool)));
     connect(ui->actionSize, SIGNAL(triggered(bool)), SIGNAL(sizeTriggered(bool)));
+    connect(ui->actionImportExcel, SIGNAL(triggered(bool)), SIGNAL(importExcelTriggered(bool)));
 }
 
 MainWindow* MainWindow::Create() {

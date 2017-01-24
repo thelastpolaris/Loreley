@@ -34,7 +34,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>20</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -60,6 +60,8 @@
     <addaction name="separator"/>
     <addaction name="actionColors"/>
     <addaction name="actionSize"/>
+    <addaction name="separator"/>
+    <addaction name="actionImportExcel"/>
    </widget>
    <addaction name="menuMenu"/>
    <addaction name="menuLanguage"/>
@@ -125,6 +127,11 @@
    </property>
    <property name="shortcut">
     <string>Alt+3</string>
+   </property>
+  </action>
+  <action name="actionImportExcel">
+   <property name="text">
+    <string>Import Products (From Excel)</string>
    </property>
   </action>
  </widget>

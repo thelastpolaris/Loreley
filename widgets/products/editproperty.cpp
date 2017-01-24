@@ -11,7 +11,7 @@ EditProperty::EditProperty(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(this, &EditProperty::propertiesChanged, [=](const QString &tableName) {
+    connect(ProductsData::Instance(), &ProductsData::propertiesChanged, [=](const QString &tableName) {
         propertiesModel.setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
     });
 
@@ -35,7 +35,7 @@ void EditProperty::addProperty() {
     if(status) {
         if(ProductsData::Instance()->addNewProperty(tableName, newPropName)) {
             QMessageBox::information(this, tr("Success!"), tr("Successfully added new property with the name %1").arg(newPropName));
-            emit propertiesChanged(tableName);
+            emit ProductsData::Instance()->propertiesChanged(tableName);
         } else {
             QSqlError err = QSqlDatabase::database().lastError();
             QMessageBox::information(this,tr("Error!"), tr("Error - property was not added to the database due to the following errors"
@@ -79,7 +79,7 @@ void EditProperty::removeProperty() {
 
         if(prodData->removeProperty(tableName, delIDProp)) {
             QMessageBox::information(this, tr("Success!"), tr("Successfully deleted property <b>%1</b>").arg(delPropName));
-            emit propertiesChanged(tableName);
+            emit ProductsData::Instance()->propertiesChanged(tableName);
         } else {
             QSqlError err = QSqlDatabase::database().lastError();
             QMessageBox::information(this,tr("Error!"), tr("Error - property was not deleted due to the following errors"
@@ -102,8 +102,8 @@ void EditProperty::editPropertySlot() {
     if(status) {
         if(prodData->editProperty(tableName, propName, newPropName)) {
             QMessageBox::information(this, tr("Success!"), tr("Successfully changed name of property <b>%1</b> to <b>%2</b>").arg(propName, newPropName));
-            emit propertiesChanged(tableName);
-            emit propertyEdited();
+            emit ProductsData::Instance()->propertiesChanged(tableName);
+            emit ProductsData::Instance()->propertyEdited();
         } else {
             QSqlError err = QSqlDatabase::database().lastError();
             QMessageBox::information(this,tr("Error!"), tr("Error - property was not changed due to the following errors"
@@ -119,6 +119,7 @@ void EditProperty::show(QString _propertySingular, QString _tableName, int _fiel
     fieldID = _fieldID;
     product = _product;
     propertiesModel.setPropertiesList(ProductsData::Instance()->getNameAndKey(tableName, "id", "name"));
+//    propertiesModel.sort();
 
 //    if(color) {
 //        ui->listView->setViewMode(QListView::IconMode);

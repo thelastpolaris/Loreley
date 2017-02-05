@@ -48,7 +48,6 @@ void EditProperty::addProperty() {
 void EditProperty::removeProperty() {
     ProductsData* prodData = ProductsData::Instance();
 
-    bool status;
     if(!ui->propertiesLV->currentIndex().isValid()) return;
     QString delPropName = ui->propertiesLV->currentIndex().data().toString();
     int delIDProp = ui->propertiesLV->currentIndex().data(PropertiesModel::PropertyValue).toInt();

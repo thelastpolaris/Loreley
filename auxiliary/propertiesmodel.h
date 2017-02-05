@@ -11,7 +11,7 @@ public:
 
     explicit PropertiesModel(QObject *parent = 0);
 
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const { return propMap.size(); }
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const {Q_UNUSED(parent); return propMap.size(); }
     virtual QVariant data(const QModelIndex &index, int role) const;
 
     virtual QHash<int, QByteArray> roleNames() const;

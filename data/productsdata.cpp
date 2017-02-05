@@ -360,7 +360,7 @@ QString ProductsData::generateBarcode() {
 }
 
 int ProductsData::addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note) {
-#if (QT_VERSION > QT_VERSION_CHECK(5, 9, 1)) // We provide sql query for old Qt versions where insertRecord always returns false
+#if (QT_VERSION > QT_VERSION_CHECK(5, 5, 1)) // We provide sql query version for old Qt versions where insertRecord always returns false
     QSqlRecord newRow = productsModel.record();
     newRow.setValue(PROD_NAME, QVariant(name));
     newRow.setValue(PROD_CAT, category);

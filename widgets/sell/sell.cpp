@@ -1,19 +1,67 @@
 #include "sell.h"
 #include "ui_sell.h"
-//#include <opencv2/imgproc/imgproc.hpp>
-//#include "opencv2/opencv.hpp"
-//#include <zbar.h>
 
-//using namespace cv;
-//using namespace std;
-//using namespace zbar;
+#include "data/selldata.h"
+#include "data/productsdata.h"
+
+#include "../products/products.h"
+#include <QMessageBox>
+#include <QDebug>
 
 Sell::Sell(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Sell)
+    QWidget(parent), ui(new Ui::Sell), prodWidget(new Products(true))
 {
     ui->setupUi(this);
-    connect(ui->openCamera, &QPushButton::clicked, this, &Sell::scanBarCode);
+    ui->splitter->insertWidget(0, prodWidget);
+    ui->cartTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->cartTable->horizontalHeader()->setStretchLastSection(true);
+    ui->splitter->setStretchFactor(0, 2);
+
+    //Set width of 'Price' label
+    ui->labelPrice->setMaximumWidth(ui->labelPrice->fontMetrics().width(ui->labelPrice->text()));
+
+    ui->cartTable->setModel(SellData::Instance()->getCartModel());
+
+    //Set signals
+    connect(SellData::Instance(), &SellData::priceChanged, [=](int changedPrice) {
+        ui->price->setText(QString::number(changedPrice));
+    });
+
+    connect(prodWidget, &Products::subProductSelected, [=](bool selected, int row) {
+        if(selected) {
+            ui->addToCart->setEnabled(true);
+            rowToAdd = row;
+        } else {
+            ui->addToCart->setEnabled(false);
+            rowToAdd = -1;
+        }
+    });
+
+    connect(ui->addToCart, &QPushButton::clicked, [=] {
+        QString error;
+        if(!SellData::Instance()->addToCart(
+                    ProductsData::Instance()->subProductsData(rowToAdd, SUBPROD_ID).toInt(),
+                    error)) {
+            QMessageBox::warning(this, tr("Error while adding subproduct to cart"), error);
+        }
+    });
+
+    connect(ui->cartTable->selectionModel(), &QItemSelectionModel::selectionChanged, [=](const QItemSelection &selected) {
+        if(!selected.isEmpty()) {
+            rowToRemove = selected.indexes()[0].row();
+            ui->removeFromCart->setEnabled(true);
+        } else {
+            ui->removeFromCart->setEnabled(false);
+            rowToRemove = -1;
+        }
+    });
+
+    connect(ui->removeFromCart, &QPushButton::clicked, [=] {
+        if(!SellData::Instance()->removeFromCart(rowToRemove)) {
+            QMessageBox::warning(this, tr("Error"), tr("Couldn't delete subproduct from the cart "
+                                                       "(no row with the number %1").arg(rowToRemove));
+        }
+    });
 }
 
 void Sell::scanBarCode() {

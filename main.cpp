@@ -3,7 +3,7 @@
 #include <QSettings>
 #include <QDebug>
 #include "widgets/products/products.h"
-
+#include "data/selldata.h"
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 
     //Initialize data - TO DO: Move to another class
     ProductsData::Create();
+    SellData::Create();
 
     MainWindow* win = MainWindow::Create();
     win->loadLanguage(QLocale::system().bcp47Name());

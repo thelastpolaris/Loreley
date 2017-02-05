@@ -26,16 +26,17 @@
 
 #include "mainwindow.h"
 
-Products::Products() :
+Products::Products(bool _saleMode) :
     ui(new Ui::Products), addProdDialog(new AddProductDialog(this)),
     addSubProdDialog(new AddSubProductDialog(this)), reduceSubProdDialog(new ReduceSubProductDialog(this)),
-    editPropertyWindow(new EditProperty(this)), searchProdDialog(new SearchProductDialog(this))
+    searchProdDialog(new SearchProductDialog(this)), editPropertyWindow(new EditProperty(this)), saleMode(_saleMode)
 {
     ProductsData* prodData = ProductsData::Instance();
 
     ui->setupUi(this);
 
     ui->tableView->setModel(prodData->getProductsModel());
+//    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     //Setup delegates for products
     setupPropertyDelegates("categories");
@@ -43,6 +44,7 @@ Products::Products() :
     setupPropertyDelegates("brands");
 
     ui->tableView_2->setModel(prodData->getSubProductsModel());
+//    ui->tableView_2->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     ui->tableView_2->setColumnHidden(SUBPROD_PROD_ID,true);
     ui->tableView_2->horizontalHeader()->moveSection(SUBPROD_AMOUNT, SUBPROD_NOTE);
@@ -53,10 +55,12 @@ Products::Products() :
     connect(ui->tableView_2->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
             SLOT(subProdSelectionChanged(QItemSelection,QItemSelection)));
 
-    //Setup buttons for products
-    connect(ui->addProductButton, SIGNAL(clicked(bool)), addProdDialog, SLOT(startAddingProduct()));
-    connect(ui->deleteProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingProduct()));
-    connect(ui->printBarcodeButton, SIGNAL(clicked(bool)), SLOT(startPrintingBarcode()));
+    if(!saleMode) {
+        //Setup buttons for products
+        connect(ui->addProductButton, SIGNAL(clicked(bool)), addProdDialog, SLOT(startAddingProduct()));
+        connect(ui->deleteProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingProduct()));
+        connect(ui->printBarcodeButton, SIGNAL(clicked(bool)), SLOT(startPrintingBarcode()));
+    }
     connect(ui->searchButton, SIGNAL(clicked(bool)), searchProdDialog, SLOT(startSearch()));
     //Setup cancel filter button and text
     connect(prodData, SIGNAL(productsFilterChanged(QString)), this, SLOT(updateFilter(QString)));
@@ -67,52 +71,64 @@ Products::Products() :
 
     connect(this, SIGNAL(productSelected(bool)), ui->deleteProductButton, SLOT(setEnabled(bool)));
 
-    //Setup buttons for subProducts
-    connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
-    connect(ui->reduceSubProductButton, SIGNAL(clicked(bool)), SLOT(starReducingSubProductAmount()));
-    connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
+    if(!saleMode) {
+        //Setup buttons for subProducts
+        connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
+        connect(ui->reduceSubProductButton, SIGNAL(clicked(bool)), SLOT(starReducingSubProductAmount()));
+        connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
 
-    //Add subproduct
-    connect(this, SIGNAL(productSelected(bool)), ui->addSubProductButton, SLOT(setEnabled(bool)));
-    //Delete subproduct
-    connect(this, SIGNAL(productSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
-    connect(this, SIGNAL(subProductSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
-    //Reduce button
-    connect(this, SIGNAL(productSelected(bool)), ui->reduceSubProductButton, SLOT(setEnabled(bool)));
-    connect(this, SIGNAL(subProductSelected(bool)), ui->reduceSubProductButton, SLOT(setEnabled(bool)));
-    //Print button
-    connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
+        //Add subproduct
+        connect(this, SIGNAL(productSelected(bool)), ui->addSubProductButton, SLOT(setEnabled(bool)));
+        //Delete subproduct
+        connect(this, SIGNAL(productSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
+        connect(this, SIGNAL(subProductSelected(bool)), ui->deleteSubProductButton, SLOT(setEnabled(bool)));
+        //Reduce button
+        connect(this, SIGNAL(productSelected(bool)), ui->reduceSubProductButton, SLOT(setEnabled(bool)));
+        connect(this, SIGNAL(subProductSelected(bool)), ui->reduceSubProductButton, SLOT(setEnabled(bool)));
+        //Print button
+        connect(this, SIGNAL(subProductSelected(bool)), ui->printBarcodeButton, SLOT(setEnabled(bool)));
+    }
 
     connect(prodData, &ProductsData::propertiesChanged, [=](QString table) {
         setupPropertyDelegates(table);
-        prodData->initModels(); //Re-initialize models to allow to choose new property
+        prodData->initModels(); //Re-initialize models to allow selection of new property
     });
 
     //TODO - Find better solution
     connect(prodData, &ProductsData::propertyEdited, [=]() {
-       prodData->getProductsModel()->select();
-       updateSubProducts();
+        prodData->getProductsModel()->select();
+        updateSubProducts();
     });
 
-    //Setup menu buttons for editing various properties
-    connect(MainWindow::Instance(), &MainWindow::categoriesTriggered, [=]() {
-        editPropertyWindow->show(tr("Category"), PROP_CAT, PROD_CAT);
-    });
-    connect(MainWindow::Instance(), &MainWindow::colorsTriggered, [=]() {
-        editPropertyWindow->show(tr("Color"), PROP_COLOR, PROD_COLOR);
-    });
-    connect(MainWindow::Instance(), &MainWindow::brandsTriggered, [=]() {
-        editPropertyWindow->show(tr("Brand"), PROP_BRAND, PROD_BRAND);
-    });
-    connect(MainWindow::Instance(), &MainWindow::sizeTriggered, [=]() {
-        editPropertyWindow->show(tr("Size"), PROP_SIZE, SUBPROD_SIZE, false);
-    });
-    connect(MainWindow::Instance(), &MainWindow::importExcelTriggered, [=]() {
-        QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
-                                                        "/home",
-                                                        tr("Excel spreadsheet (*.xlsx)"));
-        prodData->importFromExcel(fileName);
-    });
+    if(!saleMode) {
+        //Setup menu buttons for editing various properties
+        connect(MainWindow::Instance(), &MainWindow::categoriesTriggered, [=]() {
+            editPropertyWindow->show(tr("Category"), PROP_CAT, PROD_CAT);
+        });
+        connect(MainWindow::Instance(), &MainWindow::colorsTriggered, [=]() {
+            editPropertyWindow->show(tr("Color"), PROP_COLOR, PROD_COLOR);
+        });
+        connect(MainWindow::Instance(), &MainWindow::brandsTriggered, [=]() {
+            editPropertyWindow->show(tr("Brand"), PROP_BRAND, PROD_BRAND);
+        });
+        connect(MainWindow::Instance(), &MainWindow::sizeTriggered, [=]() {
+            editPropertyWindow->show(tr("Size"), PROP_SIZE, SUBPROD_SIZE, false);
+        });
+        connect(MainWindow::Instance(), &MainWindow::importExcelTriggered, [=]() {
+            QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"),
+                                                            "/home",
+                                                            tr("Excel spreadsheet (*.xlsx)"));
+            prodData->importFromExcel(fileName);
+        });
+    } else {
+        ui->addProductButton->setVisible(false);
+        ui->deleteProductButton->setVisible(false);
+        ui->printBarcodeButton->setVisible(false);
+
+        ui->addSubProductButton->setVisible(false);
+        ui->reduceSubProductButton->setVisible(false);
+        ui->deleteSubProductButton->setVisible(false);
+    }
 
     ui->tableView->hideColumn(PROD_ID);
     ui->tableView_2->hideColumn(SUBPROD_ID);
@@ -164,7 +180,7 @@ void Products::updateSubProducts(const QItemSelection & selected, const QItemSel
 void Products::subProdSelectionChanged(const QItemSelection & selected, const QItemSelection & deselected) {
     Q_UNUSED(deselected)
     if(!selected.isEmpty()) {
-        emit subProductSelected(true);
+        emit subProductSelected(true, selected.indexes()[0].row());
     } else {
         emit subProductSelected(false);
     }

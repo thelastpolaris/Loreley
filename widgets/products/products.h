@@ -24,7 +24,7 @@ class Products : public QWidget
     Q_OBJECT
 
 public:
-    explicit Products();
+    explicit Products(bool _saleMode = false);
     virtual ~Products() override;
 
 public slots:
@@ -48,7 +48,7 @@ public slots:
 
 signals:
     void productSelected(bool selected);
-    void subProductSelected(bool selected);
+    void subProductSelected(bool selected, int row = -1);
 
 private:
     static Products* p_instance;
@@ -61,6 +61,11 @@ private:
     SearchProductDialog* searchProdDialog;
 
     EditProperty* editPropertyWindow;
+
+    /**
+     * @brief saleMode - true if don't need to display add/delete product/subproduct and print buttons
+     */
+    bool saleMode;
 };
 
 #endif // PRODUCTS_H

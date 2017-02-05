@@ -14,6 +14,7 @@ TEMPLATE = app
 TRANSLATIONS = languages/Loreley_ru.ts \
                 languages/Loreley_en.ts
 CONFIG += c++11
+INCLUDEPATH += "/usr/include/c++/6/"
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -33,7 +34,8 @@ SOURCES += main.cpp\
     widgets/products/reducesubproductdialog.cpp \
     widgets/home.cpp \
     widgets/sell/sell.cpp \
-    widgets/products/searchproductdialog.cpp
+    widgets/products/searchproductdialog.cpp \
+    data/selldata.cpp
 
 HEADERS  += mainwindow.h \
     widgets/delegates/comboboxitemdelegate.h \
@@ -51,7 +53,8 @@ HEADERS  += mainwindow.h \
     widgets/products/reducesubproductdialog.h \
     widgets/home.h \
     widgets/sell/sell.h \
-    widgets/products/searchproductdialog.h
+    widgets/products/searchproductdialog.h \
+    data/selldata.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \
@@ -65,43 +68,3 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     resources.qrc
-
-#win32 {
-#message("Using win32 configuration")
-
-#OPENCV_PATH = C:/devel/OpenCV/opencv-2.4.6.0
-
-
-##LIBS_PATH = "$$OPENCV_PATH/build/x86/mingw/lib" #project compiled using MINGW
-#LIBS_PATH = "$$OPENCV_PATH/build/x86/vc10/lib" #project compiled using Visual C++ 2010 32bit compiler
-
-#    CONFIG(debug, debug|release) {
-#    LIBS     += -L$$LIBS_PATH \
-#                -lopencv_core246d \
-#                -lopencv_highgui246d
-#    }
-
-#    CONFIG(release, debug|release) {
-#    LIBS     += -L$$LIBS_PATH \
-#                -lopencv_core246 \
-#                -lopencv_highgui246
-#    }
-
-#}
-
-#unix { #OpenSuse
-#message("Using unix configuration")
-
-#OPENCV_PATH = /usr/local/opencv/
-
-#LIBS_PATH = /usr/lib64
-
-#LIBS     += -lopencv_core \
-#            -lopencv_highgui \
-#            -lopencv_imgproc \
-#            -lzbar
-#}
-
-#LIBS += -L/usr/lib64 -lopencv_core -lopencv_videoio -lopencv_imgproc -lzbar
-
-INCLUDEPATH += /usr/include

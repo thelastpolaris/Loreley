@@ -29,11 +29,14 @@ Sell::Sell(QWidget *parent) :
 
     connect(prodWidget, &Products::subProductSelected, [=](bool selected, int row) {
         if(selected) {
-            ui->addToCart->setEnabled(true);
             rowToAdd = row;
         } else {
-            ui->addToCart->setEnabled(false);
             rowToAdd = -1;
+        }
+        if(rowToAdd != -1 && ProductsData::Instance()->subProductsData(rowToAdd, SUBPROD_AMOUNT) > 0) {
+            ui->addToCart->setEnabled(true);
+        } else {
+            ui->addToCart->setEnabled(false);
         }
     });
 
@@ -43,6 +46,9 @@ Sell::Sell(QWidget *parent) :
                     ProductsData::Instance()->subProductsData(rowToAdd, SUBPROD_ID).toInt(),
                     error)) {
             QMessageBox::warning(this, tr("Error while adding subproduct to cart"), error);
+        } else {
+            //Update subproducts model
+            prodWidget->selectSubProdsWithSelection();
         }
     });
 
@@ -60,6 +66,9 @@ Sell::Sell(QWidget *parent) :
         if(!SellData::Instance()->removeFromCart(rowToRemove)) {
             QMessageBox::warning(this, tr("Error"), tr("Couldn't delete subproduct from the cart "
                                                        "(no row with the number %1").arg(rowToRemove));
+        } else {
+            //Update subproducts model
+            prodWidget->selectSubProdsWithSelection();
         }
     });
 }

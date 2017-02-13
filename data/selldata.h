@@ -29,7 +29,13 @@ public:
      * @return true if row was successfully deleted
      */
     bool removeFromCart(int row, int& price);
+
+    /**
+     * @brief getIDsWithAmount - returns QHash with ID of subproduct as a key and ints amount as a value
+     */
+    QHash<int, int> getIDsWithAmount();
 private:
+    QHash<int, int> m_IDsWithAmount;
     QVector<QVector<QString>> columns;
 };
 

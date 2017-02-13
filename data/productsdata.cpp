@@ -9,6 +9,7 @@
 #include "xlsxdocument.h"
 #include "productsdata.h"
 #include "auxiliary/ean13.h"
+#include "selldata.h"
 
 ProductsData* ProductsData::p_instance = 0;
 
@@ -89,7 +90,11 @@ void ProductsData::cancelProductsFilter() {
 
 void ProductsData::filterSubProducts(int product_id) {
     subProductsModel.setFilterByInteger("product_id", product_id);
-    subProductsModel.select();
+    if(SellData::Instance()) {
+        subProductsModel.selectSubProds(SellData::Instance()->getCartModel()->getIDsWithAmount());
+    } else {
+        subProductsModel.select();
+    }
 }
 
 int ProductsData::searchForValues(QString name, int category, int color, int brand,
@@ -434,6 +439,10 @@ void ProductsData::setProductsFilter(QString productsFilter) {
         m_productsFilter = productsFilter;
         emit productsFilterChanged(productsFilter);
     }
+}
+
+void ProductsData::selectSubProducts() {
+    subProductsModel.selectSubProds(SellData::Instance()->getCartModel()->getIDsWithAmount());
 }
 
 void ProductsData::importFromExcel(const QString& importXlsx) {

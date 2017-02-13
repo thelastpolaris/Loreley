@@ -111,6 +111,19 @@ bool CartModel::removeFromCart(int row, int& price) {
     return false;
 }
 
+QHash<int, int> CartModel::getIDsWithAmount() {
+    QHash<int, int> ids;
+    for(int i = 0; i < columns[0].size(); ++i) {
+        int id = columns[ID][i].toInt();
+        if(ids.contains(id)) {
+           ids[id]++;
+        } else {
+            ids.insert(id, 1);
+        }
+    }
+    return ids;
+}
+
 QVariant CartModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (role == Qt::DisplayRole)
     {

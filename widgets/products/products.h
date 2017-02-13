@@ -46,13 +46,12 @@ public slots:
      */
     void updateFilter(QString newFilter);
 
+    void selectSubProdsWithSelection();
 signals:
     void productSelected(bool selected);
     void subProductSelected(bool selected, int row = -1);
 
 private:
-    static Products* p_instance;
-
     Ui::Products* ui;
 
     AddProductDialog* addProdDialog;

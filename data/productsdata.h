@@ -51,7 +51,7 @@ public:
     Q_PROPERTY(QString productsFilter READ getProductsFilter WRITE setProductsFilter NOTIFY productsFilterChanged)
 
     ProductsModel* getProductsModel() { return &productsModel; }
-    ProductsModel* getSubProductsModel() { return &subProductsModel; }
+    SubProductsModel* getSubProductsModel() { return &subProductsModel; }
 
     int addProduct(QString name, QVariant category, int price, QVariant color, QVariant brand, QString note = QString());
     QSqlError productsLastError() const { return productsModel.lastError(); }
@@ -103,6 +103,11 @@ public:
      * @param importXlsx - path to file
      */
     void importFromExcel(const QString& importXlsx);
+
+    /**
+     * @brief selectSubProducts - select subproducts according to subproducts in the shopping cart
+     */
+    void selectSubProducts();
 
 signals:
     void productsFilterChanged(QString productsFilter);

@@ -9,6 +9,11 @@ SubProductsModel::SubProductsModel(QObject *parent)
 
 }
 
+void SubProductsModel::selectSubProds(QHash<int, int> _idsInCart) {
+    select();
+    idsInCart = _idsInCart;
+}
+
 QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
     if(role == Qt::DisplayRole) {
         if(item.column() == SUBPROD_AMOUNT) {
@@ -34,6 +39,13 @@ QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
             }
 
             while(reduce.next()) amount -= reduce.value(SUBPROD_HISTORY_AMOUNT).toInt();
+
+            for(int i = 0; i < rowCount(); ++i) {
+                int id = data(index(i, SUBPROD_ID)).toInt();
+                if(idsInCart.contains(id)) {
+                    amount -= idsInCart[id];
+                }
+            }
 
             return QVariant(amount);
         }

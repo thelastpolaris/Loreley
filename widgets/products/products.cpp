@@ -186,6 +186,13 @@ void Products::subProdSelectionChanged(const QItemSelection & selected, const QI
     }
 }
 
+void Products::selectSubProdsWithSelection() {
+    int currentRow = ui->tableView_2->currentIndex().row();
+    int currentCol = ui->tableView_2->currentIndex().column();
+    ProductsData::Instance()->selectSubProducts();
+    ui->tableView_2->setCurrentIndex(ProductsData::Instance()->getSubProductsModel()->index(currentRow, currentCol));
+}
+
 bool Products::startDeletingProduct() {
     QModelIndex currentIndex = ui->tableView->selectionModel()->currentIndex();
     ProductsData *prodData = ProductsData::Instance();
@@ -243,7 +250,6 @@ bool Products::starReducingSubProductAmount() {
 
     int curAmount = prodData->subProductsData(curSubProd.row(), SUBPROD_AMOUNT).toInt();
     int subProdID = prodData->subProductsData(curSubProd.row(), SUBPROD_ID).toInt();
-
 
     reduceSubProdDialog->startReducingSubProduct(subProdID, curAmount);
     return false;

@@ -39,6 +39,58 @@ bool SellData::addToCart(QString barCode, QString& error) {
     return addToCart(getValueFromDB(SUBPROD_TABLE, "barcode", barCode, "id").toInt(), error);
 }
 
+bool SellData::commitSale(int discPercents, int discount) {
+    QSqlQuery query;
+    query.prepare("INSERT INTO sells (price, client) VALUES (:price, :client)");
+    query.bindValue(":price", m_price);
+    query.bindValue(":client", -1); //Under development
+
+    if(query.exec()) {
+        query.prepare("SELECT LAST_INSERT_ID()");
+        if(!query.exec()) {
+            emit errorOccured(query.lastError().text());
+        }
+        query.next(); //Get insert ID
+        int sellID = query.value(0).toInt();
+
+        QHash<int, int> subProds = m_productCart.getIDsWithAmount();
+        for(QHash<int, int>::const_iterator i = subProds.constBegin();
+            i != subProds.constEnd(); ++i)
+        {
+            query.prepare("INSERT INTO subprod_reduce (subprod_id, amount, reason) "
+                          "VALUES (:subprod_id, :amount, :reason);");
+            query.bindValue(":subprod_id", i.key());
+            query.bindValue(":amount", i.value());
+            query.bindValue(":reason", SELL_REASON);
+
+            if(!query.exec()) {
+                emit errorOccured(query.lastError().text());
+                return false;
+            }
+
+            query.prepare("INSERT INTO sells_subproducts (sell, subproduct, amount, discount)"
+                          "VALUES (:sell, :subprod_id, :amount, :discount);");
+            query.bindValue(":sell", sellID);
+            query.bindValue(":subprod_id", i.key());
+            query.bindValue(":amount", i.value());
+            query.bindValue(":discount", 0);
+
+            if(!query.exec()) {
+                emit errorOccured(query.lastError().text());
+                return false;
+            }
+        }
+
+        m_productCart.clearCart();
+        emit saleDone(m_price);
+        setProperty("price", 0);
+        return true;
+    } else {
+        emit errorOccured(query.lastError().text());
+    }
+    return false;
+}
+
 bool SellData::addToCart(int subProdID, QString& error) {
     QSqlQuery getSubProd = getQueryFromDB(SUBPROD_TABLE, "id", subProdID);
     if(getSubProd.next()) {
@@ -122,6 +174,16 @@ QHash<int, int> CartModel::getIDsWithAmount() {
         }
     }
     return ids;
+}
+
+void CartModel::clearCart() {
+    emit beginResetModel();
+//    emit beginRemoveRows(index(0,0), 0, columns[0].size());
+    for(int i = 0; i < columns.size(); ++i) {
+        columns[i].clear();
+    }
+//    emit endRemoveRows();
+    emit endResetModel();
 }
 
 QVariant CartModel::headerData(int section, Qt::Orientation orientation, int role) const {

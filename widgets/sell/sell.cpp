@@ -17,13 +17,15 @@ Sell::Sell(QWidget *parent) :
     ui->cartTable->horizontalHeader()->setStretchLastSection(true);
     ui->splitter->setStretchFactor(0, 2);
 
+    SellData* sellData = SellData::Instance();
+
     //Set width of 'Price' label
     ui->labelPrice->setMaximumWidth(ui->labelPrice->fontMetrics().width(ui->labelPrice->text()));
 
-    ui->cartTable->setModel(SellData::Instance()->getCartModel());
+    ui->cartTable->setModel(sellData->getCartModel());
 
     //Set signals
-    connect(SellData::Instance(), &SellData::priceChanged, [=](int changedPrice) {
+    connect(sellData, &SellData::priceChanged, [=](int changedPrice) {
         ui->price->setText(QString::number(changedPrice));
     });
 
@@ -42,7 +44,7 @@ Sell::Sell(QWidget *parent) :
 
     connect(ui->addToCart, &QPushButton::clicked, [=] {
         QString error;
-        if(!SellData::Instance()->addToCart(
+        if(!sellData->addToCart(
                     ProductsData::Instance()->subProductsData(rowToAdd, SUBPROD_ID).toInt(),
                     error)) {
             QMessageBox::warning(this, tr("Error while adding subproduct to cart"), error);
@@ -63,13 +65,28 @@ Sell::Sell(QWidget *parent) :
     });
 
     connect(ui->removeFromCart, &QPushButton::clicked, [=] {
-        if(!SellData::Instance()->removeFromCart(rowToRemove)) {
+        if(!sellData->removeFromCart(rowToRemove)) {
             QMessageBox::warning(this, tr("Error"), tr("Couldn't delete subproduct from the cart "
                                                        "(no row with the number %1").arg(rowToRemove));
         } else {
             //Update subproducts model
             prodWidget->selectSubProdsWithSelection();
         }
+    });
+
+    connect(ui->finishSale, &QPushButton::clicked, [=] {
+        sellData->commitSale(0,0);
+    });
+
+    //Handle errors
+    connect(sellData, &SellData::errorOccured, [=](QString errorText) {
+        QMessageBox::warning(this, tr("Problems with sell module"), errorText);
+    });
+
+    //Handle sale was done
+    connect(sellData, &SellData::saleDone, [=](int price) {
+        QMessageBox::information(this, tr("Sale is successfully finished"),
+                                 tr("Sale for the price <b>%1</b> was succesfully added to database").arg(QString::number(price)));
     });
 }
 

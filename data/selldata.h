@@ -16,6 +16,8 @@ public:
 #define PRICE 3
 #define ID 4 //Not visible to user
 
+#define SELL_REASON 3 //ID of "Sell" reason for subproduct reduce
+
     CartModel();
     int rowCount(const QModelIndex& parent = QModelIndex()) const;
     int columnCount(const QModelIndex& parent = QModelIndex()) const;
@@ -34,8 +36,12 @@ public:
      * @brief getIDsWithAmount - returns QHash with ID of subproduct as a key and ints amount as a value
      */
     QHash<int, int> getIDsWithAmount();
+
+    /**
+     * @brief clearCart - deletes all products in the products cart
+     */
+    void clearCart();
 private:
-    QHash<int, int> m_IDsWithAmount;
     QVector<QVector<QString>> columns;
 };
 
@@ -69,11 +75,25 @@ public:
     bool removeFromCart(int row);
 
     CartModel* getCartModel() { return &m_productCart; }
+
+    /**
+     * @brief commitSale - Adds a new sale to the databse. Reduces the amount of subproducts
+     * @param subProds - Key - individual discount for subproduct (should be 0 if there is no discount), value - subproduct
+     * @param discPercents - discount for the whole cart in percents
+     * @param discount - discount for the whole cart in plain sum
+     * @return true if sale was successfully added to DB
+     */
+    bool commitSale(int discPercents = 0, int discount = 0);
+
 protected:
     explicit SellData(QObject *parent = 0);
 
 signals:
     void priceChanged(int changedPrice);
+
+    void saleDone(int price);
+
+    void errorOccured(QString errorText);
 public slots:
 
 private:

@@ -70,9 +70,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="finishSale">
               <property name="text">
-               <string>PushButton</string>
+               <string>Finish</string>
               </property>
              </widget>
             </item>

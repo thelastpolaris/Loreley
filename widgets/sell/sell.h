@@ -2,6 +2,8 @@
 #define SELL_H
 
 #include <QWidget>
+#include <QStyledItemDelegate>
+#include <QItemSelection>
 
 namespace Ui {
 class Sell;
@@ -16,10 +18,16 @@ public:
     explicit Sell(QWidget *parent = 0);
     void scanBarCode();
     ~Sell();
+    Products* getProdWidget() { return prodWidget; }
 
+    void prepareSell();
 signals:
     void subProductSelected(bool selected, int row = -1);
 
+public slots:
+    void addDiscount();
+    void deleteDiscount();
+    void handleSelection(const QItemSelection &selected);
 private:
     QList<int> currentCart;
     Ui::Sell *ui;
@@ -34,6 +42,14 @@ private:
      * @brief rowToAdd - the id of row that is currently selected in cart table
      */
     int rowToRemove;
+};
+
+
+class HTMLDelegate : public QStyledItemDelegate
+{
+protected:
+    void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+    QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 };
 
 #endif // SELL_H

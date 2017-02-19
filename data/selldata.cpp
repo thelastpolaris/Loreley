@@ -30,9 +30,26 @@ QSqlQuery getQueryFromDB(QString table, QString field, QVariant value) {
     return query;
 }
 
-SellData::SellData(QObject *parent) : QObject(parent)
+SellData::SellData(QObject *parent)
+    :QObject(parent)
 {
+    connect(&m_productCart, SIGNAL(priceChanged(double)), this, SLOT(handleDisplayPrice()));
+    connect(&m_productCart, SIGNAL(discountsChanged(double)), this, SLOT(handleDisplayPrice()));
+}
 
+void SellData::handleDisplayPrice() {
+    double price = m_productCart.property("price").toDouble();
+    double discounts = m_productCart.property("discounts").toDouble();
+
+    if(discounts != 0) {
+        setProperty("displayPrice",
+                    QString("<s>%1</s> %2 <font color=#006400>-%3</font>").arg(
+                    QString::number(price),
+                    QString::number(price - discounts),
+                    QString::number(discounts)));
+    } else {
+        setProperty("displayPrice", QString::number(price));
+    }
 }
 
 bool SellData::addToCart(QString barCode, QString& error) {
@@ -42,7 +59,7 @@ bool SellData::addToCart(QString barCode, QString& error) {
 bool SellData::commitSale(int discPercents, int discount) {
     QSqlQuery query;
     query.prepare("INSERT INTO sells (price, client) VALUES (:price, :client)");
-    query.bindValue(":price", m_price);
+    query.bindValue(":price", m_productCart.property("price").toString());
     query.bindValue(":client", -1); //Under development
 
     if(query.exec()) {
@@ -54,13 +71,15 @@ bool SellData::commitSale(int discPercents, int discount) {
         int sellID = query.value(0).toInt();
 
         QHash<int, int> subProds = m_productCart.getIDsWithAmount();
-        for(QHash<int, int>::const_iterator i = subProds.constBegin();
-            i != subProds.constEnd(); ++i)
-        {
+        for(int i = 0; i < m_productCart.rowCount(); ++i) {
+            int subProdID = m_productCart.data(i, ID).toInt();
+            int amount = subProds[subProdID];
+            double discount = m_productCart.data(i, DISCOUNT).toDouble();
+
             query.prepare("INSERT INTO subprod_reduce (subprod_id, amount, reason) "
                           "VALUES (:subprod_id, :amount, :reason);");
-            query.bindValue(":subprod_id", i.key());
-            query.bindValue(":amount", i.value());
+            query.bindValue(":subprod_id", subProdID);
+            query.bindValue(":amount", amount);
             query.bindValue(":reason", SELL_REASON);
 
             if(!query.exec()) {
@@ -71,9 +90,9 @@ bool SellData::commitSale(int discPercents, int discount) {
             query.prepare("INSERT INTO sells_subproducts (sell, subproduct, amount, discount)"
                           "VALUES (:sell, :subprod_id, :amount, :discount);");
             query.bindValue(":sell", sellID);
-            query.bindValue(":subprod_id", i.key());
-            query.bindValue(":amount", i.value());
-            query.bindValue(":discount", 0);
+            query.bindValue(":subprod_id", subProdID);
+            query.bindValue(":amount", amount);
+            query.bindValue(":discount", discount);
 
             if(!query.exec()) {
                 emit errorOccured(query.lastError().text());
@@ -81,9 +100,10 @@ bool SellData::commitSale(int discPercents, int discount) {
             }
         }
 
+        setProperty("displayPrice", QString::number(0));
         m_productCart.clearCart();
-        emit saleDone(m_price);
         setProperty("price", 0);
+        emit saleDone(m_productCart.property("price").toDouble());
         return true;
     } else {
         emit errorOccured(query.lastError().text());
@@ -101,11 +121,10 @@ bool SellData::addToCart(int subProdID, QString& error) {
             QSqlQuery getCat = getQueryFromDB(PROP_CAT, "id", getProd.value(PROD_CAT));
             getCat.next();
             m_productCart.addToCart(getCat.value("name").toString(),
-                                 getProd.value(PROD_NAME).toString(),
-                                 getValueFromDB(PROP_SIZE, "id", getSubProd.value(SUBPROD_SIZE).toString(), "name").toString(),
-                                 getProd.value(PROD_PRICE).toString(),
+                                    getProd.value(PROD_NAME).toString(),
+                                    getValueFromDB(PROP_SIZE, "id", getSubProd.value(SUBPROD_SIZE).toString(), "name").toString(),
+                                    getProd.value(PROD_PRICE).toString(),
                                     subProdID);
-            setProperty("price", m_price + getProd.value(PROD_PRICE).toInt());
             return true;
         } else {
             error = tr("No product with ID %1").arg(QString::number(productID));
@@ -118,102 +137,5 @@ bool SellData::addToCart(int subProdID, QString& error) {
 }
 
 bool SellData::removeFromCart(int row) {
-    int price = 0;
-    if(m_productCart.removeFromCart(row, price)) {
-        setProperty("price", m_price - price);
-        return true;
-    }
-    return false;
-}
-
-CartModel::CartModel()
-    :QAbstractTableModel(), columns(COLS_NUMBER)
-{
-
-}
-
-int CartModel::rowCount(const QModelIndex& parent) const {
-    Q_UNUSED(parent);
-    return columns[0].size();
-}
-
-void CartModel::addToCart(QString category, QString name, QString size, QString price, int id) {
-    emit beginInsertRows(QModelIndex(), columns[0].size(), columns[0].size());
-    columns[CATEGORY].append(category);
-    columns[NAME].append(name);
-    columns[SIZE].append(size);
-    columns[PRICE].append(price);
-    columns[ID].append(QString::number(id));
-    emit endInsertRows();
-}
-
-bool CartModel::removeFromCart(int row, int& price) {
-    if(columns[0].size() > row && 0 <= row) {
-        emit beginRemoveRows(QModelIndex(), row, row);
-        columns[CATEGORY].remove(row);
-        columns[NAME].remove(row);
-        columns[SIZE].remove(row);
-
-        price = columns[PRICE][row].toInt();
-        columns[PRICE].remove(row);
-        columns[ID].remove(row);
-        emit endRemoveRows();
-        return true;
-    }
-    return false;
-}
-
-QHash<int, int> CartModel::getIDsWithAmount() {
-    QHash<int, int> ids;
-    for(int i = 0; i < columns[0].size(); ++i) {
-        int id = columns[ID][i].toInt();
-        if(ids.contains(id)) {
-           ids[id]++;
-        } else {
-            ids.insert(id, 1);
-        }
-    }
-    return ids;
-}
-
-void CartModel::clearCart() {
-    emit beginResetModel();
-//    emit beginRemoveRows(index(0,0), 0, columns[0].size());
-    for(int i = 0; i < columns.size(); ++i) {
-        columns[i].clear();
-    }
-//    emit endRemoveRows();
-    emit endResetModel();
-}
-
-QVariant CartModel::headerData(int section, Qt::Orientation orientation, int role) const {
-    if (role == Qt::DisplayRole)
-    {
-        if (orientation == Qt::Horizontal) {
-            switch (section)
-            {
-            case CATEGORY:
-                return tr("Category");
-            case NAME:
-                return tr("Name");
-            case SIZE:
-                return tr("Size");
-            case PRICE:
-                return tr("Price");
-            }
-        }
-    }
-    return QVariant();
-}
-
-int CartModel::columnCount(const QModelIndex& parent) const {
-    Q_UNUSED(parent);
-    return columns.size() - 1; //1 is for ID (we don't want to show it)
-}
-
-QVariant CartModel::data(const QModelIndex& index, int role) const {
-    if(role == Qt::DisplayRole && index.row() != ID) {
-        return columns[index.column()][index.row()];
-    }
-    return QVariant::Invalid;
+    return m_productCart.removeFromCart(row);
 }

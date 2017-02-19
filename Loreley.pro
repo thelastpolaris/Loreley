@@ -26,16 +26,17 @@ SOURCES += main.cpp\
     widgets/products/addsubproductdialog.cpp \
     widgets/products/products.cpp \
     data/productsdata.cpp \
-    data/productsmodel.cpp \
+    data/models/productsmodel.cpp \
     auxiliary/ean13.cpp \
     widgets/products/editproperty.cpp \
     auxiliary/propertiesmodel.cpp \
-    data/subproductsmodel.cpp \
+    data/models/subproductsmodel.cpp \
     widgets/products/reducesubproductdialog.cpp \
     widgets/home.cpp \
     widgets/sell/sell.cpp \
     widgets/products/searchproductdialog.cpp \
-    data/selldata.cpp
+    data/selldata.cpp \
+    data/models/cartmodel.cpp
 
 HEADERS  += mainwindow.h \
     widgets/delegates/comboboxitemdelegate.h \
@@ -44,17 +45,18 @@ HEADERS  += mainwindow.h \
     widgets/products/addsubproductdialog.h \
     widgets/delegates/datepickeritemdelegate.h \
     widgets/delegates/textfielditemdelegate.h \
-    data/productsmodel.h \
+    data/models/productsmodel.h \
     data/productsdata.h \
     auxiliary/ean13.h \
     widgets/products/editproperty.h \
     auxiliary/propertiesmodel.h \
-    data/subproductsmodel.h \
+    data/models/subproductsmodel.h \
     widgets/products/reducesubproductdialog.h \
     widgets/home.h \
     widgets/sell/sell.h \
     widgets/products/searchproductdialog.h \
-    data/selldata.h
+    data/selldata.h \
+    data/models/cartmodel.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \

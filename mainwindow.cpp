@@ -160,11 +160,13 @@ void MainWindow::prepareCentralWidget() {
 
 void MainWindow::openProducts() {
     prepareCentralWidget();
+    p_products->prepareProducts();
     setCentralWidget(p_products);
 }
 
 void MainWindow::openHome() {
     prepareCentralWidget();
+    p_sell->prepareSell();
     setCentralWidget(p_home);
 }
 

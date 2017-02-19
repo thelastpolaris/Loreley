@@ -28,6 +28,9 @@ public:
      */
     void loadLanguage(const QString& rLanguage);
 
+    Sell* getSellWidget() { return p_sell; }
+    Products* getProdWidget() { return p_products; }
+
 protected:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

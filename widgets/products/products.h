@@ -26,6 +26,10 @@ class Products : public QWidget
 public:
     explicit Products(bool _saleMode = false);
     virtual ~Products() override;
+    /**
+     * @brief prepareProducts - resets selection in product's table and clear all subproducts
+     */
+    void prepareProducts();
 
 public slots:
     void updateSubProducts(const QItemSelection & selected = QItemSelection(), const QItemSelection & deselected = QItemSelection());
@@ -39,7 +43,6 @@ public slots:
     void setupPropertyDelegates(QString propTableName);
 
     void startPrintingBarcode();
-
     /**
      * @brief updateFilter - updates visibility of "Cancel Filter" button and text of filter.
      * Makes button and text invisible if newFilter is empty.
@@ -48,7 +51,7 @@ public slots:
 
     void selectSubProdsWithSelection();
 signals:
-    void productSelected(bool selected);
+    void productSelected(bool selected, int row = -1);
     void subProductSelected(bool selected, int row = -1);
 
 private:

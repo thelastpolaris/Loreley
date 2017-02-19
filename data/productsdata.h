@@ -5,8 +5,8 @@
 #include <QSqlError>
 #include <QPrinter>
 
-#include "productsmodel.h"
-#include "subproductsmodel.h"
+#include "models/productsmodel.h"
+#include "models/subproductsmodel.h"
 #include "auxiliary/ean13.h"
 
 class EAN13;

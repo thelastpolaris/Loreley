@@ -15,6 +15,8 @@ DatePickerItemDelegate::~DatePickerItemDelegate() {
 }
 
 QWidget* DatePickerItemDelegate::createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const {
+    Q_UNUSED(option);
+    Q_UNUSED(index);
     QDateEdit *dateEdit = new QDateEdit(parent);
 
     return dateEdit;

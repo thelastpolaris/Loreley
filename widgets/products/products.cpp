@@ -9,7 +9,7 @@
 #include <QDialogButtonBox>
 #include <QFileDialog>
 #include "data/productsdata.h"
-#include "data/productsmodel.h"
+#include "data/models/productsmodel.h"
 
 #include "addproductdialog.h"
 //#include "ui_addproductdialog.h"
@@ -23,6 +23,7 @@
 #include "../delegates/datepickeritemdelegate.h"
 #include "../delegates/comboboxitemdelegate.h"
 #include "searchproductdialog.h"
+#include "../sell/sell.h"
 
 #include "mainwindow.h"
 
@@ -36,7 +37,7 @@ Products::Products(bool _saleMode) :
     ui->setupUi(this);
 
     ui->tableView->setModel(prodData->getProductsModel());
-//    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    //    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     //Setup delegates for products
     setupPropertyDelegates("categories");
@@ -44,7 +45,7 @@ Products::Products(bool _saleMode) :
     setupPropertyDelegates("brands");
 
     ui->tableView_2->setModel(prodData->getSubProductsModel());
-//    ui->tableView_2->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView_2->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     ui->tableView_2->setColumnHidden(SUBPROD_PROD_ID,true);
     ui->tableView_2->horizontalHeader()->moveSection(SUBPROD_AMOUNT, SUBPROD_NOTE);
@@ -138,6 +139,11 @@ Products::Products(bool _saleMode) :
     emit subProductSelected(false);
 }
 
+void Products::prepareProducts() {
+    ui->tableView->clearSelection();
+    updateSubProducts();
+}
+
 void Products::setupPropertyDelegates(QString propTableName) {
     ProductsData *prodData = ProductsData::Instance();
 
@@ -168,7 +174,7 @@ void Products::updateSubProducts(const QItemSelection & selected, const QItemSel
     ProductsData *prodData = ProductsData::Instance();
     if(!selected.isEmpty()) {
         int productRow = selected.indexes()[0].row();
-        emit productSelected(true);
+        emit productSelected(true, productRow);
         filter = prodData->productsData(productRow, PROD_ID).toInt();
     } else {
         emit productSelected(false);

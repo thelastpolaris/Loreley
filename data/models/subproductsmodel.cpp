@@ -1,7 +1,7 @@
 #include "subproductsmodel.h"
 #include <QSqlQuery>
 #include <QDebug>
-#include "productsdata.h"
+#include "../productsdata.h"
 
 SubProductsModel::SubProductsModel(QObject *parent)
     :ProductsModel(parent)
@@ -10,8 +10,8 @@ SubProductsModel::SubProductsModel(QObject *parent)
 }
 
 void SubProductsModel::selectSubProds(QHash<int, int> _idsInCart) {
-    select();
     idsInCart = _idsInCart;
+    select();
 }
 
 QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
@@ -21,7 +21,7 @@ QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
 
             QSqlQuery arrival;
             arrival.prepare("SELECT * from " + QString(SUBPROD_ARRIVAL_TABLE) +
-                          " WHERE subprod_id=:subprod_id");
+                            " WHERE subprod_id=:subprod_id");
             arrival.bindValue(":subprod_id", subProdID);
             if(!arrival.exec()) {
                 qDebug() << tr("Error retrieving amount of subproduct. Amount will be set to 0");
@@ -32,7 +32,7 @@ QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
 
             QSqlQuery reduce;
             reduce.prepare("SELECT * from " + QString(SUBPROD_REDUCE_TABLE) +
-                          " WHERE subprod_id=:subprod_id");
+                           " WHERE subprod_id=:subprod_id");
             reduce.bindValue(":subprod_id", subProdID);
             if(!reduce.exec()) {
                 qDebug() << tr("Error retrieving amount of subproduct. Amount will be set to 0");
@@ -40,11 +40,10 @@ QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
 
             while(reduce.next()) amount -= reduce.value(SUBPROD_HISTORY_AMOUNT).toInt();
 
-            for(int i = 0; i < rowCount(); ++i) {
-                int id = data(index(i, SUBPROD_ID)).toInt();
-                if(idsInCart.contains(id)) {
-                    amount -= idsInCart[id];
-                }
+            int id = data(index(item.row(), SUBPROD_ID)).toInt();
+            if(idsInCart.contains(id)) {
+                qDebug() << idsInCart << id;
+                amount -= idsInCart[id];
             }
 
             return QVariant(amount);

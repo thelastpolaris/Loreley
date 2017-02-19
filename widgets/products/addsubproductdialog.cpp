@@ -1,6 +1,6 @@
 #include "addsubproductdialog.h"
 #include "ui_addsubproductdialog.h"
-#include "data/productsmodel.h"
+#include "data/models/productsmodel.h"
 #include "data/productsdata.h"
 #include <QMessageBox>
 #include "mainwindow.h"

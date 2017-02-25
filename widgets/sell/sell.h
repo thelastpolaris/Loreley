@@ -4,12 +4,14 @@
 #include <QWidget>
 #include <QStyledItemDelegate>
 #include <QItemSelection>
+#include <QDialog>
 
 namespace Ui {
 class Sell;
 }
 
 class Products;
+class ScanBarcodeDialog;
 
 class Sell : public QWidget
 {
@@ -21,7 +23,6 @@ public:
     Products* getProdWidget() { return prodWidget; }
 
     void prepareSell();
-    void keyPressEvent(QKeyEvent *event);
 signals:
     void subProductSelected(bool selected, int row = -1);
 
@@ -33,6 +34,7 @@ private:
     QList<int> currentCart;
     Ui::Sell *ui;
     Products* prodWidget;
+    ScanBarcodeDialog* scanDialog;
 
     /**
      * @brief rowToAdd - the id of row that is currently selected in subproducts table
@@ -47,7 +49,6 @@ private:
     /// Stores barcode that is being read
     QString barCode;
 };
-
 
 class HTMLDelegate : public QStyledItemDelegate
 {

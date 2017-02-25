@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     widgets/sell/sell.cpp \
     widgets/products/searchproductdialog.cpp \
     data/selldata.cpp \
-    data/models/cartmodel.cpp
+    data/models/cartmodel.cpp \
+    widgets/sell/scanbarcodedialog.cpp
 
 HEADERS  += mainwindow.h \
     widgets/delegates/comboboxitemdelegate.h \
@@ -56,7 +57,8 @@ HEADERS  += mainwindow.h \
     widgets/sell/sell.h \
     widgets/products/searchproductdialog.h \
     data/selldata.h \
-    data/models/cartmodel.h
+    data/models/cartmodel.h \
+    widgets/sell/scanbarcodedialog.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \
@@ -66,7 +68,8 @@ FORMS    += mainwindow.ui \
     widgets/products/reducesubproductdialog.ui \
     widgets/home.ui \
     widgets/sell/sell.ui \
-    widgets/products/searchproductdialog.ui
+    widgets/products/searchproductdialog.ui \
+    widgets/sell/scanbarcodedialog.ui
 
 RESOURCES += \
     resources.qrc

@@ -44,9 +44,9 @@ void SellData::handleDisplayPrice() {
     if(discounts != 0) {
         setProperty("displayPrice",
                     QString("<s>%1</s> %2 <font color=#006400>-%3</font>").arg(
-                    QString::number(price),
-                    QString::number(price - discounts),
-                    QString::number(discounts)));
+                        QString::number(price),
+                        QString::number(price - discounts),
+                        QString::number(discounts)));
     } else {
         setProperty("displayPrice", QString::number(price));
     }
@@ -54,12 +54,16 @@ void SellData::handleDisplayPrice() {
 
 bool SellData::addToCart(QString barCode, QString& error) {
     if(!barCode.isEmpty() && barCode.size() == 13) {
-    qDebug() << getValueFromDB(SUBPROD_TABLE, "barcode", barCode, "id").toInt();
-    return addToCart(getValueFromDB(SUBPROD_TABLE, "barcode", barCode, "id").toInt(), error);
-    } else {
-        error = tr("Invalid barcode provied");
-        return false;
+        int subProdID =  getValueFromDB(SUBPROD_TABLE, "barcode", barCode, "id").toInt();
+        if(subProdID > 0) {
+            return addToCart(subProdID, error);
+        } else {
+            error = tr("No subproduct with barcode %1").arg(barCode);
+            return false;
+        }
     }
+    error = tr("Invalid barcode provied");
+    return false;
 }
 
 bool SellData::commitSale(int discPercents, int discount) {
@@ -118,27 +122,33 @@ bool SellData::commitSale(int discPercents, int discount) {
 }
 
 bool SellData::addToCart(int subProdID, QString& error) {
-    QSqlQuery getSubProd = getQueryFromDB(SUBPROD_TABLE, "id", subProdID);
-    if(getSubProd.next()) {
-        int productID = getSubProd.value(SUBPROD_PROD_ID).toInt();
-        QSqlQuery getProd = getQueryFromDB(PROD_TABLE, "id", productID);
+    if(ProductsData::Instance()->getAmountOfSubProd(subProdID) >= 1) {
 
-        if(getProd.next()) {
-            QSqlQuery getCat = getQueryFromDB(PROP_CAT, "id", getProd.value(PROD_CAT));
-            getCat.next();
-            m_productCart.addToCart(getCat.value("name").toString(),
-                                    getProd.value(PROD_NAME).toString(),
-                                    getValueFromDB(PROP_SIZE, "id", getSubProd.value(SUBPROD_SIZE).toString(), "name").toString(),
-                                    getProd.value(PROD_PRICE).toString(),
-                                    subProdID);
-            return true;
+        QSqlQuery getSubProd = getQueryFromDB(SUBPROD_TABLE, "id", subProdID);
+        if(getSubProd.next()) {
+            int productID = getSubProd.value(SUBPROD_PROD_ID).toInt();
+            QSqlQuery getProd = getQueryFromDB(PROD_TABLE, "id", productID);
+
+            if(getProd.next()) {
+                QSqlQuery getCat = getQueryFromDB(PROP_CAT, "id", getProd.value(PROD_CAT));
+                getCat.next();
+                m_productCart.addToCart(getCat.value("name").toString(),
+                                        getProd.value(PROD_NAME).toString(),
+                                        getValueFromDB(PROP_SIZE, "id", getSubProd.value(SUBPROD_SIZE).toString(), "name").toString(),
+                                        getProd.value(PROD_PRICE).toString(),
+                                        subProdID);
+                return true;
+            } else {
+                error = tr("No product with ID %1").arg(QString::number(productID));
+                return false;
+            }
         } else {
-            error = tr("No product with ID %1").arg(QString::number(productID));
-            return false;
+            error = tr("No subproduct with ID %1").arg(QString::number(subProdID));
         }
     } else {
-        error = tr("No subproduct with ID %1").arg(QString::number(subProdID));
+        error = tr("Not enough product with ID %1").arg(QString::number(subProdID));
     }
+
     return false;
 }
 

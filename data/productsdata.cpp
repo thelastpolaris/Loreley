@@ -90,17 +90,13 @@ void ProductsData::cancelProductsFilter() {
 
 void ProductsData::filterSubProducts(int product_id) {
     subProductsModel.setFilterByInteger("product_id", product_id);
-    if(SellData::Instance()) {
-        subProductsModel.selectSubProds(SellData::Instance()->getCartModel()->getIDsWithAmount());
-    } else {
-        subProductsModel.select();
-    }
+    subProductsModel.select();
 }
 
 int ProductsData::searchForValues(QString name, int category, int color, int brand,
-                                    int price, QString comment)
+                                  int price, QString comment)
 {
-//    productsModel.setFilter(""); //Reset filters
+    //    productsModel.setFilter(""); //Reset filters
     QSqlRecord r = productsModel.getOriginalRecord(-1);
     QStringList filter;
     QStringList coolFilter;
@@ -383,8 +379,8 @@ int ProductsData::addProduct(QString name, QVariant category, int price, QVarian
 #else
     QSqlQuery addProduct;
     addProduct.prepare("INSERT INTO " + QString(PROD_TABLE) +
-                             "(brand, category_id, name, color, price, note)"
-                             "VALUES (:brand, :category, :name, :color, :price, :note)");
+                       "(brand, category_id, name, color, price, note)"
+                       "VALUES (:brand, :category, :name, :color, :price, :note)");
     addProduct.bindValue(":brand", brand);
     addProduct.bindValue(":category", QVariant(category));
     addProduct.bindValue(":name", QVariant(name));
@@ -442,7 +438,7 @@ void ProductsData::setProductsFilter(QString productsFilter) {
 }
 
 void ProductsData::selectSubProducts() {
-    subProductsModel.selectSubProds(SellData::Instance()->getCartModel()->getIDsWithAmount());
+    subProductsModel.select();
 }
 
 void ProductsData::importFromExcel(const QString& importXlsx) {
@@ -539,4 +535,36 @@ void ProductsData::importFromExcel(const QString& importXlsx) {
         }
         row++;
     }
+}
+
+int ProductsData::getAmountOfSubProd(int subProdID) {
+    QHash<int, int> idsInCart = SellData::Instance()->getCartModel()->getIDsWithAmount();
+
+    QSqlQuery arrival;
+    arrival.prepare("SELECT * from " + QString(SUBPROD_ARRIVAL_TABLE) +
+                    " WHERE subprod_id=:subprod_id");
+    arrival.bindValue(":subprod_id", subProdID);
+    if(!arrival.exec()) {
+        qDebug() << tr("Error retrieving amount of subproduct. Amount will be set to 0");
+    }
+
+    int amount = 0;
+    while(arrival.next()) amount += arrival.value(SUBPROD_HISTORY_AMOUNT).toInt();
+
+    QSqlQuery reduce;
+    reduce.prepare("SELECT * from " + QString(SUBPROD_REDUCE_TABLE) +
+                   " WHERE subprod_id=:subprod_id");
+    reduce.bindValue(":subprod_id", subProdID);
+    if(!reduce.exec()) {
+        qDebug() << tr("Error retrieving amount of subproduct. Amount will be set to 0");
+    }
+
+    while(reduce.next()) amount -= reduce.value(SUBPROD_HISTORY_AMOUNT).toInt();
+
+    if(idsInCart.contains(subProdID)) {
+        qDebug() << idsInCart << subProdID;
+        amount -= idsInCart[subProdID];
+    }
+
+    return amount;
 }

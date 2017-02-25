@@ -49,6 +49,7 @@ Products::Products(bool _saleMode) :
 
     ui->tableView_2->setColumnHidden(SUBPROD_PROD_ID,true);
     ui->tableView_2->horizontalHeader()->moveSection(SUBPROD_AMOUNT, SUBPROD_NOTE);
+    ui->tableView_2->setSelectionBehavior(QAbstractItemView::SelectRows);
     setupPropertyDelegates("sizes");
 
     connect(ui->tableView->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
@@ -74,7 +75,10 @@ Products::Products(bool _saleMode) :
 
     if(!saleMode) {
         //Setup buttons for subProducts
-        connect(ui->addSubProductButton, SIGNAL(clicked(bool)), addSubProdDialog, SLOT(startAddingSubProduct()));
+        connect(ui->addSubProductButton, &QPushButton::clicked, [=]() {
+            QString size = prodData->subProductsData(ui->tableView_2->currentIndex().row(), SUBPROD_SIZE).toString();
+            addSubProdDialog->startAddingSubProduct(size);
+        });
         connect(ui->reduceSubProductButton, SIGNAL(clicked(bool)), SLOT(starReducingSubProductAmount()));
         connect(ui->deleteSubProductButton, SIGNAL(clicked(bool)), SLOT(startDeletingSubProduct()));
 

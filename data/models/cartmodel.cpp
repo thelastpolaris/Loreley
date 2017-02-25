@@ -26,6 +26,14 @@ void CartModel::addToCart(QString category, QString name, QString size, QString 
     columns[PRICE].append(price);
     columns[DISCOUNT].append(QString::number(0));
     columns[ID].append(QString::number(id));
+
+    if(IDsWithAmount.contains(id)) {
+        IDsWithAmount[id]++;
+    } else {
+        IDsWithAmount.insert(id, 1);
+    }
+    emit IDsWithAmountChanged(IDsWithAmount);
+
     setProperty("price", m_price + price.toDouble());
     emit endInsertRows();
 }
@@ -41,6 +49,17 @@ bool CartModel::removeFromCart(int row) {
         columns[PRICE].remove(row);
         double discount = columns[DISCOUNT][row].toDouble();
         columns[DISCOUNT].remove(row);
+
+        int id = columns[ID][row].toInt();
+        if(IDsWithAmount.contains(id)) {
+            if(IDsWithAmount[id] == 1) {
+                IDsWithAmount.remove(id);
+            } else {
+                IDsWithAmount[id]--;
+            }
+            emit IDsWithAmountChanged(IDsWithAmount);
+        }
+
         columns[ID].remove(row);
 
         setProperty("price", m_price - price);
@@ -50,19 +69,6 @@ bool CartModel::removeFromCart(int row) {
         return true;
     }
     return false;
-}
-
-QHash<int, int> CartModel::getIDsWithAmount() {
-    QHash<int, int> ids;
-    for(int i = 0; i < columns[0].size(); ++i) {
-        int id = columns[ID][i].toInt();
-        if(ids.contains(id)) {
-            ids[id]++;
-        } else {
-            ids.insert(id, 1);
-        }
-    }
-    return ids;
 }
 
 void CartModel::clearCart() {

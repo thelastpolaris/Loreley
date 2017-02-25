@@ -109,6 +109,8 @@ public:
      */
     void selectSubProducts();
 
+    int getAmountOfSubProd(int subProdID);
+
 signals:
     void productsFilterChanged(QString productsFilter);
     void propertiesChanged(QString _tableName);

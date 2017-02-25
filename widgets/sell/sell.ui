@@ -178,6 +178,14 @@
             </item>
            </layout>
           </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="scanBarcodeButton">
+            <property name="text">
+             <string>Scan 
+ barcode</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>

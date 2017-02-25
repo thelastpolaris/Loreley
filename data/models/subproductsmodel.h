@@ -16,9 +16,8 @@ public:
      * @brief selectSubProds - select subproducts and set their amount according to shopping cart
      * @param idsInCart - key - subproduct id, value - its amount in shopping cart
      */
-    void selectSubProds(QHash<int, int> idsInCart);
+    void selectSubProds();
 private:
-    QHash<int, int> idsInCart;
     QString historyTable;
 };
 

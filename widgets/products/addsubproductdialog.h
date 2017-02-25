@@ -18,7 +18,10 @@ public:
     ~AddSubProductDialog();
 public slots:
     void finishAddingSubProduct();
-    void startAddingSubProduct();
+    /**
+     * @brief startAddingSubProduct - if size is not empty pre-select the size in sizes dropbox
+     */
+    void startAddingSubProduct(QString size = "");
 
 private:
     Ui::AddSubProductDialog *ui;

@@ -30,7 +30,7 @@ void AddSubProductDialog::finishAddingSubProduct() {
     }
 }
 
-void AddSubProductDialog::startAddingSubProduct() {
+void AddSubProductDialog::startAddingSubProduct(QString size) {
     ProductsData *prod = ProductsData::Instance();
     clearFields();
 
@@ -39,6 +39,8 @@ void AddSubProductDialog::startAddingSubProduct() {
             ui->sizeCB->addItem(i.value(), i.key());
     }
     ui->arrivalDE->setDate(QDate::currentDate());
+
+    ui->sizeCB->setCurrentText(size);
 
     if(!ui->sizeCB->count()) {
         QMessageBox::warning(MainWindow::Instance(), tr("Add size"), tr("Please, add at least one size, before adding product"));

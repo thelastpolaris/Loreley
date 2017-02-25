@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QDebug>
 #include <QSettings>
+#include <QKeyEvent>
 
 MainWindow* MainWindow::pinstance = 0;
 

@@ -49,18 +49,20 @@ public:
     /**
      * @brief getIDsWithAmount - returns QHash with ID of subproduct as a key and ints amount as a value
      */
-    QHash<int, int> getIDsWithAmount();
+    QHash<int, int> getIDsWithAmount() const { return IDsWithAmount; }
 
     /**
      * @brief clearCart - deletes all products in the products cart
      */
-    void clearCart();
+    void clearCart();    
 private:
     QVector<QVector<QString>> columns;
 signals:
     void priceChanged(double changedPrice);
     void discountsChanged(double changedDiscounts);
+    void IDsWithAmountChanged(QHash<int, int> IDsWithAmount);
 private:
+    QHash<int, int> IDsWithAmount;
     double m_price;
     double m_discounts;
 };

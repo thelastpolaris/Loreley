@@ -53,7 +53,13 @@ void SellData::handleDisplayPrice() {
 }
 
 bool SellData::addToCart(QString barCode, QString& error) {
+    if(!barCode.isEmpty() && barCode.size() == 13) {
+    qDebug() << getValueFromDB(SUBPROD_TABLE, "barcode", barCode, "id").toInt();
     return addToCart(getValueFromDB(SUBPROD_TABLE, "barcode", barCode, "id").toInt(), error);
+    } else {
+        error = tr("Invalid barcode provied");
+        return false;
+    }
 }
 
 bool SellData::commitSale(int discPercents, int discount) {

@@ -105,6 +105,26 @@ void Sell::prepareSell() {
     prodWidget->prepareProducts();
 }
 
+void Sell::keyPressEvent(QKeyEvent *event) {
+    if(!event->text().isEmpty()) {
+        qDebug() << event->text();
+        if(event->text() == "\r") {
+            qDebug() << barCode;
+            QString error;
+            SellData::Instance()->addToCart(barCode, error);
+            if(!error.isEmpty()) {
+                QMessageBox::warning(this, tr("Error while adding product to cart"),
+                                     error);
+            }
+            barCode.clear();
+        } else {
+            barCode += event->text();
+        }
+
+        event->accept();
+    }
+}
+
 void Sell::handleSelection(const QItemSelection &selected) {
     if(!selected.isEmpty()) {
         rowToRemove = selected.indexes()[0].row();

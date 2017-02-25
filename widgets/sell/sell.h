@@ -21,6 +21,7 @@ public:
     Products* getProdWidget() { return prodWidget; }
 
     void prepareSell();
+    void keyPressEvent(QKeyEvent *event);
 signals:
     void subProductSelected(bool selected, int row = -1);
 
@@ -42,6 +43,9 @@ private:
      * @brief rowToAdd - the id of row that is currently selected in cart table
      */
     int rowToRemove;
+
+    /// Stores barcode that is being read
+    QString barCode;
 };
 
 

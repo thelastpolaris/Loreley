@@ -58,7 +58,8 @@ HEADERS  += mainwindow.h \
     widgets/products/searchproductdialog.h \
     data/selldata.h \
     data/models/cartmodel.h \
-    widgets/sell/scanbarcodedialog.h
+    widgets/sell/scanbarcodedialog.h \
+    data/helpers.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \

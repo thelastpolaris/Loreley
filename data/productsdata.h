@@ -46,7 +46,10 @@ public:
     static ProductsData* Create();
     static ProductsData* Instance() { return p_instance; }
 
-    void initModels();
+    /**
+     * @param onlyProducts - if true will (re)initialize only products model
+     */
+    void initModels(bool onlyProducts = false);
 
     Q_PROPERTY(QString productsFilter READ getProductsFilter WRITE setProductsFilter NOTIFY productsFilterChanged)
 

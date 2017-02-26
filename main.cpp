@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "widgets/products/products.h"
 #include "data/selldata.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

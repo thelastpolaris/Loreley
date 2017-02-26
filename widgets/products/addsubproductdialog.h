@@ -10,7 +10,6 @@ class AddSubProductDialog;
 class AddSubProductDialog : public QDialog
 {
     Q_OBJECT
-
 public:
     explicit AddSubProductDialog(QWidget *parent = 0);
     void clearFields();

@@ -10,6 +10,7 @@
 #include "productsdata.h"
 #include "auxiliary/ean13.h"
 #include "selldata.h"
+#include "helpers.h"
 
 ProductsData* ProductsData::p_instance = 0;
 
@@ -34,7 +35,7 @@ ProductsData::~ProductsData() {
 
 }
 
-void ProductsData::initModels() {
+void ProductsData::initModels(bool onlyProducts) {
     //Setup productsModel
     productsModel.setTable("products");
     productsModel.setEditStrategy(QSqlRelationalTableModel::OnFieldChange);
@@ -55,24 +56,25 @@ void ProductsData::initModels() {
     //Select all products
     productsModel.select();
 
-    //Setup subProductsModel
-    subProductsModel.setTable("subproducts");
-    subProductsModel.setEditStrategy(QSqlRelationalTableModel::OnRowChange);
-    //Name headers
-    subProductsModel.setHeaderData(SUBPROD_ID, Qt::Horizontal, tr("Subproduct ID"));
-    subProductsModel.setHeaderData(SUBPROD_AMOUNT, Qt::Horizontal, tr("Amount"));
-    subProductsModel.setHeaderData(SUBPROD_SIZE, Qt::Horizontal, tr("Size"));
-    subProductsModel.setHeaderData(SUBPROD_BARCODE, Qt::Horizontal, tr("Barcode"));
-    subProductsModel.setHeaderData(SUBPROD_NOTE, Qt::Horizontal, tr("Note"));
-    //Set relations
-    subProductsModel.setRelation(SUBPROD_SIZE, QSqlRelation("sizes", "id", "name"));
+    if(!onlyProducts) {
+        //Setup subProductsModel
+        subProductsModel.setTable("subproducts");
+        subProductsModel.setEditStrategy(QSqlRelationalTableModel::OnRowChange);
+        //Name headers
+        subProductsModel.setHeaderData(SUBPROD_ID, Qt::Horizontal, tr("Subproduct ID"));
+        subProductsModel.setHeaderData(SUBPROD_AMOUNT, Qt::Horizontal, tr("Amount"));
+        subProductsModel.setHeaderData(SUBPROD_SIZE, Qt::Horizontal, tr("Size"));
+        subProductsModel.setHeaderData(SUBPROD_BARCODE, Qt::Horizontal, tr("Barcode"));
+        subProductsModel.setHeaderData(SUBPROD_NOTE, Qt::Horizontal, tr("Note"));
+        //Set relations
+        subProductsModel.setRelation(SUBPROD_SIZE, QSqlRelation("sizes", "id", "name"));
+
+        //Setup readonly columns
+        subProductsModel.setReadOnlyCols(QList<int>{SUBPROD_ID, SUBPROD_AMOUNT, SUBPROD_SIZE, SUBPROD_BARCODE});
+    }
 
     //Initialize filter so that no subproducts are displayed
     filterSubProducts(-1);
-    //Setup readonly columns
-    subProductsModel.setReadOnlyCols(QList<int>{SUBPROD_ID, SUBPROD_AMOUNT, SUBPROD_SIZE, SUBPROD_BARCODE});
-    //Select all subproducts
-    subProductsModel.select();
 }
 
 QVariant ProductsData::productsData(int row, int column) const {
@@ -106,15 +108,15 @@ int ProductsData::searchForValues(QString name, int category, int color, int bra
     }
     if(category >= 0) {
         filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_CAT) + "=" + QString::number(category));
-        coolFilter.append(productsModel.headerData(PROD_CAT, Qt::Horizontal).toString() + " - " + QString::number(category));
+        coolFilter.append(productsModel.headerData(PROD_CAT, Qt::Horizontal).toString() + " - " + getValueFromDB(PROP_CAT, "id", category, "name").toString());
     }
     if(color >= 0) {
         filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_COLOR) + "=" + QString::number(color));
-        coolFilter.append(productsModel.headerData(PROD_COLOR, Qt::Horizontal).toString() + " - " + QString::number(color));
+        coolFilter.append(productsModel.headerData(PROD_COLOR, Qt::Horizontal).toString() + " - " + getValueFromDB(PROP_COLOR, "id", color, "name").toString());
     }
     if(brand >= 0) {
         filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_BRAND) + "=" + QString::number(brand));
-        coolFilter.append(productsModel.headerData(PROD_BRAND, Qt::Horizontal).toString() + " - " + QString::number(brand));
+        coolFilter.append(productsModel.headerData(PROD_BRAND, Qt::Horizontal).toString() + " - " + getValueFromDB(PROP_BRAND, "id", brand, "name").toString());
     }
     if(price != 0) {
         filter.append(QString(PROD_TABLE) + "." + r.fieldName(PROD_PRICE) + "=" + QString::number(price));
@@ -375,6 +377,8 @@ int ProductsData::addProduct(QString name, QVariant category, int price, QVarian
         qDebug() << productsModel.lastError().text();
     }
     productsModel.select();
+    // Clear all subproducts in subprod model because there will be no selection in products model
+    filterSubProducts(-1);
     return status;
 #else
     QSqlQuery addProduct;
@@ -525,7 +529,6 @@ void ProductsData::importFromExcel(const QString& importXlsx) {
             productID = addProduct(name, QVariant(category),price, QVariant(color), QVariant(brand));
             emptyRowCounter = 0; //Once we found non-empty row - reset emptyrowCounter
         }
-        qDebug() << productID;
 
         //Add subproducts
         for(QMap<int, QString>::iterator i = sizes.begin(); i != sizes.end(); ++i) {
@@ -562,7 +565,6 @@ int ProductsData::getAmountOfSubProd(int subProdID) {
     while(reduce.next()) amount -= reduce.value(SUBPROD_HISTORY_AMOUNT).toInt();
 
     if(idsInCart.contains(subProdID)) {
-        qDebug() << idsInCart << subProdID;
         amount -= idsInCart[subProdID];
     }
 

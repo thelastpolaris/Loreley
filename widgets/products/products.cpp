@@ -96,7 +96,7 @@ Products::Products(bool _saleMode) :
 
     connect(prodData, &ProductsData::propertiesChanged, [=](QString table) {
         setupPropertyDelegates(table);
-        prodData->initModels(); //Re-initialize models to allow selection of new property
+        prodData->initModels(true); //Re-initialize models to allow selection of new property
     });
 
     //TODO - Find better solution
@@ -211,7 +211,7 @@ bool Products::startDeletingProduct() {
         int delRow = currentIndex.row();
         QString name = prodData->productsData(delRow, PROD_NAME).toString();
 
-        int response = QMessageBox::question(this, tr("Delete product"),tr("Are you sure you want to delete <b>%1</b>?").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
+        int response = QMessageBox::question(this, tr("Delete product"),tr("Are you sure you want to delete <b>%1</b> ?").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
         if(response == QMessageBox::Ok) {
             prodData->removeProduct(delRow);
             ui->tableView->selectRow(delRow); // Select next row
@@ -237,7 +237,7 @@ bool Products::startDeletingSubProduct() {
         int parentProdRow = ui->tableView->selectionModel()->currentIndex().row();
         QString name = prodData->productsData(parentProdRow, PROD_NAME).toString();
 
-        int response = QMessageBox::question(this, tr("Delete subproduct"),tr("Are you sure you want to delete subproduct of product <b>%1</b>?<br>"
+        int response = QMessageBox::question(this, tr("Delete subproduct"),tr("Are you sure you want to delete subproduct of product <b>%1</b> ?<br>"
                                                                               "This will erase all data associated with subproduct (arrival history, sells)").arg(name), QDialogButtonBox::Ok, QDialogButtonBox::Cancel);
         if(response == QDialogButtonBox::Ok) {
             prodData->removeSubProduct(delRow);

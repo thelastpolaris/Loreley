@@ -2,6 +2,7 @@
 #include "productsdata.h"
 #include <QSqlQuery>
 #include <QDebug>
+#include "helpers.h"
 
 SellData* SellData::p_instance = 0;
 
@@ -9,25 +10,6 @@ SellData* SellData::Create() {
     if(p_instance) delete p_instance;
     p_instance = new SellData;
     return p_instance;
-}
-
-QVariant getValueFromDB(QString table, QString field, QVariant value, QString targetField) {
-    QSqlQuery query;
-    query.prepare("SELECT * FROM " + table + " WHERE " + field + "=:value");
-    query.bindValue(":value", value);
-    query.exec();
-    if(query.next()) {
-        return query.value(targetField);
-    }
-    return QVariant::Invalid;
-}
-
-QSqlQuery getQueryFromDB(QString table, QString field, QVariant value) {
-    QSqlQuery query;
-    query.prepare("SELECT * FROM " + table + " WHERE " + field + "=:value");
-    query.bindValue(":value", value);
-    query.exec();
-    return query;
 }
 
 SellData::SellData(QObject *parent)
@@ -83,7 +65,7 @@ bool SellData::commitSale(int discPercents, int discount) {
         QHash<int, int> subProds = m_productCart.getIDsWithAmount();
         for(int i = 0; i < m_productCart.rowCount(); ++i) {
             int subProdID = m_productCart.data(i, ID).toInt();
-            int amount = subProds[subProdID];
+            int amount = 1;//subProds[subProdID];
             double discount = m_productCart.data(i, DISCOUNT).toDouble();
 
             query.prepare("INSERT INTO subprod_reduce (subprod_id, amount, reason) "
@@ -111,9 +93,8 @@ bool SellData::commitSale(int discPercents, int discount) {
         }
 
         setProperty("displayPrice", QString::number(0));
+        emit saleDone(m_productCart.property("price").toDouble() - m_productCart.property("discounts").toDouble());
         m_productCart.clearCart();
-        setProperty("price", 0);
-        emit saleDone(m_productCart.property("price").toDouble());
         return true;
     } else {
         emit errorOccured(query.lastError().text());

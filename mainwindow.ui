@@ -56,9 +56,9 @@
      <string>Products</string>
     </property>
     <addaction name="actionCategories"/>
+    <addaction name="actionColors"/>
     <addaction name="actionBrands"/>
     <addaction name="separator"/>
-    <addaction name="actionColors"/>
     <addaction name="actionSize"/>
     <addaction name="separator"/>
     <addaction name="actionImportExcel"/>

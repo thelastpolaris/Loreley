@@ -20,8 +20,6 @@ Sell::Sell(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->splitter->insertWidget(0, prodWidget);
-    ui->cartTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->cartTable->horizontalHeader()->setStretchLastSection(true);
     ui->cartTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->splitter->setStretchFactor(0, 2);
 
@@ -35,6 +33,10 @@ Sell::Sell(QWidget *parent) :
     ui->price->setWordWrap(true);
 
     ui->cartTable->setModel(sellData->getCartModel());
+
+    ui->cartTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->cartTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    ui->cartTable->horizontalHeader()->setStretchLastSection(true);
 
     //Set signals
     connect(sellData, &SellData::displayPriceChanged, [=](QString changedPrice) {
@@ -69,7 +71,8 @@ Sell::Sell(QWidget *parent) :
     connect(ui->cartTable->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleSelection(QItemSelection)));
 
     connect(ui->removeFromCart, &QPushButton::clicked, [=] {
-        if(!sellData->removeFromCart(rowToRemove)) {
+        int rowToRemove = ui->cartTable->selectionModel()->currentIndex().row();
+        if(!sellData->removeFromCart(ui->cartTable->selectionModel()->currentIndex().row())) {
             QMessageBox::warning(this, tr("Error"), tr("Couldn't delete subproduct from the cart "
                                                        "(no row with the number %1)").arg(rowToRemove));
         } else {
@@ -90,12 +93,7 @@ Sell::Sell(QWidget *parent) :
     });
 
     //Handle sale was done
-    connect(sellData, &SellData::saleDone, [=](int price) {
-        // Reset subproducts amount once sale is finished
-        prodWidget->selectSubProdsWithSelection();
-        QMessageBox::information(this, tr("Sale is successfully finished"),
-                                 tr("Sale for the price <b>%1</b> was succesfully added to database").arg(QString::number(price)));
-    });
+    connect(sellData, SIGNAL(saleDone(double)), this, SLOT(onSaleDone(double)));
 
     connect(ui->addDiscount, SIGNAL(pressed()), this, SLOT(addDiscount()));
     connect(ui->removeDiscount, SIGNAL(pressed()), this, SLOT(deleteDiscount()));
@@ -108,9 +106,16 @@ void Sell::prepareSell() {
     prodWidget->prepareProducts();
 }
 
+void Sell::onSaleDone(double finalPrice) {
+    // Reset subproducts amount once sale is finished
+    prodWidget->selectSubProdsWithSelection();
+    QMessageBox::information(this, tr("Sale is successfully finished"),
+                             tr("Sale for the price <b>%1</b> was succesfully added to database").arg(QString::number(finalPrice)));
+}
+
 void Sell::handleSelection(const QItemSelection &selected) {
     if(!selected.isEmpty()) {
-        rowToRemove = selected.indexes()[0].row();
+        int rowToRemove = ui->cartTable->selectionModel()->currentIndex().row();
         ui->removeFromCart->setEnabled(true);
         ui->addDiscount->setEnabled(true);
 
@@ -120,12 +125,13 @@ void Sell::handleSelection(const QItemSelection &selected) {
         ui->removeFromCart->setEnabled(false);
         ui->addDiscount->setEnabled(false);
         ui->removeDiscount->setEnabled(false);
-        rowToRemove = -1;
     }
 }
 
 void Sell::addDiscount() {
     CartModel* model = SellData::Instance()->getCartModel();
+    int rowToRemove = ui->cartTable->selectionModel()->currentIndex().row();
+
     if(rowToRemove >= 0) {
         QModelIndex indexPrice = model->index(rowToRemove, PRICE);
         double price = indexPrice.data().toDouble();
@@ -149,6 +155,8 @@ void Sell::addDiscount() {
 
 void Sell::deleteDiscount() {
     CartModel* model = SellData::Instance()->getCartModel();
+    int rowToRemove = ui->cartTable->selectionModel()->currentIndex().row();
+\
     if(rowToRemove >= 0) {
         if(model->hasDiscount(rowToRemove)) {
             if(!model->deleteDiscount(rowToRemove)) {
@@ -203,7 +211,11 @@ QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModel
     QString text = index.data().toString();
     doc.setHtml(text);
     doc.setTextWidth(option.fontMetrics.width(text));
-    return QSize(doc.idealWidth(), doc.size().height());
+    QSizeF d = doc.size();
+    qreal w = doc.idealWidth();
+    qreal w2 = doc.textWidth();
+    qreal i = doc.indentWidth();
+    return QSize(doc.textWidth() * 1.1, doc.size().height());
 }
 
 Sell::~Sell()

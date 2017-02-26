@@ -30,6 +30,7 @@ public slots:
     void addDiscount();
     void deleteDiscount();
     void handleSelection(const QItemSelection &selected);
+    void onSaleDone(double finalPrice);
 private:
     QList<int> currentCart;
     Ui::Sell *ui;
@@ -40,11 +41,6 @@ private:
      * @brief rowToAdd - the id of row that is currently selected in subproducts table
      */
     int rowToAdd;
-
-    /**
-     * @brief rowToAdd - the id of row that is currently selected in cart table
-     */
-    int rowToRemove;
 
     /// Stores barcode that is being read
     QString barCode;

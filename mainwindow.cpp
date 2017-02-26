@@ -35,6 +35,7 @@ MainWindow* MainWindow::Create() {
 }
 
 void MainWindow::Initialize() {
+    QWidget *prevWidget = centralWidget();
     if(p_products) delete p_products;
     p_products = new Products;
 
@@ -43,6 +44,7 @@ void MainWindow::Initialize() {
 
     if(p_sell) delete p_sell;
     p_sell = new Sell;
+    if(prevWidget) setCentralWidget(prevWidget);
 }
 
 // we create the menu entries dynamically, dependent on the existing translations.

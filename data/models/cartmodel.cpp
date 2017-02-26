@@ -73,9 +73,12 @@ bool CartModel::removeFromCart(int row) {
 
 void CartModel::clearCart() {
     emit beginResetModel();
-    for(int i = 0; i < columns.size(); ++i) {
-        columns[i].clear();
-    }
+    for(int i = 0; i < columns.size(); ++i) columns[i].clear();
+
+    IDsWithAmount.clear();
+    setProperty("price", 0);
+    setProperty("discounts", 0);
+
     emit endResetModel();
 }
 

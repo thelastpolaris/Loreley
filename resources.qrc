@@ -45,6 +45,5 @@
         <file>languages/Loreley_en.ts</file>
         <file>languages/Loreley_ru.qm</file>
         <file>languages/Loreley_ru.ts</file>
-        <file>languages/project_ru.ts</file>
     </qresource>
 </RCC>

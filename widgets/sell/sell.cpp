@@ -84,6 +84,7 @@ Sell::Sell(QWidget *parent) :
     connect(ui->finishSale, &QPushButton::clicked, [=] {
         if(sellData->commitSale(0,0)) {
             ui->cartTable->selectionModel()->clearSelection();
+            handleSelection();
         }
     });
 

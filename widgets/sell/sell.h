@@ -29,7 +29,7 @@ signals:
 public slots:
     void addDiscount();
     void deleteDiscount();
-    void handleSelection(const QItemSelection &selected);
+    void handleSelection(const QItemSelection &selected = QItemSelection());
     void onSaleDone(double finalPrice);
 private:
     QList<int> currentCart;

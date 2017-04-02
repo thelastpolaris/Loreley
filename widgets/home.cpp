@@ -11,6 +11,7 @@ Home::Home(QWidget *parent) :
     connect(ui->openProducts, SIGNAL(pressed()), MainWindow::Instance(), SLOT(openProducts()));
     /******* Separator ********/
     connect(ui->openSell, SIGNAL(pressed()), MainWindow::Instance(), SLOT(openSell()));
+    connect(ui->openReports, SIGNAL(pressed()), MainWindow::Instance(), SLOT(openReports()));
 }
 
 Home::~Home()

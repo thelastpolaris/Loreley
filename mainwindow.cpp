@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "widgets/products/products.h"
 #include "widgets/sell/sell.h"
-
+#include "widgets/reports/reports.h"
+#include "widgets/products/products.h"
 #include "widgets/home.h"
 #include <QDir>
 #include <QDebug>
@@ -12,7 +12,8 @@
 MainWindow* MainWindow::pinstance = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::MainWindow), p_products(NULL), p_home(NULL), p_sell(NULL)
+    QMainWindow(parent), ui(new Ui::MainWindow), p_products(NULL), p_home(NULL), p_sell(NULL),
+    p_reports(NULL)
 {
     ui->setupUi(this);
     ui->mainToolBar->hide();
@@ -44,6 +45,10 @@ void MainWindow::Initialize() {
 
     if(p_sell) delete p_sell;
     p_sell = new Sell;
+
+    if(p_reports) delete p_reports;
+    p_reports = new Reports;
+
     if(prevWidget) setCentralWidget(prevWidget);
 }
 
@@ -178,9 +183,15 @@ void MainWindow::openSell() {
     setCentralWidget(p_sell);
 }
 
+void MainWindow::openReports() {
+    prepareCentralWidget();
+    setCentralWidget(p_reports);
+}
+
 void MainWindow::createActions() {
     connect(ui->actionHome, &QAction::triggered, this, &MainWindow::openHome);
     /******* Separator ********/
     connect(ui->actionProducts, &QAction::triggered, this, &MainWindow::openProducts);
     connect(ui->actionSell, &QAction::triggered, this, &MainWindow::openSell);
+    connect(ui->actionReports, &QAction::triggered, this, &MainWindow::openReports);
 }

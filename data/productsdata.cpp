@@ -20,7 +20,8 @@ ProductsData* ProductsData::Create() {
     return p_instance;
 }
 
-ProductsData::ProductsData()
+ProductsData::ProductsData(QObject *parent)
+    :QObject(parent)
 {
     initModels();
     //Setup printer

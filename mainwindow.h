@@ -13,6 +13,7 @@ namespace Ui {
 class Products;
 class Home;
 class Sell;
+class Reports;
 
 class MainWindow : public QMainWindow
 {
@@ -57,6 +58,7 @@ public slots:
     void openProducts();
     void openHome();
     void openSell();
+    void openReports();
 
 private:
     Ui::MainWindow *ui;
@@ -65,6 +67,7 @@ private:
     Products *p_products;
     Home *p_home;
     Sell *p_sell;
+    Reports *p_reports;
 
     static MainWindow* pinstance;
 

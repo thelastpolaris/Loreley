@@ -120,7 +120,7 @@ signals:
     void propertyEdited();
 
 protected:
-    ProductsData();
+    ProductsData(QObject *parent = 0);
     ~ProductsData();
 
 private:

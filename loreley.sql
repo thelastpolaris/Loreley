@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Feb 16, 2017 at 06:41 PM
+-- Generation Time: Apr 06, 2017 at 06:09 AM
 -- Server version: 5.7.17-0ubuntu0.16.10.1
--- PHP Version: 7.0.13-0ubuntu0.16.10.1
+-- PHP Version: 7.0.15-0ubuntu0.16.10.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `loreley`
 --
+CREATE DATABASE IF NOT EXISTS `loreley` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `loreley`;
 
 -- --------------------------------------------------------
 
@@ -31,13 +33,6 @@ CREATE TABLE `brands` (
   `name` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `brands`
---
-
-INSERT INTO `brands` (`id`, `name`) VALUES
-(4, 'Mertex');
-
 -- --------------------------------------------------------
 
 --
@@ -48,14 +43,6 @@ CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `name` tinytext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `name`) VALUES
-(28, 'Блузки'),
-(29, 'Рубашки');
 
 -- --------------------------------------------------------
 
@@ -81,13 +68,6 @@ CREATE TABLE `colors` (
   `color` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `colors`
---
-
-INSERT INTO `colors` (`id`, `name`, `color`) VALUES
-(4, 'Красный', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -103,14 +83,6 @@ CREATE TABLE `products` (
   `price` decimal(10,0) NOT NULL,
   `note` mediumtext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`id`, `brand`, `category_id`, `name`, `color`, `price`, `note`) VALUES
-(48, 4, 28, 'Джинса', 4, '32100', '312312'),
-(49, 4, 28, '3333', 4, '23226', '');
 
 --
 -- Triggers `products`
@@ -133,13 +105,6 @@ CREATE TABLE `sells` (
   `client` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `sells`
---
-
-INSERT INTO `sells` (`id`, `date`, `price`, `client`) VALUES
-(17, '2017-02-16 18:41:24', 55326, -1);
-
 -- --------------------------------------------------------
 
 --
@@ -154,14 +119,6 @@ CREATE TABLE `sells_subproducts` (
   `discount` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `sells_subproducts`
---
-
-INSERT INTO `sells_subproducts` (`id`, `sell`, `subproduct`, `amount`, `discount`) VALUES
-(7, 17, 80, 1, 0),
-(8, 17, 82, 1, 0);
-
 -- --------------------------------------------------------
 
 --
@@ -173,14 +130,43 @@ CREATE TABLE `sizes` (
   `name` tinytext
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `sizes`
+-- Table structure for table `subprod_arrival`
 --
 
-INSERT INTO `sizes` (`id`, `name`) VALUES
-(5, '38'),
-(6, '32'),
-(7, '36');
+CREATE TABLE `subprod_arrival` (
+  `id` int(11) NOT NULL,
+  `subprod_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `arrival_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subprod_reasons`
+--
+
+CREATE TABLE `subprod_reasons` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subprod_reduce`
+--
+
+CREATE TABLE `subprod_reduce` (
+  `id` int(11) NOT NULL,
+  `subprod_id` int(11) NOT NULL,
+  `amount` int(11) NOT NULL,
+  `reason` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -197,14 +183,6 @@ CREATE TABLE `subproducts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `subproducts`
---
-
-INSERT INTO `subproducts` (`id`, `product_id`, `size`, `barcode`, `note`) VALUES
-(80, 49, 5, '2030000000791', NULL),
-(82, 48, 6, '2030000000807', NULL);
-
---
 -- Triggers `subproducts`
 --
 DELIMITER $$
@@ -214,70 +192,6 @@ DELETE FROM subprod_reduce WHERE subprod_reduce.subprod_id = old.id;
 END
 $$
 DELIMITER ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subprod_arrival`
---
-
-CREATE TABLE `subprod_arrival` (
-  `id` int(11) NOT NULL,
-  `subprod_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `arrival_date` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subprod_arrival`
---
-
-INSERT INTO `subprod_arrival` (`id`, `subprod_id`, `amount`, `arrival_date`) VALUES
-(26, 80, 1, '2016-12-03'),
-(28, 82, 1, '2017-02-05'),
-(29, 82, 1, '2017-02-05'),
-(30, 80, 2, '2017-02-16');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subprod_reasons`
---
-
-CREATE TABLE `subprod_reasons` (
-  `id` int(11) NOT NULL,
-  `name` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subprod_reasons`
---
-
-INSERT INTO `subprod_reasons` (`id`, `name`) VALUES
-(1, 'Ошибка'),
-(3, 'Продажа');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subprod_reduce`
---
-
-CREATE TABLE `subprod_reduce` (
-  `id` int(11) NOT NULL,
-  `subprod_id` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `reason` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `subprod_reduce`
---
-
-INSERT INTO `subprod_reduce` (`id`, `subprod_id`, `amount`, `reason`, `date`) VALUES
-(9, 80, 1, 3, '2017-02-16 18:41:24'),
-(10, 82, 1, 3, '2017-02-16 18:41:24');
 
 --
 -- Indexes for dumped tables
@@ -333,12 +247,6 @@ ALTER TABLE `sizes`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `subproducts`
---
-ALTER TABLE `subproducts`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `subprod_arrival`
 --
 ALTER TABLE `subprod_arrival`
@@ -357,6 +265,12 @@ ALTER TABLE `subprod_reduce`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `subproducts`
+--
+ALTER TABLE `subproducts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -364,12 +278,12 @@ ALTER TABLE `subprod_reduce`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `category_sizes`
 --
@@ -379,47 +293,47 @@ ALTER TABLE `category_sizes`
 -- AUTO_INCREMENT for table `colors`
 --
 ALTER TABLE `colors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sells`
 --
 ALTER TABLE `sells`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sells_subproducts`
 --
 ALTER TABLE `sells_subproducts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sizes`
 --
 ALTER TABLE `sizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
---
--- AUTO_INCREMENT for table `subproducts`
---
-ALTER TABLE `subproducts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `subprod_arrival`
 --
 ALTER TABLE `subprod_arrival`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `subprod_reasons`
 --
 ALTER TABLE `subprod_reasons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `subprod_reduce`
 --
 ALTER TABLE `subprod_reduce`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `subproducts`
+--
+ALTER TABLE `subproducts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

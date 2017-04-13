@@ -1,6 +1,7 @@
 #ifndef REPORTS_H
 #define REPORTS_H
 
+#include <QDate>
 #include <QWidget>
 #include <QItemSelection>
 
@@ -14,6 +15,7 @@ class Reports : public QWidget
 
 public:
     explicit Reports(QWidget *parent = 0);
+    void selectDate(QDate date = QDate::currentDate());
     ~Reports();
 
 private slots:

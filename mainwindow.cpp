@@ -185,6 +185,7 @@ void MainWindow::openSell() {
 
 void MainWindow::openReports() {
     prepareCentralWidget();
+    p_reports->selectDate();
     setCentralWidget(p_reports);
 }
 

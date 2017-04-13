@@ -185,22 +185,22 @@
 <context>
     <name>CartModel</name>
     <message>
-        <location filename="../data/models/cartmodel.cpp" line="89"/>
+        <location filename="../data/models/cartmodel.cpp" line="92"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/models/cartmodel.cpp" line="91"/>
+        <location filename="../data/models/cartmodel.cpp" line="94"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/models/cartmodel.cpp" line="93"/>
+        <location filename="../data/models/cartmodel.cpp" line="96"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/models/cartmodel.cpp" line="95"/>
+        <location filename="../data/models/cartmodel.cpp" line="98"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
@@ -328,12 +328,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/home.ui" line="38"/>
+        <location filename="../widgets/home.ui" line="75"/>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/home.ui" line="106"/>
         <source>Products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/home.ui" line="63"/>
+        <location filename="../widgets/home.ui" line="44"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
@@ -351,68 +356,78 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="51"/>
+        <location filename="../mainwindow.ui" line="52"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="56"/>
-        <location filename="../mainwindow.ui" line="90"/>
+        <location filename="../mainwindow.ui" line="57"/>
+        <location filename="../mainwindow.ui" line="91"/>
         <source>Products</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="93"/>
+        <location filename="../mainwindow.ui" line="94"/>
         <source>Alt+2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="118"/>
+        <location filename="../mainwindow.ui" line="119"/>
         <source>Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="121"/>
+        <location filename="../mainwindow.ui" line="122"/>
         <source>Alt+1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="126"/>
+        <location filename="../mainwindow.ui" line="127"/>
         <source>Sell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="129"/>
+        <location filename="../mainwindow.ui" line="130"/>
         <source>Alt+3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="134"/>
+        <location filename="../mainwindow.ui" line="135"/>
         <source>Import Products (From Excel)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="98"/>
+        <location filename="../mainwindow.ui" line="140"/>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="143"/>
+        <source>Alt+4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="99"/>
         <source>Categories</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="103"/>
+        <location filename="../mainwindow.ui" line="104"/>
         <source>Brands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="108"/>
+        <location filename="../mainwindow.ui" line="109"/>
         <source>Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="113"/>
+        <location filename="../mainwindow.ui" line="114"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="143"/>
+        <location filename="../mainwindow.cpp" line="148"/>
         <source>Current Language changed to %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -565,66 +580,66 @@
 <context>
     <name>ProductsData</name>
     <message>
-        <location filename="../data/productsdata.cpp" line="42"/>
+        <location filename="../data/productsdata.cpp" line="44"/>
         <source>Product ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="43"/>
+        <location filename="../data/productsdata.cpp" line="45"/>
         <source>Characteristic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="44"/>
+        <location filename="../data/productsdata.cpp" line="46"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="45"/>
-        <location filename="../data/productsdata.cpp" line="300"/>
+        <location filename="../data/productsdata.cpp" line="47"/>
+        <location filename="../data/productsdata.cpp" line="301"/>
         <source>Price</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="46"/>
+        <location filename="../data/productsdata.cpp" line="48"/>
         <source>Brand</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="47"/>
+        <location filename="../data/productsdata.cpp" line="49"/>
         <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="48"/>
-        <location filename="../data/productsdata.cpp" line="66"/>
+        <location filename="../data/productsdata.cpp" line="50"/>
+        <location filename="../data/productsdata.cpp" line="69"/>
         <source>Note</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="62"/>
+        <location filename="../data/productsdata.cpp" line="65"/>
         <source>Subproduct ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="63"/>
+        <location filename="../data/productsdata.cpp" line="66"/>
         <source>Amount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="64"/>
-        <location filename="../data/productsdata.cpp" line="322"/>
+        <location filename="../data/productsdata.cpp" line="67"/>
+        <location filename="../data/productsdata.cpp" line="323"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="65"/>
+        <location filename="../data/productsdata.cpp" line="68"/>
         <source>Barcode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/productsdata.cpp" line="548"/>
-        <location filename="../data/productsdata.cpp" line="559"/>
+        <location filename="../data/productsdata.cpp" line="550"/>
+        <location filename="../data/productsdata.cpp" line="561"/>
         <source>Error retrieving amount of subproduct. Amount will be set to 0</source>
         <translation type="unfinished"></translation>
     </message>
@@ -659,6 +674,24 @@
     <message>
         <location filename="../widgets/products/reducesubproductdialog.cpp" line="50"/>
         <source>Products left after reduce: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Reports</name>
+    <message>
+        <location filename="../widgets/reports/reports.ui" line="14"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/reports/reports.ui" line="50"/>
+        <source>Total:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../widgets/reports/reports.ui" line="63"/>
+        <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -860,63 +893,63 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="92"/>
+        <location filename="../widgets/sell/sell.cpp" line="93"/>
         <source>Problems with sell module</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="99"/>
+        <location filename="../widgets/sell/sell.cpp" line="113"/>
         <source>Sale is successfully finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="100"/>
+        <location filename="../widgets/sell/sell.cpp" line="114"/>
         <source>Sale for the price &lt;b&gt;%1&lt;/b&gt; was succesfully added to database</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="138"/>
+        <location filename="../widgets/sell/sell.cpp" line="141"/>
         <source>Enter discount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="138"/>
+        <location filename="../widgets/sell/sell.cpp" line="141"/>
         <source>Enter discount: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="141"/>
+        <location filename="../widgets/sell/sell.cpp" line="144"/>
         <source>Error adding discount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="142"/>
+        <location filename="../widgets/sell/sell.cpp" line="145"/>
         <source>Something went wrong. Discount was not added</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="149"/>
-        <location filename="../widgets/sell/sell.cpp" line="168"/>
+        <location filename="../widgets/sell/sell.cpp" line="152"/>
+        <location filename="../widgets/sell/sell.cpp" line="171"/>
         <source>No product is selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="150"/>
+        <location filename="../widgets/sell/sell.cpp" line="153"/>
         <source>Please select a product in the cart to add a discount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="161"/>
+        <location filename="../widgets/sell/sell.cpp" line="164"/>
         <source>Error deleting discount</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="162"/>
+        <location filename="../widgets/sell/sell.cpp" line="165"/>
         <source>Something went wrong. Discount was not deleted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../widgets/sell/sell.cpp" line="169"/>
+        <location filename="../widgets/sell/sell.cpp" line="172"/>
         <source>Please select a product in the cart to remove a discount</source>
         <translation type="unfinished"></translation>
     </message>
@@ -924,28 +957,84 @@
 <context>
     <name>SellData</name>
     <message>
-        <location filename="../data/selldata.cpp" line="61"/>
+        <location filename="../data/selldata.cpp" line="43"/>
         <source>No subproduct with barcode %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/selldata.cpp" line="65"/>
+        <location filename="../data/selldata.cpp" line="47"/>
         <source>Invalid barcode provied</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/selldata.cpp" line="142"/>
+        <location filename="../data/selldata.cpp" line="123"/>
         <source>No product with ID %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/selldata.cpp" line="146"/>
+        <location filename="../data/selldata.cpp" line="127"/>
         <source>No subproduct with ID %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../data/selldata.cpp" line="149"/>
+        <location filename="../data/selldata.cpp" line="130"/>
         <source>Not enough product with ID %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SellingsModel</name>
+    <message>
+        <location filename="../data/models/sellingsmodel.cpp" line="9"/>
+        <source>Selling ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingsmodel.cpp" line="10"/>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingsmodel.cpp" line="11"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingsmodel.cpp" line="12"/>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SellingsSubProdsModel</name>
+    <message>
+        <location filename="../data/models/sellingssubprodsmodel.cpp" line="9"/>
+        <source>Product&apos;s name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingssubprodsmodel.cpp" line="10"/>
+        <source>Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingssubprodsmodel.cpp" line="11"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingssubprodsmodel.cpp" line="12"/>
+        <source>Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingssubprodsmodel.cpp" line="13"/>
+        <source>Discount</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../data/models/sellingssubprodsmodel.cpp" line="14"/>
+        <source>Color</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

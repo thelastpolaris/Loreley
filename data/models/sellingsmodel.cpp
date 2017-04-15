@@ -5,12 +5,6 @@ SellingsModel::SellingsModel(QObject* parent)
     :QSqlTableModel(parent)
 {
     setTable("sells");
-
-    setHeaderData(SELLING_ID, Qt::Horizontal, tr("Selling ID"));
-    setHeaderData(SELLING_TIME, Qt::Horizontal, tr("Time"));
-    setHeaderData(SELLING_PRICE, Qt::Horizontal, tr("Price"));
-    setHeaderData(SELLING_CLIENT, Qt::Horizontal, tr("Client"));
-
     select();
 }
 

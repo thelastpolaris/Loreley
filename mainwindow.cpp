@@ -8,6 +8,8 @@
 #include <QDebug>
 #include <QSettings>
 #include <QKeyEvent>
+#include "data/reportsdata.h"
+#include "data/selldata.h"
 
 MainWindow* MainWindow::pinstance = 0;
 
@@ -147,6 +149,8 @@ void MainWindow::loadLanguage(const QString& rLanguage)
         switchTranslator(m_translatorQt, QString("qt_%1.qm").arg(rLanguage));
         ui->statusBar->showMessage(tr("Current Language changed to %1").arg(languageName));
         productsData = ProductsData::Create();
+        sellData = SellData::Create();
+        reportsData = ReportsData::Create();
         Initialize();
     }
 }
@@ -185,6 +189,8 @@ void MainWindow::openSell() {
 
 void MainWindow::openReports() {
     prepareCentralWidget();
+    QDate resetDate = QDate::currentDate().addDays(1);
+    p_reports->selectDate(resetDate);
     p_reports->selectDate();
     setCentralWidget(p_reports);
 }

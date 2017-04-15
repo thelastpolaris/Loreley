@@ -24,10 +24,6 @@ int main(int argc, char *argv[])
     Q_ASSERT_X(db.open(), "MainWindow::MainWindow", "Couldn't connect to database");
 
     //Initialize data - TO DO: Move to another class
-    ProductsData::Create();
-    SellData::Create();
-    ReportsData::Create();
-
     MainWindow* win = MainWindow::Create();
     win->loadLanguage(QLocale::system().bcp47Name());
 

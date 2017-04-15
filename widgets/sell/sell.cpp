@@ -212,10 +212,6 @@ QSize HTMLDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModel
     QString text = index.data().toString();
     doc.setHtml(text);
     doc.setTextWidth(option.fontMetrics.width(text));
-    QSizeF d = doc.size();
-    qreal w = doc.idealWidth();
-    qreal w2 = doc.textWidth();
-    qreal i = doc.indentWidth();
     return QSize(doc.textWidth() * 1.1, doc.size().height());
 }
 

@@ -41,7 +41,10 @@ SOURCES += main.cpp\
     data/reportsdata.cpp \
     widgets/reports/reports.cpp \
     data/models/sellingsmodel.cpp \
-    data/models/sellingssubprodsmodel.cpp
+    data/models/sellingssubprodsmodel.cpp \
+    data/clientsdata.cpp \
+    widgets/clients/clients.cpp \
+    widgets/clients/addclientdialog.cpp
 
 HEADERS  += mainwindow.h \
     widgets/delegates/comboboxitemdelegate.h \
@@ -67,7 +70,10 @@ HEADERS  += mainwindow.h \
     data/reportsdata.h \
     widgets/reports/reports.h \
     data/models/sellingsmodel.h \
-    data/models/sellingssubprodsmodel.h
+    data/models/sellingssubprodsmodel.h \
+    data/clientsdata.h \
+    widgets/clients/clients.h \
+    widgets/clients/addclientdialog.h
 
 FORMS    += mainwindow.ui \
     widgets/products/products.ui \
@@ -79,7 +85,9 @@ FORMS    += mainwindow.ui \
     widgets/sell/sell.ui \
     widgets/products/searchproductdialog.ui \
     widgets/sell/scanbarcodedialog.ui \
-    widgets/reports/reports.ui
+    widgets/reports/reports.ui \
+    widgets/clients/clients.ui \
+    widgets/clients/addclientdialog.ui
 
 RESOURCES += \
     resources.qrc

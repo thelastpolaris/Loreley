@@ -14,6 +14,7 @@ class Products;
 class Home;
 class Sell;
 class Reports;
+class Clients;
 
 class MainWindow : public QMainWindow
 {
@@ -59,6 +60,7 @@ public slots:
     void openHome();
     void openSell();
     void openReports();
+    void openClients();
 
 private:
     Ui::MainWindow *ui;
@@ -68,6 +70,7 @@ private:
     Home *p_home;
     Sell *p_sell;
     Reports *p_reports;
+    Clients *p_clients;
 
     static MainWindow* pinstance;
 

@@ -125,6 +125,7 @@ Products::Products(bool _saleMode) :
                                                             tr("Excel spreadsheet (*.xlsx)"));
             prodData->importFromExcel(fileName);
         });
+
     } else {
         ui->addProductButton->setVisible(false);
         ui->deleteProductButton->setVisible(false);

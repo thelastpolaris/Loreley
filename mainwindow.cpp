@@ -3,6 +3,7 @@
 #include "widgets/sell/sell.h"
 #include "widgets/reports/reports.h"
 #include "widgets/products/products.h"
+#include "widgets/clients/clients.h"
 #include "widgets/home.h"
 #include <QDir>
 #include <QDebug>
@@ -13,7 +14,7 @@ MainWindow* MainWindow::pinstance = 0;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), ui(new Ui::MainWindow), p_products(NULL), p_home(NULL), p_sell(NULL),
-    p_reports(NULL)
+    p_reports(NULL), p_clients(NULL)
 {
     ui->setupUi(this);
     ui->mainToolBar->hide();
@@ -48,6 +49,9 @@ void MainWindow::Initialize() {
 
     if(p_reports) delete p_reports;
     p_reports = new Reports;
+
+    if(p_clients) delete p_clients;
+    p_clients = new Clients;
 
     if(prevWidget) setCentralWidget(prevWidget);
 }
@@ -186,6 +190,11 @@ void MainWindow::openSell() {
 void MainWindow::openReports() {
     prepareCentralWidget();
     setCentralWidget(p_reports);
+}
+
+void MainWindow::openClients() {
+    prepareCentralWidget();
+    setCentralWidget(p_clients);
 }
 
 void MainWindow::createActions() {

@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     db.setHostName(settings.value("database/hostname", "localhost").toString());
     db.setDatabaseName(settings.value("database/dbname", "loreley").toString());
     db.setUserName(settings.value("database/username", "root").toString());
-    db.setPassword(settings.value("database/password", "redwood32").toString());
+    db.setPassword(settings.value("database/password", "1lyaeva5").toString());
     Q_ASSERT_X(db.open(), "MainWindow::MainWindow", "Couldn't connect to database");
 
     //Initialize data - TO DO: Move to another class

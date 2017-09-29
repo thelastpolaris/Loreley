@@ -2,6 +2,7 @@
 #define SELLINGSSUBPRODSMODEL_H
 
 #include <QSqlQueryModel>
+
 #define SELLSUB_PRODNAME 0
 #define SELLSUB_CATEGORIE 1
 #define SELLSUB_SIZE 2

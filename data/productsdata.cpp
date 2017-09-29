@@ -28,7 +28,7 @@ ProductsData::ProductsData(QObject *parent)
     printer.setPrinterName("QL-570");
     printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
     //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
-    printer.setOutputFileName("testBarcode.pdf");
+//    printer.setOutputFileName("testBarcode.pdf");
     printer.setResolution(260);
 }
 
@@ -261,8 +261,6 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     ean13.EAN13ToImage(barcodePixmap, barcode);
 
     QPainter painter;
-    barcodePixmap.save("/home/polaris/test.png");
-
 #define SEPARATOR_LINE_WIDTH 3
 #define BARCODE_SEPARATOR_DISTANCE 10
 

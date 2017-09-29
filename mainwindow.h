@@ -15,6 +15,8 @@ class Home;
 class Sell;
 class Reports;
 class Clients;
+class ReportsData;
+class SellData;
 
 class MainWindow : public QMainWindow
 {
@@ -65,6 +67,8 @@ public slots:
 private:
     Ui::MainWindow *ui;
     ProductsData* productsData;
+    ReportsData* reportsData;
+    SellData* sellData;
 
     Products *p_products;
     Home *p_home;

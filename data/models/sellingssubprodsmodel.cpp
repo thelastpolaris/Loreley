@@ -6,12 +6,6 @@ SellingsSubProdsModel::SellingsSubProdsModel(QObject* parent)
     :QSqlQueryModel(parent)
 {
     setSellingID(-1);
-    setHeaderData(SELLSUB_PRODNAME, Qt::Horizontal, tr("Product's name"));
-    setHeaderData(SELLSUB_CATEGORIE, Qt::Horizontal, tr("Category"));
-    setHeaderData(SELLSUB_SIZE, Qt::Horizontal, tr("Size"));
-    setHeaderData(SELLSUB_PRICE, Qt::Horizontal, tr("Price"));
-    setHeaderData(SELLSUB_DISCOUNT, Qt::Horizontal, tr("Discount"));
-    setHeaderData(SELLSUB_COLOR, Qt::Horizontal, tr("Color"));
 }
 
 void SellingsSubProdsModel::setSellingID(int id)

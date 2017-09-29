@@ -17,7 +17,7 @@ public:
 
 protected:
     explicit ReportsData(QObject *parent = 0);
-    ~ReportsData();
+    virtual ~ReportsData();
 
 signals:
 

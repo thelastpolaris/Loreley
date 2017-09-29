@@ -19,6 +19,7 @@ Reports::Reports(QWidget *parent) :
         sellingsSubProdsModel->setSellingID(-1);
     });
 
+    sellingsModel->setDate(QDate::currentDate());
     ui->salesTable->setModel(sellingsModel);
     ui->salesTable->hideColumn(SELLING_ID);
     ui->salesTable->hideColumn(SELLING_CLIENT);
@@ -30,7 +31,11 @@ Reports::Reports(QWidget *parent) :
     connect(ui->salesTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),
             SLOT(updateSubProdsModel(const QItemSelection &, const QItemSelection &)));
     ui->subProductsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+}
 
+void Reports::selectDate(QDate date)
+{
+    ui->calendarWidget->setSelectedDate(date);
 }
 
 void Reports::updateSubProdsModel(const QItemSelection &first, const QItemSelection &last)

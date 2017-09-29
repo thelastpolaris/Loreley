@@ -3,6 +3,7 @@
 #include "data/clientsdata.h"
 
 #include <QMessageBox>
+#include <QSqlError>
 
 AddClientDialog::AddClientDialog(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +26,7 @@ void AddClientDialog::startAddingClient() {
 void AddClientDialog::finishAddingClient() {
     ClientsData *client = ClientsData::Instance();
 
+    QString id = ui->IDEdit->text();
     QString name = ui->nameEdit->text();
     QString surname = ui->surnameEdit->text();
     QString fathersName = ui->fatherEdit->text();
@@ -33,9 +35,12 @@ void AddClientDialog::finishAddingClient() {
     QString phoneNum2 = ui->phone2Edit->text();
     QString instagram = ui->instagramEdit->text();
     QString email = ui->emailEdit->text();
-    bool smsSend = ui->smsCB->isChecked();
-    bool emailSend = ui->emailCB->isChecked();
-    QString = ui->noteTextEdit->toPlainText();
+    QString note = ui->noteTextEdit->toPlainText();
+
+    if(id.isEmpty()) {
+        QMessageBox::warning(this, tr("ID was not entered"), tr("Please enter ID of the client"));
+        return;
+    }
 
     if(name.isEmpty()) {
         QMessageBox::warning(this, tr("Name was not entered"), tr("Please enter name of the client"));
@@ -52,7 +57,7 @@ void AddClientDialog::finishAddingClient() {
         return;
     }
 
-    if(DOB.isValid()) {
+    if(!DOB.isValid()) {
         QMessageBox::warning(this, tr("Date of Birth is not valid"), tr("Please enter valid date of birth"));
         return;
     }
@@ -62,21 +67,24 @@ void AddClientDialog::finishAddingClient() {
         return;
     }
 
-    if(prod->addProduct(
+    if(client->addClient(
+                id,
                 name,
-                ui->categoryCB->currentData(),
-                ui->priceEdit->text().remove(" ").toInt(),
-                ui->colorCB->currentData(),
-                ui->brandCB->currentData(),
-                ui->noteTextEdit->toPlainText()))
+                surname,
+                fathersName,
+                DOB,
+                phoneNum1,
+                phoneNum2,
+                instagram,
+                email,
+                note))
     {
         close();
-        QMessageBox::information(this,tr("Success!"), tr("Successfully added product <b>%1</b> to the database").arg(name));
+        QMessageBox::information(this,tr("Success!"), tr("Successfully added client to the database").arg(name));
     } else {
-        QSqlError err = prod->productsLastError();
-        QMessageBox::information(this,tr("Error!"), tr("Error - Product <b>%1</b> was not added to the database due to the following errors"
+        QSqlError err = client->clientsLastError();
+        QMessageBox::information(this,tr("Error!"), tr("Error - Client <b>%1</b> was not added to the database due to the following errors"
                                                        "<br> <b>Database Error:</b> %2"
                                                        "<br> <b>Driver Error:</b> %3").arg(name, err.databaseText(), err.driverText() ));
     }
-}
 }

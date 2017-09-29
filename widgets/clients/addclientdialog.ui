@@ -14,102 +14,62 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Add new client</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="9" column="0">
-    <widget class="QLabel" name="emailLabel_2">
-     <property name="text">
-      <string>EMail?</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0">
-    <widget class="QLabel" name="smsLabel">
-     <property name="text">
-      <string>SMS?</string>
-     </property>
-    </widget>
-   </item>
-   <item row="10" column="0">
     <widget class="QLabel" name="noteLabel">
      <property name="text">
       <string>Note</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="2">
+   <item row="7" column="2">
     <widget class="QLineEdit" name="instagramEdit">
      <property name="placeholderText">
       <string>(Optional)</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="2">
+   <item row="8" column="2">
     <widget class="QLineEdit" name="emailEdit">
      <property name="placeholderText">
       <string>(Optional)</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="0">
+   <item row="1" column="0">
     <widget class="QLabel" name="nameLabel">
      <property name="text">
       <string>Name</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="2">
+    <widget class="QLineEdit" name="nameEdit"/>
+   </item>
+   <item row="2" column="0">
     <widget class="QLabel" name="surnameLabel">
      <property name="text">
       <string>Surname</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="3" column="0">
     <widget class="QLabel" name="fatherLabel">
      <property name="text">
       <string>Father's Name</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="2">
-    <widget class="QDateEdit" name="DOBEdit"/>
-   </item>
-   <item row="0" column="2">
-    <widget class="QLineEdit" name="nameEdit"/>
-   </item>
-   <item row="8" column="2">
-    <widget class="QCheckBox" name="smsCB">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <property name="tristate">
-      <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QLabel" name="phone2Label">
      <property name="text">
       <string>Phone 2</string>
      </property>
     </widget>
    </item>
-   <item row="9" column="2">
-    <widget class="QCheckBox" name="emailCB">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="2">
+   <item row="6" column="2">
     <widget class="QLineEdit" name="phone2Edit">
      <property name="text">
       <string/>
@@ -119,52 +79,59 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="phone1Label">
-     <property name="text">
-      <string>Phone 1</string>
-     </property>
-    </widget>
-   </item>
    <item row="2" column="2">
+    <widget class="QLineEdit" name="surnameEdit"/>
+   </item>
+   <item row="3" column="2">
     <widget class="QLineEdit" name="fatherEdit">
      <property name="placeholderText">
       <string/>
      </property>
     </widget>
    </item>
-   <item row="1" column="2">
-    <widget class="QLineEdit" name="surnameEdit"/>
+   <item row="5" column="0">
+    <widget class="QLabel" name="phone1Label">
+     <property name="text">
+      <string>Phone 1</string>
+     </property>
+    </widget>
    </item>
-   <item row="7" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="emailLabel">
      <property name="text">
       <string>Email</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="7" column="0">
     <widget class="QLabel" name="instagramLabel">
      <property name="text">
       <string>Instagram</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QLabel" name="DOBLabel">
      <property name="text">
       <string>Date of Birth</string>
      </property>
     </widget>
    </item>
-   <item row="11" column="2">
+   <item row="9" column="2">
+    <widget class="QTextEdit" name="noteTextEdit">
+     <property name="placeholderText">
+      <string>(Optional)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
    </item>
-   <item row="4" column="2">
+   <item row="5" column="2">
     <widget class="QLineEdit" name="phone1Edit">
      <property name="inputMask">
       <string>D9 999 999</string>
@@ -177,16 +144,37 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="2">
-    <widget class="QTextEdit" name="noteTextEdit">
-     <property name="placeholderText">
-      <string>(Optional)</string>
+   <item row="4" column="2">
+    <widget class="QDateEdit" name="DOBEdit">
+     <property name="displayFormat">
+      <string>dd/MM/yyyy</string>
+     </property>
+     <property name="calendarPopup">
+      <bool>true</bool>
+     </property>
+     <property name="date">
+      <date>
+       <year>2000</year>
+       <month>1</month>
+       <day>1</day>
+      </date>
      </property>
     </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QLabel" name="IDLabel">
+     <property name="text">
+      <string>Client Card ID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QLineEdit" name="IDEdit"/>
    </item>
   </layout>
  </widget>
  <tabstops>
+  <tabstop>IDEdit</tabstop>
   <tabstop>nameEdit</tabstop>
   <tabstop>surnameEdit</tabstop>
   <tabstop>fatherEdit</tabstop>
@@ -195,8 +183,6 @@
   <tabstop>phone2Edit</tabstop>
   <tabstop>instagramEdit</tabstop>
   <tabstop>emailEdit</tabstop>
-  <tabstop>smsCB</tabstop>
-  <tabstop>emailCB</tabstop>
   <tabstop>noteTextEdit</tabstop>
  </tabstops>
  <resources/>

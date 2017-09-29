@@ -203,4 +203,5 @@ void MainWindow::createActions() {
     connect(ui->actionProducts, &QAction::triggered, this, &MainWindow::openProducts);
     connect(ui->actionSell, &QAction::triggered, this, &MainWindow::openSell);
     connect(ui->actionReports, &QAction::triggered, this, &MainWindow::openReports);
+    connect(ui->actionClients, &QAction::triggered, this, &MainWindow::openClients);
 }

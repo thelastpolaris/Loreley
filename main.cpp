@@ -5,6 +5,7 @@
 #include "widgets/products/products.h"
 #include "data/selldata.h"
 #include "data/reportsdata.h"
+#include "data/clientsdata.h"
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
     ProductsData::Create();
     SellData::Create();
     ReportsData::Create();
+    ClientsData::Create();
 
     MainWindow* win = MainWindow::Create();
     win->loadLanguage(QLocale::system().bcp47Name());

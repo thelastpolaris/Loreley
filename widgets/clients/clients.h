@@ -17,10 +17,15 @@ public:
     explicit Clients(QWidget *parent = 0);
     ~Clients();
 
-private:
-    AddClientDialog* addClientDialog;
+private slots:
+    bool startDeletingClient();
 
+signals:
+    void clientSelected(bool isClientSelected);
+
+private:
     Ui::Clients *ui;
+    AddClientDialog* addClientDialog;
 };
 
 #endif // CLIENTS_H

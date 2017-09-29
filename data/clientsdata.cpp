@@ -1,57 +1,78 @@
 #include "clientsdata.h"
 #include <QSqlRecord>
+#include <QDate>
+#include <QDebug>
+#include <QSqlQuery>
 
 ClientsData* ClientsData::p_instance = 0;
 
 ClientsData::ClientsData(QObject *parent)
-    :QObject(parent)
+    :QObject(parent), clientsModel(new ProductsModel(this))
 {
-
+    initModels();
 }
 
-int ClientsData::addClient(QString name, QString surname, QString fathersName, QDate DOB, QString phoneNum1,
-                           QString phoneNum2, QString instagram, QString email, bool smsSend, bool emailSend,
-                           QString note)
+void ClientsData::initModels()
 {
-//#if (QT_VERSION > QT_VERSION_CHECK(5, 5, 1)) // We provide sql query version for old Qt versions where insertRecord always returns false
-    QSqlRecord newRow = productsModel.record();
-    newRow.setValue(CLIENT_NAME, QVariant(name));
-    newRow.setValue(CLIENT_SURNAME, QVariant(surname));
-    newRow.setValue(CLIENT_FATHERS_NAME, QVariant(fathersName));
-    newRow.setValue(CLIENT_DOB, QVariant(DOB));
-    newRow.setValue(CLIENT_PHONE_1, QVariant(phoneNum1));
-    newRow.setValue(CLIENT_PHONE_2, QVariant(phoneNum2));
-    newRow.setValue(CLIENT_EMAIL, QVariant(email));
-    newRow.setValue(CLIENT_INSTAGRAM, QVariant(instagram));
-    newRow.setValue(CLIENT_SMS_SEND, QVariant(smsSend));
-    newRow.setValue(CLIENT_EMAIL_SEND, QVariant(emailSend));
-    newRow.setValue(CLIENT_NOTE, QVariant(note));
+    //Setup productsModel
+    clientsModel->setTable("clients");
+    clientsModel->setEditStrategy(QSqlRelationalTableModel::OnFieldChange);
+    //Name headers
+    clientsModel->setHeaderData(CLIENT_NAME, Qt::Horizontal, tr("Name"));
+    clientsModel->setHeaderData(CLIENT_SURNAME, Qt::Horizontal, tr("Surname"));
+    clientsModel->setHeaderData(CLIENT_FATHERS_NAME, Qt::Horizontal, tr("Father's Name"));
+    clientsModel->setHeaderData(CLIENT_DOB, Qt::Horizontal, tr("Date of Birth"));
+    clientsModel->setHeaderData(CLIENT_PHONE_1, Qt::Horizontal, tr("Tel. 1"));
+    clientsModel->setHeaderData(CLIENT_PHONE_2, Qt::Horizontal, tr("Tel. 2"));
+    clientsModel->setHeaderData(CLIENT_EMAIL, Qt::Horizontal, tr("EMail"));
+    clientsModel->setHeaderData(CLIENT_INSTAGRAM, Qt::Horizontal, tr("Instagram"));
+    clientsModel->setHeaderData(CLIENT_NOTE, Qt::Horizontal, tr("Note"));
+    //Setup readonly columns
+    clientsModel->setReadOnlyCols(QList<int>{CLIENT_ID});
+    //Select all products
+    clientsModel->select();
+}
 
-    bool status = productsModel.insertRecord(-1, newRow);
-    if(!status) {
-        qDebug() << productsModel.lastError().text();
+bool ClientsData::addClient(QString id, QString name, QString surname, QString fathersName, QDate DOB, QString phoneNum1,
+                            QString phoneNum2, QString instagram, QString email, QString note)
+{
+    QSqlQuery addClient;
+    addClient.prepare("INSERT INTO " + QString(CLIENT_TABLE) +
+                      "(id, name, surname, fathers_name, birthdate, phone_1, phone_2,"
+                      "email, instagram, note)"
+                      "VALUES (:id, :name, :surname, :fathers_name, :birthdate, :phone_1, :phone_2,"
+                      ":email, :instagram, :note)");
+    addClient.bindValue(":id", QVariant(id));
+    addClient.bindValue(":name", QVariant(name));
+    addClient.bindValue(":surname", QVariant(surname));
+    addClient.bindValue(":fathers_name", QVariant(fathersName));
+    addClient.bindValue(":birthdate", QVariant(DOB));
+    addClient.bindValue(":phone_1", QVariant(phoneNum1));
+    addClient.bindValue(":phone_2", QVariant(phoneNum2));
+    addClient.bindValue(":email", QVariant(email));
+    addClient.bindValue(":instagram", QVariant(instagram));
+    addClient.bindValue(":note", QVariant(note));
+    bool success = addClient.exec();
+
+    if(!success) {
+        qDebug() << addClient.lastError().text();
     }
-    productsModel.select();
-    // Clear all subproducts in subprod model because there will be no selection in products model
-    filterSubProducts(-1);
+    clientsModel->select();
+    return success;
+}
+
+QVariant ClientsData::clientsData(int row, int column) const {
+    return clientsModel->data(clientsModel->index(row,column));
+}
+
+bool ClientsData::removeClient(int clientRow) {
+    bool status = clientsModel->removeRow(clientRow);
+    clientsModel->select();
     return status;
-#else
-    QSqlQuery addProduct;
-    addProduct.prepare("INSERT INTO " + QString(PROD_TABLE) +
-                       "(brand, category_id, name, color, price, note)"
-                       "VALUES (:brand, :category, :name, :color, :price, :note)");
-    addProduct.bindValue(":brand", brand);
-    addProduct.bindValue(":category", QVariant(category));
-    addProduct.bindValue(":name", QVariant(name));
-    addProduct.bindValue(":color", QVariant(color));
-    addProduct.bindValue(":price", QVariant(price));
-    addProduct.bindValue(":note", QVariant(note));
-    if(!addProduct.exec()) {
-        qDebug() << addProduct.lastError().text();
-    }
-    productsModel.select();
-    return addProduct.lastInsertId().toInt();
-#endif
+}
+
+bool ClientsData::hasProducts() {
+    return clientsModel->rowCount() > 0;
 }
 
 ClientsData* ClientsData::Create() {
@@ -59,6 +80,3 @@ ClientsData* ClientsData::Create() {
     p_instance = new ClientsData;
     return p_instance;
 }
-
-
-

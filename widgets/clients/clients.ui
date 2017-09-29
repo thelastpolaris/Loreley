@@ -31,7 +31,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
        <item row="3" column="0">
-        <widget class="QTableView" name="tableView">
+        <widget class="QTableView" name="clientsTable">
          <property name="selectionMode">
           <enum>QAbstractItemView::SingleSelection</enum>
          </property>

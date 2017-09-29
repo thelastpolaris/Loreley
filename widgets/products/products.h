@@ -34,11 +34,6 @@ public:
 public slots:
     void updateSubProducts(const QItemSelection & selected = QItemSelection(), const QItemSelection & deselected = QItemSelection());
     void subProdSelectionChanged(const QItemSelection & selected = QItemSelection(), const QItemSelection & deselected = QItemSelection());
-    //Products
-    bool startDeletingProduct();
-    //Subproducts
-    bool startDeletingSubProduct();
-    bool starReducingSubProductAmount();
 
     void setupPropertyDelegates(QString propTableName);
 
@@ -50,6 +45,14 @@ public slots:
     void updateFilter(QString newFilter);
 
     void selectSubProdsWithSelection();
+
+private slots:
+    //Products
+    bool startDeletingProduct();
+    //Subproducts
+    bool startDeletingSubProduct();
+    bool starReducingSubProductAmount();
+
 signals:
     void productSelected(bool selected, int row = -1);
     void subProductSelected(bool selected, int row = -1);

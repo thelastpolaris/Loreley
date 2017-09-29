@@ -46,6 +46,7 @@
     <addaction name="actionProducts"/>
     <addaction name="actionSell"/>
     <addaction name="actionReports"/>
+    <addaction name="actionClients"/>
    </widget>
    <widget class="QMenu" name="menuLanguage">
     <property name="title">
@@ -141,6 +142,14 @@
    </property>
    <property name="shortcut">
     <string>Alt+4</string>
+   </property>
+  </action>
+  <action name="actionClients">
+   <property name="text">
+    <string>Clients</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+5</string>
    </property>
   </action>
  </widget>

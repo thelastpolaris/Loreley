@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 06, 2017 at 06:09 AM
--- Server version: 5.7.17-0ubuntu0.16.10.1
--- PHP Version: 7.0.15-0ubuntu0.16.10.4
+-- Generation Time: Oct 05, 2017 at 06:08 PM
+-- Server version: 5.7.18-0ubuntu0.16.10.1
+-- PHP Version: 7.0.18-0ubuntu0.16.10.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -19,8 +19,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `loreley`
 --
-CREATE DATABASE IF NOT EXISTS `loreley` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `loreley`;
 
 -- --------------------------------------------------------
 
@@ -55,6 +53,35 @@ CREATE TABLE `category_sizes` (
   `category_id` int(11) DEFAULT NULL,
   `size_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clients`
+--
+
+CREATE TABLE `clients` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `surname` varchar(255) NOT NULL,
+  `fathers_name` varchar(255) NOT NULL,
+  `birthdate` date NOT NULL,
+  `phone_1` varchar(255) NOT NULL,
+  `phone_2` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `instagram` varchar(255) DEFAULT NULL,
+  `note` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `clients`
+--
+
+INSERT INTO `clients` (`id`, `name`, `surname`, `fathers_name`, `birthdate`, `phone_1`, `phone_2`, `email`, `instagram`, `note`) VALUES
+(1, 'Test', 'Test', 'Test', '2017-09-12', '123123', '2222', '', NULL, '222'),
+(12312, 'sad', 'dsadasd', 'asd', '2000-01-01', '23 23 ', '', '', '', ''),
+(213122, 'asd', 'asd', 'asd', '2000-01-01', '23 213 ', '', '', '', ''),
+(213123, 'asd', 'asdasd', 'asdad', '1994-01-01', '23 123 12', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -133,6 +160,31 @@ CREATE TABLE `sizes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subproducts`
+--
+
+CREATE TABLE `subproducts` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `size` int(11) NOT NULL,
+  `barcode` varchar(13) DEFAULT NULL,
+  `note` mediumtext
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Triggers `subproducts`
+--
+DELIMITER $$
+CREATE TRIGGER `delete_subproduct` BEFORE DELETE ON `subproducts` FOR EACH ROW BEGIN
+DELETE FROM subprod_arrival WHERE subprod_arrival.subprod_id = old.id;
+DELETE FROM subprod_reduce WHERE subprod_reduce.subprod_id = old.id;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `subprod_arrival`
 --
 
@@ -168,31 +220,6 @@ CREATE TABLE `subprod_reduce` (
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `subproducts`
---
-
-CREATE TABLE `subproducts` (
-  `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
-  `size` int(11) NOT NULL,
-  `barcode` varchar(13) DEFAULT NULL,
-  `note` mediumtext
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Triggers `subproducts`
---
-DELIMITER $$
-CREATE TRIGGER `delete_subproduct` BEFORE DELETE ON `subproducts` FOR EACH ROW BEGIN
-DELETE FROM subprod_arrival WHERE subprod_arrival.subprod_id = old.id;
-DELETE FROM subprod_reduce WHERE subprod_reduce.subprod_id = old.id;
-END
-$$
-DELIMITER ;
-
 --
 -- Indexes for dumped tables
 --
@@ -214,6 +241,12 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `category_sizes`
   ADD PRIMARY KEY (`category_sizes_id`);
+
+--
+-- Indexes for table `clients`
+--
+ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `colors`
@@ -247,6 +280,12 @@ ALTER TABLE `sizes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `subproducts`
+--
+ALTER TABLE `subproducts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `subprod_arrival`
 --
 ALTER TABLE `subprod_arrival`
@@ -262,12 +301,6 @@ ALTER TABLE `subprod_reasons`
 -- Indexes for table `subprod_reduce`
 --
 ALTER TABLE `subprod_reduce`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `subproducts`
---
-ALTER TABLE `subproducts`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -315,6 +348,11 @@ ALTER TABLE `sells_subproducts`
 ALTER TABLE `sizes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `subproducts`
+--
+ALTER TABLE `subproducts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `subprod_arrival`
 --
 ALTER TABLE `subprod_arrival`
@@ -328,11 +366,6 @@ ALTER TABLE `subprod_reasons`
 -- AUTO_INCREMENT for table `subprod_reduce`
 --
 ALTER TABLE `subprod_reduce`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `subproducts`
---
-ALTER TABLE `subproducts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

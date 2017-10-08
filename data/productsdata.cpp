@@ -25,9 +25,9 @@ ProductsData::ProductsData(QObject *parent)
 {
     initModels();
     //Setup printer
-    printer.setPrinterName("QL-570");
-    printer.setPaperSize(QSize(62, 40), QPrinter::Millimeter);
-    //    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
+    printer.setPrinterName("Xprinter XP-350B");
+    printer.setPaperSize(QSize(60, 40), QPrinter::Millimeter);
+    printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
 //    printer.setOutputFileName("testBarcode.pdf");
     printer.setResolution(260);
 }
@@ -269,8 +269,11 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
 #define NAME_PRICE_DISTANCE 10
 #define LABEL_PRICE_DISTANCE 5
+    QPixmap label(540, 410);
+    label.fill();
+    painter.begin(&label);
 
-    painter.begin(&printer);
+//    painter.begin(&printer);
     //Draw label
     QRect barcodeRect(barcodePixmap.rect());
     int beginX = barcodeRect.bottomLeft().x();
@@ -280,14 +283,22 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     barcodeRect.moveCenter(devRect.center());
     painter.drawPixmap(barcodeRect.topLeft().x(), 0, barcodePixmap);
 
-    painter.setPen(QPen(painter.brush(), SEPARATOR_LINE_WIDTH));
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    QBrush brush;
+    brush.setStyle(Qt::SolidPattern);
+    brush.setColor(Qt::black);
+    painter.setBrush(brush);
+
+    qreal fontSize = 30;
+
+    painter.setPen(QPen(brush, SEPARATOR_LINE_WIDTH));
     int separator_y = barcodePixmap.height() + BARCODE_SEPARATOR_DISTANCE;
     painter.drawLine(beginX, separator_y, barcodeRect.bottomRight().x(), separator_y );
 
     //Draw name, category and color
     /***********************************************************/
     QString barcodeName = QString("%1, %2, %3").arg(name, category, color);
-    painter.setFont(QFont("Arial", 8));
+    painter.setFont(QFont("Arial", 25));
     QRectF nameBound(beginX, separator_y + SEPARATOR_NAME_DISTANCE, barcodeRect.bottomRight().x() - beginX,
                      QFontMetrics(painter.font()).height()*NUM_LINES_NAME);
     painter.drawText(nameBound, Qt::TextWrapAnywhere,  barcodeName, &nameBound);
@@ -296,11 +307,11 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     int blockWidth = (barcodeRect.bottomRight().x())/3;
     //Draw price
     /***********************************************************/
-    painter.setFont(QFont("Arial", 12));
+    painter.setFont(QFont("Arial", fontSize));
     QRectF priceLabelBound(beginX, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(priceLabelBound, Qt::TextWrapAnywhere, tr("Price"), &priceLabelBound);
 
-    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.setFont(QFont("Arial", fontSize, QFont::Bold));
     QRectF priceBound(beginX, priceLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE, blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(priceBound, Qt::TextWrapAnywhere, price, &priceBound);
     /***********************************************************/
@@ -326,18 +337,25 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
     double maxWidth = sizeLabelWidth > sizeWidth ? sizeLabelWidth : sizeWidth;
 
-    painter.setFont(QFont("Arial", 12));
+    painter.setFont(QFont("Arial", fontSize));
     QRectF sizeLabelBound(endX - maxWidth, nameBound.bottomLeft().y() + NAME_PRICE_DISTANCE,
                           blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeLabelBound, Qt::TextWrapAnywhere, sizeLabel, &sizeLabelBound);
 
-    painter.setFont(QFont("Arial", 12, QFont::Bold));
+    painter.setFont(QFont("Arial", fontSize, QFont::Bold));
     QRectF sizeBound(endX - maxWidth, sizeLabelBound.bottomLeft().y() + LABEL_PRICE_DISTANCE,
                      blockWidth, QFontMetrics(painter.font()).height());
     painter.drawText(sizeBound, Qt::TextWrapAnywhere, size, &sizeBound);
     /***********************************************************/
 
     painter.end();
+
+    QPainter painterPrint;
+    painterPrint.begin(&printer);
+    painterPrint.drawPixmap(50,20, label);
+    painterPrint.end();
+
+
 }
 
 
@@ -345,6 +363,7 @@ QHash<int, QString> ProductsData::getNameAndKey(QString table, QString key, QStr
     QSqlQuery query("SELECT * from " + table);
 
     QHash<int, QString> values;
+
     while (query.next())
         values.insert(query.value(key).toInt(), query.value(value).toString());
 

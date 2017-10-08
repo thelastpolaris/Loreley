@@ -35,9 +35,12 @@ void AddSubProductDialog::startAddingSubProduct(QString size) {
     clearFields();
 
     QHash<int, QString> categories = prod->getNameAndKey("sizes", "id", "name");
-    for(QHash<int, QString>::const_iterator i = categories.begin(); i != categories.end(); ++i) {
-            ui->sizeCB->addItem(i.value(), i.key());
+    QList<QString> sorted = categories.values();
+    qSort(sorted);
+    for(QList<QString>::const_iterator i = sorted.begin(); i != sorted.end(); ++i) {
+            ui->sizeCB->addItem(*i, categories.key(*i));
     }
+
     ui->arrivalDE->setDate(QDate::currentDate());
 
     ui->sizeCB->setCurrentText(size);

@@ -23,21 +23,24 @@ void SearchProductDialog::startSearch() {
     clearFields();
 
     QHash<int, QString> categories = prod->getNameAndKey("categories", "id", "name");
-    ui->categoryCB->addItem(tr("All categories"), -1);
-    for(QHash<int, QString>::const_iterator i = categories.begin(); i != categories.end(); ++i) {
-            ui->categoryCB->addItem(i.value(), i.key());
+    QList<QString> sorted = categories.values();
+    qSort(sorted);
+    for(QList<QString>::const_iterator i = sorted.begin(); i != sorted.end(); ++i) {
+            ui->categoryCB->addItem(*i, categories.key(*i));
     }
 
-    ui->colorCB->addItem(tr("All colors"), -1);
     QHash<int, QString> colors = prod->getNameAndKey("colors", "id", "name");
-    for(QHash<int, QString>::const_iterator i = colors.begin(); i != colors.end(); ++i) {
-            ui->colorCB->addItem(i.value(), i.key());
+    sorted = colors.values();
+    qSort(sorted);
+    for(QList<QString>::const_iterator i = sorted.begin(); i != sorted.end(); ++i) {
+            ui->colorCB->addItem(*i, colors.key(*i));
     }
 
-    ui->brandCB->addItem(tr("All brands"), -1);
     QHash<int, QString> brands = prod->getNameAndKey("brands", "id", "name");
-    for(QHash<int, QString>::const_iterator i = brands.begin(); i != brands.end(); ++i) {
-            ui->brandCB->addItem(i.value(), i.key());
+    sorted = brands.values();
+    qSort(sorted);
+    for(QList<QString>::const_iterator i = sorted.begin(); i != sorted.end(); ++i) {
+            ui->brandCB->addItem(*i, brands.key(*i));
     }
 
     if(!ui->categoryCB->count()) {

@@ -95,7 +95,7 @@ void EditProperty::editPropertySlot() {
     QString propName = ui->propertiesLV->currentIndex().data().toString();
 
     bool status;
-    QString newPropName = QInputDialog::getText(this, tr("Edit <b>%1</b> property").arg(propName),
+    QString newPropName = QInputDialog::getText(this, tr("Edit %1 property").arg(propName),
                           tr("Enter the new name"), QLineEdit::Normal,
                           propName, &status);
     if(status) {

@@ -54,7 +54,13 @@ public:
     /**
      * @brief clearCart - deletes all products in the products cart
      */
-    void clearCart();    
+    void clearCart();
+
+    /**
+     * @brief getFinalPrice - returns final price with all the discounts
+     */
+    double getFinalPrice();
+
 private:
     QVector<QVector<QString>> columns;
 signals:

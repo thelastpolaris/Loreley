@@ -51,7 +51,7 @@ bool SellData::addToCart(QString barCode, QString& error) {
 bool SellData::commitSale(int discPercents, int discount) {
     QSqlQuery query;
     query.prepare("INSERT INTO sells (price, client) VALUES (:price, :client)");
-    query.bindValue(":price", m_productCart.property("price").toString());
+    query.bindValue(":price", QString::number(m_productCart.getFinalPrice()));
     query.bindValue(":client", -1); //Under development
 
     if(query.exec()) {
@@ -62,7 +62,6 @@ bool SellData::commitSale(int discPercents, int discount) {
         query.next(); //Get insert ID
         int sellID = query.value(0).toInt();
 
-        QHash<int, int> subProds = m_productCart.getIDsWithAmount();
         for(int i = 0; i < m_productCart.rowCount(); ++i) {
             int subProdID = m_productCart.data(i, ID).toInt();
             int amount = 1;//subProds[subProdID];

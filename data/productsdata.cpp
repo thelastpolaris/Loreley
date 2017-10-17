@@ -25,10 +25,10 @@ ProductsData::ProductsData(QObject *parent)
 {
     initModels();
     //Setup printer
-    printer.setPrinterName("Xprinter XP-350B");
+//    printer.setPrinterName("Xprinter XP-350B");
     printer.setPaperSize(QSize(60, 40), QPrinter::Millimeter);
     printer.setPageMargins(2,0,2,1, QPrinter::Millimeter);
-//    printer.setOutputFileName("testBarcode.pdf");
+    printer.setOutputFileName("testBarcode.pdf");
     printer.setResolution(260);
 }
 
@@ -254,6 +254,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
     QString name = productsModel.data(productsModel.index(product.row(), PROD_NAME)).toString();
     QString category = productsModel.data(productsModel.index(product.row(), PROD_CAT)).toString();
+    QString brand = productsModel.data(productsModel.index(product.row(), PROD_BRAND)).toString();
     QString color = productsModel.data(productsModel.index(product.row(), PROD_COLOR)).toString();
     QString price = productsModel.data(productsModel.index(product.row(), PROD_PRICE)).toString();
 
@@ -297,7 +298,7 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
 
     //Draw name, category and color
     /***********************************************************/
-    QString barcodeName = QString("%1, %2, %3").arg(name, category, color);
+    QString barcodeName = QString("%1, %2, %3, %4").arg(category, brand, name, color);
     painter.setFont(QFont("Arial", 25));
     QRectF nameBound(beginX, separator_y + SEPARATOR_NAME_DISTANCE, barcodeRect.bottomRight().x() - beginX,
                      QFontMetrics(painter.font()).height()*NUM_LINES_NAME);
@@ -354,8 +355,6 @@ void ProductsData::printBarcode(QModelIndex subProduct, QModelIndex product) {
     painterPrint.begin(&printer);
     painterPrint.drawPixmap(50,20, label);
     painterPrint.end();
-
-
 }
 
 

@@ -14,9 +14,11 @@
 #include <QInputDialog>
 #include "mainwindow.h"
 #include "scanbarcodedialog.h"
+#include "addglobaldiscount.h"
 
 Sell::Sell(QWidget *parent) :
-    QWidget(parent), ui(new Ui::Sell), prodWidget(new Products(true)), scanDialog(new ScanBarcodeDialog(this))
+    QWidget(parent), ui(new Ui::Sell), prodWidget(new Products(true)), scanDialog(new ScanBarcodeDialog(this)),
+    addGlobalDisc(new AddGlobalDiscount(this))
 {
     ui->setupUi(this);
     ui->splitter->insertWidget(0, prodWidget);
@@ -43,6 +45,19 @@ Sell::Sell(QWidget *parent) :
         ui->price->setText(changedPrice);
     });
 
+    connect(sellData->getCartModel(), &CartModel::priceChanged, [=](double price) {
+        if(price > 0) {
+            ui->globalDiscount->setEnabled(true);
+        }
+
+        if(addGlobalDisc->isActive()) {
+            ui->globalDiscount->setText(tr("Remove Global Discount"));
+        } else {
+            ui->globalDiscount->setText(tr("Add Global Discount"));
+            addGlobalDisc->setMaxDiscountVal(price - 1);
+        }
+    });
+
     connect(prodWidget, &Products::subProductSelected, [=](bool selected, int row) {
         if(selected) {
             rowToAdd = row;
@@ -67,6 +82,12 @@ Sell::Sell(QWidget *parent) :
             prodWidget->selectSubProdsWithSelection();
         }
     });
+
+    connect(ui->globalDiscount, &QPushButton::clicked, [=] {
+        addGlobalDisc->show();
+    });
+
+    addGlobalDisc->hide();
 
     connect(ui->cartTable->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleSelection(QItemSelection)));
 
@@ -101,6 +122,9 @@ Sell::Sell(QWidget *parent) :
 
     connect(ui->scanBarcodeButton, SIGNAL(pressed()), scanDialog, SLOT(show()));
 
+
+    //Not ready for production
+    ui->globalDiscount->hide();
 }
 
 void Sell::prepareSell() {

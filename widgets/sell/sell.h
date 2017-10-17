@@ -12,6 +12,7 @@ class Sell;
 
 class Products;
 class ScanBarcodeDialog;
+class AddGlobalDiscount;
 
 class Sell : public QWidget
 {
@@ -36,6 +37,7 @@ private:
     Ui::Sell *ui;
     Products* prodWidget;
     ScanBarcodeDialog* scanDialog;
+    AddGlobalDiscount* addGlobalDisc;
 
     /**
      * @brief rowToAdd - the id of row that is currently selected in subproducts table

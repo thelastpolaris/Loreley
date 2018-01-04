@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>default.txt</file>
         <file>images/icons/add.png</file>
         <file>images/icons/add@4x.png</file>
         <file>images/icons/add@3x.png</file>
@@ -41,6 +40,10 @@
         <file>images/icons/minus@3x.png</file>
         <file>images/icons/minus@2x.png</file>
         <file>images/icons/minus.png</file>
+        <file>images/icons/barcode@4x.png</file>
+        <file>images/icons/barcode@3x.png</file>
+        <file>images/icons/barcode@2x.png</file>
+        <file>images/icons/barcode.png</file>
         <file>languages/Loreley_en.qm</file>
         <file>languages/Loreley_en.ts</file>
         <file>languages/Loreley_ru.qm</file>

@@ -1,7 +1,8 @@
 #include "cartmodel.h"
 
 CartModel::CartModel(QObject* parent)
-    :QAbstractTableModel(parent), columns(COLS_NUMBER), m_price(0), m_discounts(0)
+    :QAbstractTableModel(parent), columns(COLS_NUMBER), m_price(0), m_discounts(0),
+      m_globalDiscount(0)
 {
 
 }
@@ -35,6 +36,9 @@ void CartModel::addToCart(QString category, QString name, QString size, QString 
     emit IDsWithAmountChanged(IDsWithAmount);
 
     setProperty("price", m_price + price.toDouble());
+
+
+
     emit endInsertRows();
 }
 
@@ -82,7 +86,7 @@ void CartModel::clearCart() {
     emit endResetModel();
 }
 
-double CartModel::getFinalPrice() {
+double CartModel::getFinalPrice() const {
     return m_price - m_discounts;
 }
 
@@ -142,7 +146,7 @@ bool CartModel::addDiscount(int row, double discount) {
         emit beginResetModel();
         double oldDisc = columns[DISCOUNT][row].toDouble();
         columns[DISCOUNT][row] = QString::number(discount);
-        // We subtract old discount to handle cases when discount is edited and not added
+        // We subtract old discount to handle cases when discount is added but edited
         setProperty("discounts", m_discounts - oldDisc + discount);
         emit endResetModel();
         return true;
@@ -162,6 +166,25 @@ bool CartModel::deleteDiscount(int row) {
         }
     }
     return false;
+}
+
+void CartModel::addGlobalDiscount(double value) {
+    if(m_discounts + m_globalDiscount < m_price) {
+        m_globalDiscount = value;
+        double newDiscount = value;
+        if(value < 1) newDiscount = m_price * value;
+        setProperty("discounts", m_discounts + newDiscount);
+    }
+}
+
+void CartModel::removeGlobalDiscount() {
+    if(m_globalDiscount) {
+        double discount = m_globalDiscount;
+        if(m_globalDiscount < 1) discount = m_price * m_globalDiscount;
+
+        setProperty("discounts", m_discounts - discount);
+        m_globalDiscount = 0;
+    }
 }
 
 //bool CartModel::setData(const QModelIndex & index, const QVariant & value, int role)

@@ -114,6 +114,18 @@ public:
 
     int getAmountOfSubProd(int subProdID);
 
+    /**
+     * @brief searchBarcode - return id of parent product and subproduct
+     * @param barCode - barcode of the subproduct
+     * @return first value - parent id, second value - subproduct id
+     */
+    QPair<int, int> searchBarcode(QString barCode);
+
+    /**
+     * @brief rowByBarcode - find parent and subproduct rows by barcode
+     */
+    void rowByBarcode(QString barCode);
+
 signals:
     void productsFilterChanged(QString productsFilter);
     void propertiesChanged(QString _tableName);

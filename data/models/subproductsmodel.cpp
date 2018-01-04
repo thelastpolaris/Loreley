@@ -24,3 +24,7 @@ QVariant SubProductsModel::data(const QModelIndex &item, int role) const {
 int SubProductsModel::columnCount(const QModelIndex &parent) const {
     return ProductsModel::columnCount(parent) + 1;
 }
+
+int SubProductsModel::rowByID(int subProductID, int column) {
+    return match(index(0, column), Qt::DisplayRole, subProductID)[0].row();
+}

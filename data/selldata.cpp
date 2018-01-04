@@ -50,9 +50,11 @@ bool SellData::addToCart(QString barCode, QString& error) {
 
 bool SellData::commitSale(int discPercents, int discount) {
     QSqlQuery query;
-    query.prepare("INSERT INTO sells (price, client) VALUES (:price, :client)");
+    query.prepare("INSERT INTO sells (price, client, global_discount) "
+                  "VALUES (:price, :client, :global_discount)");
     query.bindValue(":price", QString::number(m_productCart.getFinalPrice()));
     query.bindValue(":client", -1); //Under development
+    query.bindValue(":global_discount", m_productCart.getGlobalDiscount());
 
     if(query.exec()) {
         query.prepare("SELECT LAST_INSERT_ID()");

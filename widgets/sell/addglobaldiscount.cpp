@@ -8,12 +8,24 @@ AddGlobalDiscount::AddGlobalDiscount(QWidget *parent) :
     ui->setupUi(this);
 
     connect(ui->globalDiscBB, &QDialogButtonBox::accepted, [=] {
-        m_isActive = true;
+        setActive(true);
+        bool isPercents = false;
+        double value = 0;
+
+        if (ui->percentsSB->isEnabled()) {
+            isPercents = true;
+            value = ui->percentsSB->value();
+        } else {
+            value = ui->valueSB->value();
+        }
+
+        if(value) emit discountSet(isPercents, value);
+
         close();
     });
 
     connect(ui->globalDiscBB, &QDialogButtonBox::rejected, [=] {
-        m_isActive = false;
+        setActive(false);
         close();
     });
 
@@ -28,14 +40,24 @@ AddGlobalDiscount::AddGlobalDiscount(QWidget *parent) :
     });
 }
 
+void AddGlobalDiscount::setActive(bool isActive)
+{
+    if(m_isActive != isActive) {
+        m_isActive = isActive;
+        emit activeChanged(isActive);
+    }
+}
+
+void AddGlobalDiscount::showDialog()
+{
+    ui->valueSB->setValue(0);
+    ui->percentsSB->setValue(0);
+    show();
+}
+
 AddGlobalDiscount::~AddGlobalDiscount()
 {
     delete ui;
-}
-
-bool AddGlobalDiscount::isActive()
-{
-    return m_isActive;
 }
 
 void AddGlobalDiscount::setMaxDiscountVal(int maxDiscount)

@@ -57,9 +57,18 @@ public:
     void clearCart();
 
     /**
-     * @brief getFinalPrice - returns final price with all the discounts
+     * @brief getFinalPrice - returns final price including all the discounts
      */
-    double getFinalPrice();
+    double getFinalPrice() const;
+
+    /**
+     * @brief getPrice - returns regular price not including discounts
+     */
+    double getPrice() const { return m_price; }
+
+    void addGlobalDiscount(double value);
+    void removeGlobalDiscount();
+    double getGlobalDiscount() const { return m_globalDiscount;}
 
 private:
     QVector<QVector<QString>> columns;
@@ -71,6 +80,7 @@ private:
     QHash<int, int> IDsWithAmount;
     double m_price;
     double m_discounts;
+    double m_globalDiscount;
 };
 
 #endif // CARTMODEL_H

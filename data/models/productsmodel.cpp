@@ -15,6 +15,10 @@ Qt::ItemFlags ProductsModel::flags(const QModelIndex &index) const {
     }
 }
 
+int ProductsModel::rowByID(int productID, int column) {
+    return match(index(0, column),Qt::DisplayRole, productID)[0].row();
+}
+
 QSqlRecord ProductsModel::getOriginalRecord(int row) const {
     QSqlTableModel mod;
     mod.setTable(tableName());

@@ -16,9 +16,10 @@ void ScanBarcodeDialog::keyPressEvent(QKeyEvent *event) {
     if(!event->text().isEmpty()) {
         if(event->text() == "\r") {
             QString error;
-            SellData::Instance()->addToCart(barCode, error);
+            emit newBarcode(barCode);
+
             if(!error.isEmpty()) {
-                QMessageBox::warning(this, tr("Error while adding product to cart"),
+                QMessageBox::warning(this, tr("Error while scanning the barcode"),
                                      error);
             }
             barCode.clear();

@@ -587,3 +587,25 @@ int ProductsData::getAmountOfSubProd(int subProdID) {
 
     return amount;
 }
+
+
+QPair<int, int> ProductsData::searchBarcode(QString barCode) {
+    QSqlQuery search;
+    QPair<int,int> ids;
+    search.prepare("SELECT id, product_id from " + QString(SUBPROD_TABLE) +
+                   " WHERE barcode=:barcode");
+    search.bindValue(":barcode", barCode);
+    if(!search.exec()) {
+        qDebug() << tr("No subproduct with barcode %1").arg(barCode);
+    }
+    if(!search.size()) {
+        ids.first = -1;
+        ids.second = -1;
+        return ids;
+    }
+    search.next();
+    ids.first = search.value("product_id").toInt();
+    ids.second = search.value("id").toInt();
+
+    return ids;
+}

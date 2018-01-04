@@ -26,6 +26,7 @@ Reports::Reports(QWidget *parent) :
     ui->salesTable->horizontalHeader()->setStretchLastSection(true);
     ui->salesTable->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->salesTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->salesTable->adjustSize();
 
     ui->subProductsTable->setModel(sellingsSubProdsModel);
     connect(ui->salesTable->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)),

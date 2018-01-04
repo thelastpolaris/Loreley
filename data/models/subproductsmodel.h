@@ -17,6 +17,13 @@ public:
      * @param idsInCart - key - subproduct id, value - its amount in shopping cart
      */
     void selectSubProds();
+
+    /**
+     * @param subProductID - id of subProduct
+     * @param column - e.g SUBPROD_ID
+     * @return row number of subProduct with id subProductID
+     */
+    int rowByID(int subProductID, int column);
 private:
     QString historyTable;
 };

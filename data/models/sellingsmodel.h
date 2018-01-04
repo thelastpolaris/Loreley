@@ -7,6 +7,7 @@
 #define SELLING_TIME 1
 #define SELLING_PRICE 2
 #define SELLING_CLIENT 3
+#define SELLING_GLOBAL_DISCOUNT 4
 
 class SellingsModel : public QSqlTableModel
 {

@@ -16,6 +16,9 @@ public:
     ~ScanBarcodeDialog();
     void keyPressEvent(QKeyEvent *);
 
+signals:
+    void newBarcode(QString _barCode);
+
 private:
     QString barCode;
     Ui::ScanBarcodeDialog *ui;

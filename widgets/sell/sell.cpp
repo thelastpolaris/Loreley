@@ -29,12 +29,13 @@ Sell::Sell(QWidget *parent) :
     ui->cartTable->setItemDelegate(delegate);
 
     SellData* sellData = SellData::Instance();
+    CartModel* cartModel = sellData->getCartModel();
 
     //Set width of 'Price' label
     ui->labelPrice->setMaximumWidth(ui->labelPrice->fontMetrics().width(ui->labelPrice->text()));
     ui->price->setWordWrap(true);
 
-    ui->cartTable->setModel(sellData->getCartModel());
+    ui->cartTable->setModel(cartModel);
 
     ui->cartTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
     ui->cartTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
@@ -43,11 +44,16 @@ Sell::Sell(QWidget *parent) :
     //Set signals
     connect(sellData, &SellData::displayPriceChanged, [=](QString changedPrice) {
         ui->price->setText(changedPrice);
-    });
 
-    connect(sellData->getCartModel(), &CartModel::priceChanged, [=](double price) {
+        double price = cartModel->getPrice();
+
         if(price > 0) {
             ui->globalDiscount->setEnabled(true);
+        }
+
+        if(price == 0) {
+            addGlobalDisc->setActive(false);
+            cartModel->removeGlobalDiscount();
         }
 
         if(addGlobalDisc->isActive()) {
@@ -56,6 +62,11 @@ Sell::Sell(QWidget *parent) :
             ui->globalDiscount->setText(tr("Add Global Discount"));
             addGlobalDisc->setMaxDiscountVal(price - 1);
         }
+    });
+
+    connect(addGlobalDisc, &AddGlobalDiscount::discountSet, [=](bool isPercent, double value) {
+        double globalDisc = isPercent ? cartModel->getPrice()*(value/100) : value;
+        cartModel->addGlobalDiscount(globalDisc);
     });
 
     connect(prodWidget, &Products::subProductSelected, [=](bool selected, int row) {
@@ -84,10 +95,13 @@ Sell::Sell(QWidget *parent) :
     });
 
     connect(ui->globalDiscount, &QPushButton::clicked, [=] {
-        addGlobalDisc->show();
+        if(addGlobalDisc->isActive()) {
+            addGlobalDisc->setActive(false);
+            cartModel->removeGlobalDiscount();
+        } else {
+            addGlobalDisc->showDialog();
+        }
     });
-
-    addGlobalDisc->hide();
 
     connect(ui->cartTable->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)), this, SLOT(handleSelection(QItemSelection)));
 
@@ -122,9 +136,16 @@ Sell::Sell(QWidget *parent) :
 
     connect(ui->scanBarcodeButton, SIGNAL(pressed()), scanDialog, SLOT(show()));
 
+    // Handle barcode scanner
+    connect(scanDialog, &ScanBarcodeDialog::newBarcode, [=](QString barCode) {
+       QString error;
+       SellData::Instance()->addToCart(barCode, error);
 
-    //Not ready for production
-    ui->globalDiscount->hide();
+       if(!error.isEmpty()) {
+           QMessageBox::warning(this, tr("Error while scanning the barcode"),
+                                error);
+       }
+    });
 }
 
 void Sell::prepareSell() {

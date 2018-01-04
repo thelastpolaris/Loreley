@@ -18,6 +18,7 @@ ReportsData::ReportsData(QObject *parent)
     sellingsModel.setHeaderData(SELLING_TIME, Qt::Horizontal, tr("Time"));
     sellingsModel.setHeaderData(SELLING_PRICE, Qt::Horizontal, tr("Price"));
     sellingsModel.setHeaderData(SELLING_CLIENT, Qt::Horizontal, tr("Client"));
+    sellingsModel.setHeaderData(SELLING_GLOBAL_DISCOUNT, Qt::Horizontal, tr("Global Discount"));
     sellingsModel.select();
 
     sellingSubProdsModel.setHeaderData(SELLSUB_PRODNAME, Qt::Horizontal, tr("Product's name"));

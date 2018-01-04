@@ -27,22 +27,32 @@
 
 #include "mainwindow.h"
 
+#include "../sell/scanbarcodedialog.h"
+
 Products::Products(bool _saleMode) :
     ui(new Ui::Products), addProdDialog(new AddProductDialog(this)),
     addSubProdDialog(new AddSubProductDialog(this)), reduceSubProdDialog(new ReduceSubProductDialog(this)),
-    searchProdDialog(new SearchProductDialog(this)), editPropertyWindow(new EditProperty(this)), saleMode(_saleMode)
+    searchProdDialog(new SearchProductDialog(this)), editPropertyWindow(new EditProperty(this)), saleMode(_saleMode),
+    scanDialog(new ScanBarcodeDialog(this))
 {
     ProductsData* prodData = ProductsData::Instance();
 
     ui->setupUi(this);
 
     ui->tableView->setModel(prodData->getProductsModel());
-    //    ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     //Setup delegates for products
     setupPropertyDelegates("categories");
     setupPropertyDelegates("colors");
     setupPropertyDelegates("brands");
+
+    //Search by barcode
+    connect(ui->searchBarcodeButton, SIGNAL(pressed()), scanDialog, SLOT(show()));
+    connect(scanDialog, &ScanBarcodeDialog::newBarcode, [=](QString barCode) {
+        selectByBarcode(barCode);
+        scanDialog->close();
+    });
 
     ui->tableView_2->setModel(prodData->getSubProductsModel());
     ui->tableView_2->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -275,6 +285,20 @@ void Products::updateFilter(QString newFilter) {
 
     ui->cancelFilterButton->setVisible(visible);
     ui->filterText->setVisible(visible);
+}
+
+void Products::selectByBarcode(QString barCode) {
+    ProductsData *prodData = ProductsData::Instance();
+    QPair<int, int> ids = prodData->searchBarcode(barCode);
+    if(ids.first < 0 || ids.second < 0) {
+        QMessageBox::warning(this, tr("Error"), tr("Invalid barcode. No product or subproduct found."));
+        return;
+    }
+    ui->tableView->selectRow(prodData->getProductsModel()->rowByID(ids.first, PROD_ID));
+    /* I assume that selectRow is asynchronious. That is why without explicitly adding
+       filter for product id to subproducts model we will get segfault */
+    prodData->filterSubProducts(ids.first);
+    ui->tableView_2->selectRow(prodData->getSubProductsModel()->rowByID(ids.second, SUBPROD_ID));
 }
 
 Products::~Products()

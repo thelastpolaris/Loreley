@@ -14,6 +14,7 @@ class AddProductDialog;
 class AddSubProductDialog;
 class ReduceSubProductDialog;
 class SearchProductDialog;
+class ScanBarcodeDialog;
 
 namespace Ui {
     class Products;
@@ -30,6 +31,8 @@ public:
      * @brief prepareProducts - resets selection in product's table and clear all subproducts
      */
     void prepareProducts();
+
+    void selectByBarcode(QString barCode);
 
 public slots:
     void updateSubProducts(const QItemSelection & selected = QItemSelection(), const QItemSelection & deselected = QItemSelection());
@@ -66,6 +69,7 @@ private:
     SearchProductDialog* searchProdDialog;
 
     EditProperty* editPropertyWindow;
+    ScanBarcodeDialog* scanDialog;
 
     /**
      * @brief saleMode - true if don't need to display add/delete product/subproduct and print buttons

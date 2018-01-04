@@ -28,6 +28,13 @@ public:
     QString selectStat() { return selectStatement(); }
     int getFilterValue() const { return filterValue; }
 
+    /**
+     * @param productID - id of parent product
+     * @param column - e.g PROD_ID
+     * @return row number of product with id productID
+     */
+    int rowByID(int productID, int column);
+
 private:
     QList<int> readOnlyCols;
     QString filterField;
